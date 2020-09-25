@@ -83,7 +83,7 @@ Prettier is an automated code formatter, so you no longer need to think about fo
 ## ESLint
 Installing and configuring eslint for this project. An .eslintrc.json file has already been created for this project, but you need to install eslint and the react plugin.
 
-A linter is basically a tool that will look for problems in your code. This will basically do what Visual Studio or Eclipse do out of the box, search for issues such as unused variables. The rules that is uses can be entirely configured, or you can use an existing one such as the [Airbnb JavaScript Style guide](https://github.com/airbnb/javascript)
+A linter is basically a tool that will look for problems in your code. This will basically do what Visual Studio or Eclipse do out of the box, search for issues such as unused variables. The rule set that it uses can be entirely configured by yourself, or you can use an existing one such as the [Airbnb JavaScript Style guide](https://github.com/airbnb/javascript) and overwrite any rules you may not want to enforce in your project.
 
 ```npm install -D eslint eslint-config-prettier```
 ```npm i -D eslint-plugin-react```
