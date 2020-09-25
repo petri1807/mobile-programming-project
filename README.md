@@ -64,6 +64,15 @@ Add these into the JSON file
 ## Cloning repo
 How to clone the repository to your local machine inside VS Code
 
+- Copy the repo address `https://github.com/petri1807/mobile-programming-project.git`
+- Open command palette `Ctrl + Shift + P` and type 'clone'. Select `Git: Clone`
+- Paste the address in and hit `Enter`
+- Select the folder you want to clone this repo into.
+- A popup will appear asking you
+> Would you like to open the cloned repository, or add it to the current workspace?
+- Select Open
+
+
 ## Prettier
 Installing and configuring prettier for this project
 
