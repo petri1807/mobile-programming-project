@@ -89,11 +89,9 @@ A linter is basically a tool that will look for problems in your code. This will
 
 The rule set that it uses can be entirely configured by yourself, or you can use an existing one such as the [Airbnb JavaScript Style guide](https://github.com/airbnb/javascript) and overwrite any rules you may not want to enforce in your project.
 
-Run these commands in the VS Code terminal, PowerShell, or the regular Command Promt inside your project root folder
+Run this command in the VS Code terminal, PowerShell, or the regular Command Promt inside your project root folder
 
-```npm install -D eslint eslint-config-prettier```
-
-```npm i -D eslint-plugin-react```
+```npm i -D eslint eslint-config-prettier eslint-plugin-react```
 
 ## Using git inside VS Code
 General functions for faster, easier commits, pulls, merging etc.
