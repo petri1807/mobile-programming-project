@@ -25,18 +25,18 @@ Optional for code completion and readability
 ## VS Code keyboard shortcuts
 Common keyboard shortcuts to boost productivity
 
-`Ctrl + J` Toggle integrated terminal.
-`Ctrl + B` Toggle side bar.
-`Ctrl + Shift + P` Open command palette.
-`Ctrl + P` Search or switch between opened files.
-`Ctrl + C or Ctrl + X` Copy/Cut, if you want to copy/cut the entire line you don't need to highlight all the text, just have the cursor on the line and copy/cut
-`Shift + arrow keys` Select text. Useful for enclosing something with parentheses, curly braces or brackets. Highlight the text, type the opening parentheses etc. and the highlighted text will be inside it.
-`Ctrl + Shift + K` Delete the entire line.
-`Alt + arrow up/down` Move line or highlighted code up/down.
-`F2` Refactoring. Want to change a variable name? Rename refactor makes it easier, rename it once and all instances of it will be automatically refactored. Should work across files if an instance is found.
+- `Ctrl + J` Toggle integrated terminal.
+- `Ctrl + B` Toggle side bar.
+- `Ctrl + Shift + P` Open command palette.
+- `Ctrl + P` Search or switch between opened files.
+- `Ctrl + C or Ctrl + X` Copy/Cut, if you want to copy/cut the entire line you don't need to highlight all the text, just have the cursor on the line and copy/cut
+- `Shift + arrow keys` Select text. Useful for enclosing something with parentheses, curly braces or brackets. Highlight the text, type the opening parentheses etc. and the highlighted text will be inside it.
+- `Ctrl + Shift + K` Delete the entire line.
+- `Alt + arrow up/down` Move line or highlighted code up/down.
+- `F2` Refactoring. Want to change a variable name? Rename refactor makes it easier, rename it once and all instances of it will be automatically refactored. Should work across files if an instance is found.
 
 Open Keyboard Shortcuts from command palette and search for
-`Emmet Balance (outward)` and add shortcut `Ctrl + Shift + arrow down`. Now you can easily duplicate a line or a block of highlighted code below with this shortcut.
+- `Emmet Balance (outward)` and add shortcut `Ctrl + Shift + arrow down`. Now you can easily duplicate a line or a block of highlighted code below with this shortcut.
 
 ## VS Code settings
 Settings to be configured
