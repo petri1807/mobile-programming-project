@@ -85,3 +85,11 @@ Installing and configuring eslint for this project
 
 ## Using git inside VS Code
 General functions for faster, easier commits, pulls, merging etc.
+
+Open the Source Control tab in the activity bar, and you will see all changes made. 
+
+Press the `+` icon to stage changes, write a commit message and commit with `Ctrl + Enter`
+
+![Git](/vscodegit.jpg)
+
+Push commits from the `...` menu.
