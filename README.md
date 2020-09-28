@@ -74,7 +74,7 @@ How to clone the repository to your local machine inside VS Code
 
 ## Prettier
 Installing and configuring prettier for this project.
-Read more at [](https://prettier.io/)
+Read more at https://prettier.io/
 
 Prettier is an automated code formatter, so you no longer need to think about formatting ever again. This, together with ESLint will work wonders on your code.
 
@@ -86,7 +86,7 @@ Run this command in the VS Code terminal, PowerShell, or the regular Command Pro
 
 ## ESLint
 Installing and configuring eslint for this project.
-Read more at [](https://eslint.org/)
+Read more at https://eslint.org/
 
 ESLint is a JavaScript linter that enables you to enforce a set of style, formatting, and coding standards for your codebase. It looks at your code, and tells you when you're not following the standard that you set in place. The rule set that it uses can be entirely configured by yourself, or you can use an existing one such as the [Airbnb JavaScript Style guide](https://github.com/airbnb/javascript) or [ESLint:recommended](https://eslint.org/docs/rules/) and add or overwrite any rules you do/don't want to enforce in your project.
 
