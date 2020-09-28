@@ -31,6 +31,7 @@ Common keyboard shortcuts to boost productivity
 - `Ctrl + P` Search or switch between opened files.
 - `Ctrl + C or Ctrl + X` Copy/Cut, if you want to copy/cut the entire line you don't need to highlight all the text, just have the cursor on the line and copy/cut
 - `Shift + arrow keys` Highlight text with arrow keys. Useful for enclosing something with parentheses, curly braces or brackets. Highlight the text, type the opening parentheses etc. and the highlighted text will be inside it.
+- `Ctrl + D` Highlight the word your cursor is on.
 - `Ctrl + Shift + K` Delete the entire line.
 - `Alt + arrow up/down` Move the line your cursor is on, or a highlighted code block up/down.
 - `F2` Refactoring. Want to change a variable/class/component name? Rename refactor makes it easier, rename it once and all instances of it will be automatically refactored. Should work across files if an instance is found.
@@ -46,8 +47,9 @@ Open settings.json file with `Ctrl + ,`, if this opens the UI settings you can o
 Add these into the JSON file
 
 ```
-  "workbench.settings.editor": "json",
-  "git.autofetch": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
   },
@@ -55,9 +57,6 @@ Add these into the JSON file
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
 ```
 
@@ -75,6 +74,7 @@ How to clone the repository to your local machine inside VS Code
 
 ## Prettier
 Installing and configuring prettier for this project.
+Read more at [](https://prettier.io/)
 
 Prettier is an automated code formatter, so you no longer need to think about formatting ever again. This, together with ESLint will work wonders on your code.
 
@@ -82,12 +82,13 @@ Run this command in the VS Code terminal, PowerShell, or the regular Command Pro
 
 ```npm i -D prettier```
 
+-D installs it as a dev dependency for THIS project only. Use -g if you want to install prettier globally.
+
 ## ESLint
-Installing and configuring eslint for this project. An .eslintrc.json file has already been created for this project, but you need to install eslint and the react plugin.
+Installing and configuring eslint for this project.
+Read more at [](https://eslint.org/)
 
-A linter is basically a tool that will look for problems in your code. This will search for issues such as unused variables. Using a linter ensures you catch problems easily, and write consistent code as a team. ESLint combined with Prettier can format and fix (some of) your code automatically.
-
-The rule set that it uses can be entirely configured by yourself, or you can use an existing one such as the [Airbnb JavaScript Style guide](https://github.com/airbnb/javascript) and overwrite any rules you may not want to enforce in your project.
+ESLint is a JavaScript linter that enables you to enforce a set of style, formatting, and coding standards for your codebase. It looks at your code, and tells you when you're not following the standard that you set in place. The rule set that it uses can be entirely configured by yourself, or you can use an existing one such as the [Airbnb JavaScript Style guide](https://github.com/airbnb/javascript) or [ESLint:recommended](https://eslint.org/docs/rules/) and add or overwrite any rules you do/don't want to enforce in your project.
 
 Run this command in the VS Code terminal, PowerShell, or the regular Command Promt inside your project root folder
 
