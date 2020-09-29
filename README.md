@@ -53,7 +53,6 @@ Add these into the JSON file
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
   },
-  "javascript.implicitProjectConfig.checkJs": false,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
