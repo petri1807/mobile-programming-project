@@ -5,6 +5,8 @@
 - [VS Code keyboard shortcuts](#vs-code-keyboard-shortcuts)
 - [VS Code settings](#vs-code-settings)
 - [Cloning repo](#cloning-repo)
+- [Dependencies](#dependencies)
+- [Git in VS Code](#git-in-vs-code)
 
 ## VS Code extensions
 Install these extensions from VS Code extensions, links to Visual Studio Marketplace
@@ -83,7 +85,7 @@ To install the new package(s) someone else added to the project, pull the latest
 
 This will install all new dependencies to your local machine.
 
-## Using git inside VS Code
+## Git in VS Code
 General functions for faster, easier commits, pulls, merging etc.
 
 Open the Source Control tab in the activity bar, and you will see all changes made. 
