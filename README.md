@@ -32,9 +32,7 @@ Common keyboard shortcuts to boost productivity
 - `Ctrl + Shift + K` Delete the entire line.
 - `Alt + arrow up/down` Move the line your cursor is on, or a highlighted code block up/down.
 - `F2` Refactoring. Want to change a variable/class/component name? Rename refactor makes it easier, rename it once and all instances of it will be automatically refactored. Should work across files if an instance is found.
-
-Open Keyboard Shortcuts from command palette and search for
-- `Emmet Balance (outward)` and add shortcut `Ctrl + Shift + arrow down`. Now you can easily duplicate the line your cursor is on or a block of highlighted code below with this shortcut.
+- `Shift + Alt + arrow down` Duplicate the line your cursor is on or a block of highlighted code below.
 
 ## VS Code settings
 Settings to be configured
