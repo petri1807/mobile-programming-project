@@ -76,6 +76,13 @@ How to clone the repository to your local machine inside VS Code
 - Open the VS Code integrated terminal with `Ctrl + J`
 - Run `npm install`
 
+## Dependencies
+If you npm install a new package (@react-navigation/drawer for example) it will update the package.json file.
+
+To install the new package(s) someone else added to the project, pull the latest version from git and run `npm install`
+
+This will install all new dependencies to your local machine.
+
 ## Using git inside VS Code
 General functions for faster, easier commits, pulls, merging etc.
 
