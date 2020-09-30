@@ -5,9 +5,6 @@
 - [VS Code keyboard shortcuts](#vs-code-keyboard-shortcuts)
 - [VS Code settings](#vs-code-settings)
 - [Cloning repo](#cloning-repo)
-- [Prettier](#prettier)
-- [ESLint](#eslint)
-
 
 ## VS Code extensions
 Install these extensions from VS Code extensions, links to Visual Studio Marketplace
@@ -49,7 +46,9 @@ Add these into the JSON file
 ```
 // These are all my auto-save configs
 "editor.formatOnSave": true,
-// turn it off for JS and JSX, we will do this via eslint
+// Updates imports on file moving or renaming automatically
+"javascript.updateImportsOnFileMove.enabled": "always",
+// turn formatting off for JS and JSX, we will do this via eslint
 "[javascript]": {
   "editor.formatOnSave": false
 },
