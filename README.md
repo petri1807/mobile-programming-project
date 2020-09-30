@@ -47,16 +47,23 @@ Open settings.json file with `Ctrl + ,`, if this opens the UI settings you can o
 Add these into the JSON file
 
 ```
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-  "editor.formatOnType": true,
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "javascript.updateImportsOnFileMove.enabled": "always",
+// These are all my auto-save configs
+"editor.formatOnSave": true,
+// turn it off for JS and JSX, we will do this via eslint
+"[javascript]": {
+  "editor.formatOnSave": false
+},
+"[javascriptreact]": {
+  "editor.formatOnSave": false
+},
+// show eslint icon at bottom toolbar
+"eslint.alwaysShowStatus": true,
+// tell the ESLint plugin to run on save
+"editor.codeActionsOnSave": {
+  "source.fixAll": true
+},
+// Optional BUT IMPORTANT: If you have the prettier extension enabled for other languages like CSS and HTML, turn it off for JS since we are doing it through Eslint already
+"prettier.disableLanguages": ["javascript", "javascriptreact"],
 ```
 
 ## Cloning repo
@@ -69,31 +76,8 @@ How to clone the repository to your local machine inside VS Code
 - A popup will appear asking you
 > Would you like to open the cloned repository, or add it to the current workspace?
 - Select Open
-
-
-## Prettier
-Installing and configuring prettier for this project.
-
-Read more at https://prettier.io/
-
-Prettier is an automated code formatter, so you no longer need to think about formatting ever again. This, together with ESLint will format and fix your code automatically.
-
-Run this command in the VS Code terminal, PowerShell, or the regular Command Promt inside your project root folder
-
-```npm i -D prettier```
-
--D installs it as a dev dependency for THIS project only.
-
-## ESLint
-Installing and configuring eslint for this project.
-
-Read more at https://eslint.org/
-
-ESLint is a JavaScript linter that enables you to enforce a set of style, formatting, and coding standards for your codebase. It looks at your code, and tells you when you're not following the standard that you set in place. The rule set that it uses can be entirely configured by yourself, or you can use an existing one such as the [Airbnb JavaScript Style guide](https://github.com/airbnb/javascript) or [ESLint:recommended](https://eslint.org/docs/rules/) and add or overwrite any rules you do/don't want to enforce in your project.
-
-Run this command in the VS Code terminal, PowerShell, or the regular Command Promt inside your project root folder
-
-```npm i -D eslint eslint-config-prettier eslint-plugin-react```
+- Open the VS Code integrated terminal with `Ctrl + J`
+- Run `npm install`
 
 ## Using git inside VS Code
 General functions for faster, easier commits, pulls, merging etc.
