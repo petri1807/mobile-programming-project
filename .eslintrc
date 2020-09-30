@@ -1,0 +1,31 @@
+{
+  "env": {
+    "react-native/react-native": true
+  },
+  "extends": ["wesbos"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["react", "react-native"],
+  "rules": {
+    "no-console": 0,
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "es5",
+        "singleQuote": true,
+        "printWidth": 120,
+        "tabWidth": 2,
+        "endOfLine": "auto"
+      }
+    ],
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 2,
+    "react-native/no-inline-styles": 2,
+    "react-native/no-color-literals": 0,
+    "react-native/no-raw-text": 2,
+    "react-native/no-single-element-style-arrays": 2
+  }
+}
