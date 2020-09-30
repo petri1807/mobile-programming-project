@@ -34,7 +34,7 @@ Common keyboard shortcuts to boost productivity
 - `F2` Refactoring. Want to change a variable/class/component name? Rename refactor makes it easier, rename it once and all instances of it will be automatically refactored. Should work across files if an instance is found.
 
 Open Keyboard Shortcuts from command palette and search for
-- `Emmet Balance (outward)` and add shortcut `Ctrl + Shift + arrow down`. Now you can easily duplicate the line your cursor is on or a block of highlighted code below with this shortcut.
+- `Copy Line Down` and add shortcut `Shift + Alt + arrow down`. Now you can easily duplicate the line your cursor is on or a block of highlighted code below with this shortcut.
 
 ## VS Code settings
 Settings to be configured
