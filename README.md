@@ -137,3 +137,20 @@ Press the `+` icon to stage changes, write a commit message and commit with `Ctr
 ![Git](/assets/git-instructions/vscodegit.jpg)
 
 Push commits from the `...` menu.
+
+Pulling from remote branch
+
+1. Open the command palette and search pull from, select `Git: Pull from...`
+
+![Pull](/assets/git-instructions/pull1.jpg)
+
+2. Select origin
+
+![Pull](/assets/git-instructions/pull1.jpg)
+
+3. Select the remote branch you wish to pull from
+
+![Pull](/assets/git-instructions/pull1.jpg)
+
+
+Merging is just as easy. Type merge and select `Git: Merge Branch` and select with branch (local or remote) you want to merge from to your current local branch.
