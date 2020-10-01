@@ -154,3 +154,8 @@ Pulling from remote branch
 
 
 Merging is just as easy. Type merge and select `Git: Merge Branch` and select with branch (local or remote) you want to merge from to your current local branch.
+
+
+Synchronize or pull/push with one button. You can find the icon in the lower left corner of VS Code, this shows How many commits there are to pull and how many commits you have to push.
+
+![sync](/assets/git-instructions/gitsync.JPG)
