@@ -120,6 +120,7 @@ If you `npm install` (or `npm i` in short) a new package that we need for the ap
 If you `npm install` a new *developer* dependency that is only needed for the development, but doesn't need to be included for the app to run, use the `--save-dev` or `-D` flag to save it in the devDependencies of package.json.
 
 > Example: `npm install --save-dev prettier`
+
 > Shorter: `npm i -D prettier`
 
 To install the new package(s) someone else added to the project, pull the latest version from git and run `npm install`
