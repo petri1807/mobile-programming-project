@@ -5,6 +5,7 @@
 - [VS Code keyboard shortcuts](#vs-code-keyboard-shortcuts)
 - [VS Code settings](#vs-code-settings)
 - [Cloning repo](#cloning-repo)
+- [Branches](#branches)
 - [Dependencies](#dependencies)
 - [Git in VS Code](#git-in-vs-code)
 
@@ -78,6 +79,27 @@ How to clone the repository to your local machine inside VS Code
 - Open the VS Code integrated terminal with `Ctrl + J`
 - Run `npm install`
 
+## Branches
+Create a local branch in VS Code and connect it to the remote branch in GitHub
+
+![Branch1](/assets/git-instructions/branch1.jpg)
+
+1. Open the command palette with `Ctrl + Shift + P` and search for branch. Select `Git: Create Branch From...`
+
+![Branch2](/assets/git-instructions/branch2.jpg)
+
+2. Give your local branch a name
+
+![Branch3](/assets/git-instructions/branch3.jpg)
+
+3. Select your remote branch from the list, `origin/yourname`
+
+![Branch4](/assets/git-instructions/branch4.jpg)
+
+4. Open the command palette again and select `Git: Publish Branch...`
+
+Test your branch by making a commit and see if it pops up in GitHub
+
 ## Dependencies
 There are two types of dependencies. Production dependencies (for example `"react": "16.13.1"`) and development dependencies (for example `"prettier": "^2.1.1"`).
 
@@ -96,6 +118,6 @@ Open the Source Control tab in the activity bar, and you will see all changes ma
 
 Press the `+` icon to stage changes, write a commit message and commit with `Ctrl + Enter`
 
-![Git](/vscodegit.jpg)
+![Git](/assets/git-instructions/vscodegit.jpg)
 
 Push commits from the `...` menu.
