@@ -7,6 +7,7 @@ export default function App() {
       <Text>Open up App.js to start working on your app!</Text>
       <Text>Open up App.js to start working on your app!</Text>
       <Text>FUCK YEAH!!!!½!!</Text>
+      <Text>Test test</Text>
     </View>
   );
 }
