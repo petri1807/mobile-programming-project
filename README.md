@@ -79,11 +79,15 @@ How to clone the repository to your local machine inside VS Code
 - Run `npm install`
 
 ## Dependencies
-If you npm install a new package (@react-navigation/drawer for example) it will update the package.json file.
+There are two types of dependencies. Production dependencies (for example `"react": "16.13.1"`) and development dependencies (for example `"prettier": "^2.1.1"`).
+
+If you `npm install` a new package that we need for the app to run, the `npm install` command will update the package.json file automatically by adding the new package to production dependencies.
+
+If you `npm install` a new *developer* dependency that is only needed for the development, but doesn't need to be included for the app to run, use the `--save-dev` or `-D` flag to save it in the devDependencies of package.json.
 
 To install the new package(s) someone else added to the project, pull the latest version from git and run `npm install`
 
-This will install all new dependencies to your local machine.
+This will look through the package.json file and install all new dependencies to your local machine.
 
 ## Git in VS Code
 General functions for faster, easier commits, pulls, merging etc.
