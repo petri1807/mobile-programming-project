@@ -146,11 +146,11 @@ Pulling from remote branch
 
 2. Select origin
 
-![Pull](/assets/git-instructions/pull1.jpg)
+![Pull](/assets/git-instructions/pull2.jpg)
 
 3. Select the remote branch you wish to pull from
 
-![Pull](/assets/git-instructions/pull1.jpg)
+![Pull](/assets/git-instructions/pull3.jpg)
 
 
 Merging is just as easy. Type merge and select `Git: Merge Branch` and select with branch (local or remote) you want to merge from to your current local branch.
