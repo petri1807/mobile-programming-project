@@ -81,7 +81,7 @@ How to clone the repository to your local machine inside VS Code
 ## Dependencies
 There are two types of dependencies. Production dependencies (for example `"react": "16.13.1"`) and development dependencies (for example `"prettier": "^2.1.1"`).
 
-If you `npm install` a new package that we need for the app to run, the `npm install` command will update the package.json file automatically by adding the new package to production dependencies.
+If you `npm install` (or `npm i` in short) a new package that we need for the app to run, the `npm install` command will update the package.json file automatically by adding the new package to production dependencies.
 
 If you `npm install` a new *developer* dependency that is only needed for the development, but doesn't need to be included for the app to run, use the `--save-dev` or `-D` flag to save it in the devDependencies of package.json.
 
