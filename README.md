@@ -142,7 +142,7 @@ Pulling from remote branch
 
 1. Open the command palette and search pull from, select `Git: Pull from...`
 
-![Pull](/assets/git-instructions/pull1.jpg)
+![Pull](/assets/git-instructions/pullfrom.jpg)
 
 2. Select origin
 
