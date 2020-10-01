@@ -82,7 +82,7 @@ How to clone the repository to your local machine inside VS Code
 ## Branches
 Create a local branch in VS Code and connect it to the remote branch in GitHub
 
-![Branch5](/assets/git-instructions/branch1.jpg)
+![Branch5](/assets/git-instructions/branch5.jpg)
 
 1. Open the command palette with `Ctrl + Shift + P` and search for git fetch. Select `Git: Fetch From All Remotes`
 
