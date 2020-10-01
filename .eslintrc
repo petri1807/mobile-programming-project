@@ -10,6 +10,7 @@
   },
   "plugins": ["react", "react-native"],
   "rules": {
+    "no-use-before-define": "off",
     "no-console": 0,
     "prettier/prettier": [
       "error",
