@@ -136,7 +136,7 @@ Press the `+` icon to stage changes, write a commit message and commit with `Ctr
 
 ![Git](/assets/git-instructions/vscodegit.jpg)
 
-Push commits from the `...` menu.
+Push commits with `Git: Push` from command palette or the `...` menu
 
 Pulling from remote branch
 
