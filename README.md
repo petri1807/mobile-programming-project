@@ -140,13 +140,16 @@ Push commits with `Git: Push` from command palette or the `...` menu
 
 Pulling from remote branch
 
+
 1. Open the command palette and search pull from, select `Git: Pull from...`
 
 ![Pull](/assets/git-instructions/pullfrom.jpg)
 
+
 2. Select origin
 
 ![Pull](/assets/git-instructions/pull2.jpg)
+
 
 3. Select the remote branch you wish to pull from
 
@@ -154,3 +157,7 @@ Pulling from remote branch
 
 
 Merging is just as easy. Type merge and select `Git: Merge Branch` and select with branch (local or remote) you want to merge from to your current local branch.
+
+Synchronize or pull/push with one button. You can find the icon in the lower left corner of VS Code, this shows how many commits there are to pull and how many commits you have to push. This will pull first to prevent errors, then push your commits.
+
+![sync](/assets/git-instructions/gitsync.JPG)
