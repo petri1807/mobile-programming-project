@@ -6,6 +6,32 @@ import { Container, Content, Accordion } from 'native-base';
 import EventCard from '../components/EventCard';
 import { homeScreen } from '../styles/ProjectStyles';
 
+// The imports will be separated into their appropriate screens/components, this is just for testing
+import {
+  init,
+  addActivity,
+  addAnnouncement,
+  addCalendarEvent,
+  addFloorballGame,
+  addFloorballParticipant,
+  addUser,
+  fetchAllActivities,
+  fetchAllAnnouncements,
+  fetchAllCalendarEvents,
+  fetchAllFloorballGames,
+  fetchAllFloorballParticipants,
+  fetchAllUsers,
+} from '../connection/DBConnection';
+
+init()
+  .then(() => {
+    console.log('Database creation successful');
+  })
+  .catch((error) => {
+    console.log(`Database not created! ${error}`);
+  });
+
+// Accordion and it's data to own component
 const dataArray = [
   {
     title: 'Prevent COVID-19',
