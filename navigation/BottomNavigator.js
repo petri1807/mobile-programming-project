@@ -2,7 +2,7 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import AnnouncementScreen from '../screens/AnnouncementScreen';
+import HomeScreen from '../screens/HomeScreen';
 import ActivityScreen from '../screens/ActivityScreen';
 import CalendarScreen from '../screens/CalendarScreen';
 import FloorBallScreen from '../screens/FloorBallScreen';
@@ -15,9 +15,11 @@ function MyTabs() {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        component={AnnouncementScreen}
+        component={HomeScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="home" color={color} size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
           // tabBarColor: 'blue',
         }}
       />
@@ -25,7 +27,13 @@ function MyTabs() {
         name="Sports"
         component={FloorBallScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hockey-sticks" color={color} size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="hockey-sticks"
+              color={color}
+              size={26}
+            />
+          ),
           // tabBarColor: 'green',
         }}
       />
@@ -33,7 +41,13 @@ function MyTabs() {
         name="Work"
         component={ActivityScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="clock-outline" color={color} size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons
+              name="clock-outline"
+              color={color}
+              size={26}
+            />
+          ),
           // tabBarColor: 'red',
         }}
       />
@@ -41,7 +55,9 @@ function MyTabs() {
         name="Calendar"
         component={CalendarScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="calendar" color={color} size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="calendar" color={color} size={26} />
+          ),
           // tabBarColor: 'black',
         }}
       />
@@ -49,7 +65,9 @@ function MyTabs() {
         name="Login"
         component={LoginScreen}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account" color={color} size={26} />,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" color={color} size={26} />
+          ),
           // tabBarColor: 'tomato',
         }}
       />

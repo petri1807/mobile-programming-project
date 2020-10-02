@@ -17,7 +17,7 @@
       {
         "trailingComma": "es5",
         "singleQuote": true,
-        "printWidth": 120,
+        "printWidth": 80, // defines the char count at which content is moved to a new line
         "tabWidth": 2,
         "endOfLine": "auto"
       }
@@ -27,6 +27,7 @@
     "react-native/no-inline-styles": 0,
     "react-native/no-color-literals": 0,
     "react-native/no-raw-text": 2,
-    "react-native/no-single-element-style-arrays": 2
+    "react-native/no-single-element-style-arrays": 2,
+    "react/display-name": 0
   }
 }

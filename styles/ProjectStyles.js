@@ -1,5 +1,13 @@
 import { StyleSheet } from 'react-native';
 
+const color = {
+  primary: '',
+  secondary: '',
+  third: '',
+  fourth: '',
+  fifth: '',
+};
+
 const activityscreen = StyleSheet.create({
   topView: {
     borderBottomLeftRadius: 25,
@@ -40,4 +48,31 @@ const activityscreen = StyleSheet.create({
   },
 });
 
-export { activityscreen };
+const homeScreen = StyleSheet.create({
+  pageLayout: {
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  header: {
+    backgroundColor: '#f1f1f1',
+  },
+  title: {
+    padding: 15,
+    fontSize: 20,
+    fontWeight: 'normal',
+  },
+  cardIconBox: {
+    justifyContent: 'flex-end',
+  },
+  cardIcon: {
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+  },
+  cardIconFont: {
+    color: '#fff',
+    fontSize: 15,
+    paddingHorizontal: 5,
+  },
+});
+
+export { activityscreen, homeScreen };
