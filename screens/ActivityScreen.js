@@ -1,6 +1,18 @@
 import React from 'react';
 import { ImageBackground, Text, View } from 'react-native';
-import { Container, Content, Body, H1, Form, Picker, Icon, Card, CardItem, Left, Right } from 'native-base';
+import {
+  Container,
+  Content,
+  Body,
+  H1,
+  Form,
+  Picker,
+  Icon,
+  Card,
+  CardItem,
+  Left,
+  Right,
+} from 'native-base';
 
 import { activityscreen } from '../styles/ProjectStyles.js';
 
@@ -40,7 +52,9 @@ const ActivityScreen = () => (
         <CardItem style={activityscreen.card}>
           <Body style={activityscreen.cardbody}>
             <Left>
-              <Text style={activityscreen.cardTextStyle}>Current activity:</Text>
+              <Text style={activityscreen.cardTextStyle}>
+                Current activity:
+              </Text>
             </Left>
             <Right>
               <Text>..Working..</Text>
@@ -50,7 +64,9 @@ const ActivityScreen = () => (
         <CardItem style={activityscreen.card}>
           <Body style={activityscreen.cardbody}>
             <Left>
-              <Text style={activityscreen.cardTextStyle}>Time on current activity:</Text>
+              <Text style={activityscreen.cardTextStyle}>
+                Time on current activity:
+              </Text>
             </Left>
             <Right>
               <Text>4.58h</Text>
@@ -60,7 +76,9 @@ const ActivityScreen = () => (
       </Card>
       <Card>
         <CardItem header style={activityscreen.card}>
-          <Text style={activityscreen.cardTextStyle}>Time spent on activities: </Text>
+          <Text style={activityscreen.cardTextStyle}>
+            Time spent on activities:{' '}
+          </Text>
         </CardItem>
         <CardItem style={activityscreen.card}>
           <Body>
