@@ -1,3 +1,4 @@
+import { Row } from 'native-base';
 import { StyleSheet } from 'react-native';
 
 const activityscreen = StyleSheet.create({
@@ -37,6 +38,24 @@ const activityscreen = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333333',
+  },
+  buttonsign: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    padding: 50,
+  },
+  buttonwho: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    padding: 50,
+  },
+  roundedtextbox: {
+    margin: 10,
+    backgroundColor: 'gainsboro',
+    borderRadius: 10,
   },
 });
 
