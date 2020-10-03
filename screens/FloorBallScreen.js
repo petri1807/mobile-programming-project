@@ -17,16 +17,16 @@ import {
   Button,
 } from 'native-base';
 
-import { activityscreen } from '../styles/ProjectStyles.js';
+import { activityScreen } from '../styles/ProjectStyles.js';
 
 const FloorBallScreen = () => (
   <Container style={{ flex: 1 }}>
     <Content>
-      <View style={activityscreen.topView}>
+      <View style={activityScreen.topView}>
         <ImageBackground
           blurRadius={4}
           source={require('../assets/floorball.jpg')}
-          style={activityscreen.image}
+          style={activityScreen.image}
           imageStyle={{
             borderBottomLeftRadius: 25,
             borderBottomRightRadius: 25,
@@ -34,36 +34,38 @@ const FloorBallScreen = () => (
           }}
         >
           <Body>
-            <H1 style={activityscreen.topTitle}>Floorball</H1>
+            <H1 style={activityScreen.topTitle}>Floorball</H1>
           </Body>
         </ImageBackground>
       </View>
       <Card>
-        <CardItem style={activityscreen.card}>
-          <Body style={activityscreen.cardbody}>
+        <CardItem style={activityScreen.card}>
+          <Body style={activityScreen.cardbody}>
             <Left>
-              <Text style={activityscreen.cardTextStyle}>Games every Tuesday, sign up below!</Text>
+              <Text style={activityScreen.cardTextStyle}>
+                Games every Tuesday, sign up below!
+              </Text>
             </Left>
           </Body>
         </CardItem>
-        <CardItem style={activityscreen.card}>
-          <Body style={activityscreen.cardbody}>
+        <CardItem style={activityScreen.card}>
+          <Body style={activityScreen.cardbody}>
             <Left>
-              <Text style={activityscreen.cardTextStyle}>Next game:</Text>
+              <Text style={activityScreen.cardTextStyle}>Next game:</Text>
             </Left>
             <Right>
               <Text>6.10.2020 @20:00</Text>
             </Right>
           </Body>
         </CardItem>
-        <Item rounded style={activityscreen.roundedtextbox}>
+        <Item rounded style={activityScreen.roundedtextbox}>
           <Input placeholder="Name" />
         </Item>
         <Body>
-          <Button style={activityscreen.buttonsign}>
+          <Button style={activityScreen.buttonsign}>
             <Text>SIGN UP</Text>
           </Button>
-          <Button transparent style={activityscreen.buttonwho}>
+          <Button transparent style={activityScreen.buttonwho}>
             <Text>WHO'S COMING</Text>
           </Button>
         </Body>

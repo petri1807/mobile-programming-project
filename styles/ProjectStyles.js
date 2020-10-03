@@ -1,4 +1,3 @@
-import { Row } from 'native-base';
 import { StyleSheet } from 'react-native';
 
 const color = {
@@ -9,7 +8,7 @@ const color = {
   fifth: '',
 };
 
-const activityscreen = StyleSheet.create({
+const activityScreen = StyleSheet.create({
   topView: {
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
@@ -28,6 +27,9 @@ const activityscreen = StyleSheet.create({
     fontSize: 48,
     lineHeight: 48 * 1.2,
   },
+  form: {
+    margin: 2,
+  },
   picker: {
     marginTop: 10,
     marginBottom: 10,
@@ -36,7 +38,7 @@ const activityscreen = StyleSheet.create({
     borderColor: 'black',
   },
   card: {
-    backgroundColor: '#4791db',
+    backgroundColor: '#62B1F6',
   },
   cardbody: {
     flex: 1,
@@ -45,7 +47,14 @@ const activityscreen = StyleSheet.create({
   cardTextStyle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333333',
+    color: 'white',
+  },
+  buttonStyle: {
+    margin: 2,
+  },
+  buttonTextStyle: {
+    color: 'white',
+    fontSize: 18,
   },
   buttonsign: {
     flexDirection: 'row',
@@ -94,4 +103,4 @@ const homeScreen = StyleSheet.create({
   },
 });
 
-export { activityscreen, homeScreen };
+export { activityScreen, homeScreen };
