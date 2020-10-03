@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ImageBackground, Text, View, Modal, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ImageBackground, Text, View } from 'react-native';
 import {
   Container,
   Content,
@@ -15,21 +15,82 @@ import {
   Button,
 } from 'native-base';
 import Dialog from 'react-native-dialog';
+import { PieChart } from 'react-native-chart-kit';
 
 import { activityScreen } from '../styles/ProjectStyles.js';
 
 const ActivityScreen = () => {
   const [activity, setActivity] = useState('');
+  const [startedActivity, setStartedActivity] = useState('');
   const [stopModalVisible, setStopModalVisible] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(null);
+
+  useEffect(() => {
+    setElapsedTime(endTime - startTime);
+  });
 
   const changeActivity = (value) => {
     setActivity(value);
   };
 
-  const stopActivity = () => {
+  const startActivity = () => {
     setActivity('');
+    const time = new Date();
+    setStartTime(time.getMilliseconds());
+    setStartedActivity(activity);
+  };
+
+  const stopActivity = () => {
+    setStartedActivity('');
+    const time = new Date();
+    setEndTime(time.getMilliseconds());
     setStopModalVisible(false);
   };
+
+  const chartConfig = {
+    backgroundGradientFrom: '#1E2923',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#08130D',
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+
+  // fake data for chart
+  const data = [
+    {
+      name: 'Work',
+      hours: 28,
+      color: '#FF8552',
+      legendFontColor: '#FFFFFF',
+      legendFontSize: 15,
+    },
+    {
+      name: 'Meetings',
+      hours: 5,
+      color: '#297373',
+      legendFontColor: '#FFFFFF',
+      legendFontSize: 15,
+    },
+    {
+      name: 'Workout',
+      hours: 1,
+      color: '#85FFC7',
+      legendFontColor: '#FFFFFF',
+      legendFontSize: 15,
+    },
+    {
+      name: 'Personal',
+      hours: 1,
+      color: '#D64045',
+      legendFontColor: '#FFFFFF',
+      legendFontSize: 15,
+    },
+  ];
 
   return (
     <Container style={{ flex: 1 }}>
@@ -65,7 +126,7 @@ const ActivityScreen = () => {
             <Picker.Item label="Workout" value="Workout" />
             <Picker.Item label="Personal" value="Personal" />
           </Picker>
-          {activity ? (
+          {startedActivity ? (
             <Button
               block
               danger
@@ -75,18 +136,11 @@ const ActivityScreen = () => {
               <Text style={activityScreen.buttonTextStyle}>Stop activity</Text>
             </Button>
           ) : (
-            <Button block info>
+            <Button block info onPress={() => startActivity()}>
               <Text style={activityScreen.buttonTextStyle}>Start activity</Text>
             </Button>
           )}
-          <Dialog.Container
-            animationType="slide"
-            transparent
-            visible={stopModalVisible}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}
-          >
+          <Dialog.Container visible={stopModalVisible}>
             <Dialog.Title>Stop activity?</Dialog.Title>
             <Dialog.Button
               label="Cancel"
@@ -104,7 +158,9 @@ const ActivityScreen = () => {
                 </Text>
               </Left>
               <Right>
-                <Text>{activity}</Text>
+                <Text style={activityScreen.cardVariableTextStyle}>
+                  {startedActivity || 'No ongoing activities.'}
+                </Text>
               </Right>
             </Body>
           </CardItem>
@@ -116,7 +172,9 @@ const ActivityScreen = () => {
                 </Text>
               </Left>
               <Right>
-                <Text>4.58h</Text>
+                <Text style={activityScreen.cardVariableTextStyle}>
+                  {elapsedTime}
+                </Text>
               </Right>
             </Body>
           </CardItem>
@@ -129,7 +187,16 @@ const ActivityScreen = () => {
           </CardItem>
           <CardItem style={activityScreen.card}>
             <Body>
-              <Text>//Your text here</Text>
+              <PieChart
+                data={data}
+                width={400}
+                height={200}
+                chartConfig={chartConfig}
+                accessor="hours"
+                backgroundColor="transparent"
+                paddingLeft="15"
+                absolute
+              />
             </Body>
           </CardItem>
         </Card>

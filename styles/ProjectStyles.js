@@ -17,7 +17,7 @@ const activityScreen = StyleSheet.create({
   },
   image: {
     resizeMode: 'cover',
-    height: 200,
+    height: 180,
     width: '100%',
     backgroundColor: 'grey',
   },
@@ -47,6 +47,10 @@ const activityScreen = StyleSheet.create({
   cardTextStyle: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white',
+  },
+  cardVariableTextStyle: {
+    fontSize: 18,
     color: 'white',
   },
   buttonStyle: {
