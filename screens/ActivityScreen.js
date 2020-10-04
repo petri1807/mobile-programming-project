@@ -25,10 +25,11 @@ const ActivityScreen = () => {
   const [stopModalVisible, setStopModalVisible] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
-  const [elapsedTime, setElapsedTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState('00:00');
 
   useEffect(() => {
-    setElapsedTime(endTime - startTime);
+    const tick = setInterval(() => timeTracker(), 1000);
+    return () => clearInterval(tick);
   });
 
   const changeActivity = (value) => {
@@ -49,6 +50,25 @@ const ActivityScreen = () => {
     setStopModalVisible(false);
   };
 
+  const timeTracker = () => {
+    const time = new Date();
+    setEndTime(time.getMilliseconds());
+
+    let startSeconds = startTime / 1000;
+    let endSeconds = endTime / 1000;
+    const startHours = parseInt(startSeconds / 3600);
+    startSeconds %= 3600;
+    const endHours = parseInt(endSeconds / 3600);
+    endSeconds %= 3600;
+    const startMinutes = parseInt(startSeconds / 60);
+    const endMinutes = parseInt(endSeconds / 60);
+
+    const hoursDiff = endHours - startHours;
+    const minutesDiff = endMinutes - startMinutes;
+
+    setElapsedTime(`${hoursDiff}:${minutesDiff}`);
+  };
+
   const chartConfig = {
     backgroundGradientFrom: '#1E2923',
     backgroundGradientFromOpacity: 0,
@@ -60,7 +80,7 @@ const ActivityScreen = () => {
     useShadowColorFromDataset: false, // optional
   };
 
-  // fake data for chart
+  // data for chart
   const data = [
     {
       name: 'Work',
@@ -113,19 +133,22 @@ const ActivityScreen = () => {
           </ImageBackground>
         </View>
         <Form style={activityScreen.form}>
-          <Picker
-            mode="dropdown"
-            iosIcon={<Icon name="arrow-down" />}
-            placeholder="Select activity"
-            style={activityScreen.picker}
-            selectedValue={activity}
-            onValueChange={(value) => changeActivity(value)}
-          >
-            <Picker.Item label="Work" value="Work" />
-            <Picker.Item label="Meeting" value="Meeting" />
-            <Picker.Item label="Workout" value="Workout" />
-            <Picker.Item label="Personal" value="Personal" />
-          </Picker>
+          {startedActivity ? null : (
+            <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholder="Select activity"
+              style={activityScreen.picker}
+              selectedValue={activity}
+              onValueChange={(value) => changeActivity(value)}
+            >
+              <Picker.Item label="Work" value="Work" />
+              <Picker.Item label="Meeting" value="Meeting" />
+              <Picker.Item label="Workout" value="Workout" />
+              <Picker.Item label="Personal" value="Personal" />
+            </Picker>
+          )}
+
           {startedActivity ? (
             <Button
               block
@@ -136,7 +159,12 @@ const ActivityScreen = () => {
               <Text style={activityScreen.buttonTextStyle}>Stop activity</Text>
             </Button>
           ) : (
-            <Button block info onPress={() => startActivity()}>
+            <Button
+              block
+              info
+              style={{ marginTop: 5 }}
+              onPress={() => startActivity()}
+            >
               <Text style={activityScreen.buttonTextStyle}>Start activity</Text>
             </Button>
           )}
@@ -149,36 +177,36 @@ const ActivityScreen = () => {
             <Dialog.Button label="Stop" onPress={() => stopActivity()} />
           </Dialog.Container>
         </Form>
-        <Card>
-          <CardItem style={activityScreen.card}>
-            <Body style={activityScreen.cardbody}>
-              <Left>
-                <Text style={activityScreen.cardTextStyle}>
-                  Current activity:
-                </Text>
-              </Left>
-              <Right>
-                <Text style={activityScreen.cardVariableTextStyle}>
-                  {startedActivity || 'No ongoing activities.'}
-                </Text>
-              </Right>
-            </Body>
-          </CardItem>
-          <CardItem style={activityScreen.card}>
-            <Body style={activityScreen.cardbody}>
-              <Left>
-                <Text style={activityScreen.cardTextStyle}>
-                  Time on current activity:
-                </Text>
-              </Left>
-              <Right>
-                <Text style={activityScreen.cardVariableTextStyle}>
-                  {elapsedTime}
-                </Text>
-              </Right>
-            </Body>
-          </CardItem>
-        </Card>
+        {startedActivity ? (
+          <Card>
+            <CardItem style={activityScreen.card}>
+              <Body style={activityScreen.cardbody}>
+                <Left>
+                  <Text style={activityScreen.cardTextStyle}>
+                    Current activity:
+                  </Text>
+                </Left>
+                <Right>
+                  <Text style={activityScreen.cardVariableTextStyle}>
+                    {startedActivity}
+                  </Text>
+                </Right>
+              </Body>
+              <Body style={activityScreen.cardbody}>
+                <Left>
+                  <Text style={activityScreen.cardTextStyle}>
+                    Time on current activity:
+                  </Text>
+                </Left>
+                <Right>
+                  <Text style={activityScreen.cardVariableTextStyle}>
+                    {elapsedTime}
+                  </Text>
+                </Right>
+              </Body>
+            </CardItem>
+          </Card>
+        ) : null}
         <Card>
           <CardItem header style={activityScreen.card}>
             <Text style={activityScreen.cardTextStyle}>

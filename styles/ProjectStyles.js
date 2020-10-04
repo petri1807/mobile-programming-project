@@ -39,6 +39,8 @@ const activityScreen = StyleSheet.create({
   },
   card: {
     backgroundColor: '#62B1F6',
+    flex: 1,
+    flexDirection: 'column',
   },
   cardbody: {
     flex: 1,
