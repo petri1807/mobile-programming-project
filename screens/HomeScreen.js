@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Button, FlatList } from 'react-native';
-import { Container, Content, Accordion, H1 } from 'native-base';
+import { Container, Content, H1 } from 'native-base';
 
-import EventCard from '../components/EventCard';
 import { homeScreen } from '../styles/ProjectStyles';
+import EventCard from '../components/EventCard';
+import AnnouncementBox from '../components/AnnouncementBox';
 
 // The imports will be separated into their appropriate screens/components, this is just for testing
 import {
@@ -31,15 +32,6 @@ init()
   .catch((error) => {
     console.log(`Database not created! ${error}`);
   });
-
-// Accordion and it's data to own component
-const dataArray = [
-  {
-    title: 'Prevent COVID-19',
-    content:
-      'Wear Batman masks. Use hand sanitizer. Trump contracted COVID-19, oops.',
-  },
-];
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -89,11 +81,7 @@ const HomeScreen = () => {
   return (
     <Container>
       <Content style={homeScreen.pageLayout}>
-        <Accordion
-          headerStyle={homeScreen.header}
-          dataArray={dataArray}
-          expanded={0}
-        />
+        <AnnouncementBox />
         <Text style={homeScreen.title}>Today's events</Text>
         {/* Delete Button once no longer needed */}
         <Button title="Add calendar event" onPress={addCalendarEventHandler} />

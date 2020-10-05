@@ -7,7 +7,8 @@ export const init = () => {
     db.transaction((tx) => {
       // Announements
       tx.executeSql(
-        'create table if not exists announcement(id integer not null primary key, message text not null);',
+        'create table if not exists announcement(id integer not null primary key, date text not null, title text not null, content text not null);',
+        // 'drop table announcement;',
         [],
         () => {
           resolve();
@@ -78,12 +79,12 @@ export const init = () => {
 
 // DATE as strings ("YYYY-MM-DD HH:MM:SS.SSS")
 
-export const addAnnouncement = (message) => {
+export const addAnnouncement = (date, title, content) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'insert into announcement(message) values(?)',
-        [message],
+        'insert into announcement(date, title, content) values(?,?,?)',
+        [date, title, content],
         (_, result) => {
           resolve(result);
         },
@@ -212,12 +213,12 @@ export const deleteCalendarEvent = (id) => {
   return promise;
 };
 
-export const fetchAllAnnouncements = () => {
+export const fetchAllAnnouncements = (date) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'select * from announcement',
-        [],
+        'select * from announcement where date=?',
+        [date],
         (tx, result) => {
           resolve(result);
         },
