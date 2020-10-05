@@ -103,9 +103,6 @@ export const addCalendarEvent = (
   topic,
   message
 ) => {
-  console.log(
-    `insert into calendarEvent userId:${userId} dateS:${dateStart} dateE:${dateEnd} topic:${topic} message:${message}`
-  );
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       console.log('SQLite transaction');

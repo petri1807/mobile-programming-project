@@ -48,7 +48,6 @@ const HomeScreen = () => {
 
   const addCalendarEventHandler = async () => {
     setLoading(!loading);
-    console.log('addCalendarEventHandler called');
 
     const dateStart = new Date().toDateString();
     const dateEnd = new Date().toDateString();
@@ -67,10 +66,6 @@ const HomeScreen = () => {
   const fetch = async () => {
     await fetchAllCalendarEvents().then((res) => {
       setCalendarList(res.rows._array);
-      console.log('res:');
-      console.log(res);
-      console.log('calendarList contents:');
-      console.log(calendarList);
     });
   };
 
