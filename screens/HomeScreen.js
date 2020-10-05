@@ -46,6 +46,7 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [calendarList, setCalendarList] = useState([]);
 
+  // Adding dummy data for testing
   const addCalendarEventHandler = async () => {
     setLoading(!loading);
 
@@ -63,6 +64,7 @@ const HomeScreen = () => {
     // await deleteCalendarEvent(1);
   };
 
+  // Add userId as function parameter
   const fetch = async () => {
     await fetchAllCalendarEvents().then((res) => {
       setCalendarList(res.rows._array);
@@ -85,6 +87,7 @@ const HomeScreen = () => {
           expanded={0}
         />
         <Text style={homeScreen.title}>Today's events</Text>
+        {/* Delete Button once no longer needed */}
         <Button title="Add calevent" onPress={addCalendarEventHandler} />
         <FlatList
           data={calendarList}
