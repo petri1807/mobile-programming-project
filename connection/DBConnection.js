@@ -7,7 +7,8 @@ export const init = () => {
     db.transaction((tx) => {
       // Announements
       tx.executeSql(
-        'create table if not exists announcement(id integer not null primary key, message text not null);',
+        'create table if not exists announcement(id integer not null primary key, date text not null, title text not null, content text not null);',
+        // 'drop table announcement;',
         [],
         () => {
           resolve();
@@ -78,12 +79,12 @@ export const init = () => {
 
 // DATE as strings ("YYYY-MM-DD HH:MM:SS.SSS")
 
-export const addAnnouncement = (message) => {
+export const addAnnouncement = (date, title, content) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'insert into announcement(message) values(?)',
-        [message],
+        'insert into announcement(date, title, content) values(?,?,?)',
+        [date, title, content],
         (_, result) => {
           resolve(result);
         },
@@ -192,32 +193,32 @@ export const addFloorballParticipant = (gameId, userId) => {
   return promise;
 };
 
-// export const deletePerson = (id) => {
-//   const promise = new Promise((resolve, reject) => {
-//     db.transaction((tx) => {
-//       tx.executeSql(
-//         'delete from person where id=?',
-//         [id],
-//         (_, result) => {
-//           console.log(result);
-//           resolve(result);
-//         },
-//         (_, err) => {
-//           console.log(err);
-//           reject(err);
-//         }
-//       );
-//     });
-//   });
-//   return promise;
-// };
-
-export const fetchAllAnnouncements = () => {
+export const deleteCalendarEvent = (id) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'select * from announcement',
-        [],
+        'delete from calendarEvent where id=?',
+        [id],
+        (_, result) => {
+          console.log(result);
+          resolve(result);
+        },
+        (_, err) => {
+          console.log(err);
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+export const fetchAllAnnouncements = (date) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'select * from announcement where date=?',
+        [date],
         (tx, result) => {
           resolve(result);
         },
@@ -229,6 +230,26 @@ export const fetchAllAnnouncements = () => {
   });
   return promise;
 };
+
+// Add a clause to the SQL statement where we select * from calendarEvent where userId=? AND dateStart=today
+export const fetchTodaysCalendarEventsForUser = (userId, date) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'select * from calendarEvent where userId=? and dateStart=?',
+        [userId, date],
+        (tx, result) => {
+          resolve(result);
+        },
+        (tx, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
 export const fetchAllCalendarEvents = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -246,6 +267,7 @@ export const fetchAllCalendarEvents = () => {
   });
   return promise;
 };
+
 export const fetchAllFloorballGames = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -263,6 +285,7 @@ export const fetchAllFloorballGames = () => {
   });
   return promise;
 };
+
 export const fetchAllFloorballParticipants = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -280,6 +303,7 @@ export const fetchAllFloorballParticipants = () => {
   });
   return promise;
 };
+
 export const fetchAllActivities = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -297,6 +321,7 @@ export const fetchAllActivities = () => {
   });
   return promise;
 };
+
 export const fetchAllUsers = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {

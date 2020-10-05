@@ -5,22 +5,18 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { homeScreen } from '../styles/ProjectStyles';
 
-const EventCard = () => (
+const EventCard = ({ dateStart, dateEnd, topic, message }) => (
   <Card>
     <CardItem header>
-      <Text>9:30</Text>
+      <Text>{dateStart}</Text>
     </CardItem>
     <CardItem>
       <Body>
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </Text>
+        <Text>{topic}</Text>
+        <Text>{message}</Text>
       </Body>
     </CardItem>
-    <CardItem footer style={homeScreen.cardIconBox}>
+    {/* <CardItem footer style={homeScreen.cardIconBox}>
       <Icon.Button
         style={homeScreen.cardIcon}
         name="instagram"
@@ -37,7 +33,7 @@ const EventCard = () => (
       >
         <Text style={homeScreen.cardIconFont}>Placeholder</Text>
       </Icon.Button>
-    </CardItem>
+    </CardItem> */}
   </Card>
 );
 
