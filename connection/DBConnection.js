@@ -103,8 +103,12 @@ export const addCalendarEvent = (
   topic,
   message
 ) => {
+  console.log(
+    `insert into calendarEvent userId:${userId} dateS:${dateStart} dateE:${dateEnd} topic:${topic} message:${message}`
+  );
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
+      console.log('SQLite transaction');
       tx.executeSql(
         'insert into calendarEvent(userId, dateStart, dateEnd, topic, message) values(?,?,?,?,?)',
         [userId, dateStart, dateEnd, topic, message],
@@ -192,25 +196,25 @@ export const addFloorballParticipant = (gameId, userId) => {
   return promise;
 };
 
-// export const deletePerson = (id) => {
-//   const promise = new Promise((resolve, reject) => {
-//     db.transaction((tx) => {
-//       tx.executeSql(
-//         'delete from person where id=?',
-//         [id],
-//         (_, result) => {
-//           console.log(result);
-//           resolve(result);
-//         },
-//         (_, err) => {
-//           console.log(err);
-//           reject(err);
-//         }
-//       );
-//     });
-//   });
-//   return promise;
-// };
+export const deleteCalendarEvent = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'delete from calendarEvent where id=?',
+        [id],
+        (_, result) => {
+          console.log(result);
+          resolve(result);
+        },
+        (_, err) => {
+          console.log(err);
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
 
 export const fetchAllAnnouncements = () => {
   const promise = new Promise((resolve, reject) => {
@@ -229,6 +233,8 @@ export const fetchAllAnnouncements = () => {
   });
   return promise;
 };
+
+// Add a clause to the SQL statement where we select * from calendarEvent where userId=?
 export const fetchAllCalendarEvents = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -246,6 +252,7 @@ export const fetchAllCalendarEvents = () => {
   });
   return promise;
 };
+
 export const fetchAllFloorballGames = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -263,6 +270,7 @@ export const fetchAllFloorballGames = () => {
   });
   return promise;
 };
+
 export const fetchAllFloorballParticipants = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -280,6 +288,7 @@ export const fetchAllFloorballParticipants = () => {
   });
   return promise;
 };
+
 export const fetchAllActivities = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -297,6 +306,7 @@ export const fetchAllActivities = () => {
   });
   return promise;
 };
+
 export const fetchAllUsers = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {

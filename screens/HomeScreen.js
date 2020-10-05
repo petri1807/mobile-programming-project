@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Container, Content, Accordion } from 'native-base';
 
+import { FlatList } from 'react-native-gesture-handler';
 import EventCard from '../components/EventCard';
 import { homeScreen } from '../styles/ProjectStyles';
 
@@ -15,6 +16,7 @@ import {
   addFloorballGame,
   addFloorballParticipant,
   addUser,
+  deleteCalendarEvent,
   fetchAllActivities,
   fetchAllAnnouncements,
   fetchAllCalendarEvents,
@@ -40,18 +42,69 @@ const dataArray = [
   },
 ];
 
-const HomeScreen = () => (
-  <Container>
-    <Content style={homeScreen.pageLayout}>
-      <Accordion
-        headerStyle={homeScreen.header}
-        dataArray={dataArray}
-        expanded={0}
-      />
-      <Text style={homeScreen.title}>Today's events</Text>
-      <EventCard />
-    </Content>
-  </Container>
-);
+const HomeScreen = () => {
+  const [loading, setLoading] = useState(true);
+  const [calendarList, setCalendarList] = useState([]);
+
+  const addCalendarEventHandler = async () => {
+    setLoading(!loading);
+    console.log('addCalendarEventHandler called');
+
+    const dateStart = new Date().toDateString();
+    const dateEnd = new Date().toDateString();
+
+    await addCalendarEvent(
+      1,
+      dateStart,
+      dateEnd,
+      'Dummy topic',
+      'Dummy message'
+    );
+
+    // await deleteCalendarEvent(1);
+  };
+
+  const fetch = async () => {
+    await fetchAllCalendarEvents().then((res) => {
+      setCalendarList(res.rows._array);
+      console.log('res:');
+      console.log(res);
+      console.log('calendarList contents:');
+      console.log(calendarList);
+    });
+  };
+
+  useEffect(() => {
+    if (loading) {
+      setLoading(!loading);
+      fetch();
+    }
+  });
+
+  return (
+    <Container>
+      <Content style={homeScreen.pageLayout}>
+        <Accordion
+          headerStyle={homeScreen.header}
+          dataArray={dataArray}
+          expanded={0}
+        />
+        <Text style={homeScreen.title}>Today's events</Text>
+        <Button title="Add calevent" onPress={addCalendarEventHandler} />
+        <FlatList
+          data={calendarList}
+          renderItem={(itemData) => (
+            <EventCard
+              dateStart={itemData.item.dateStart}
+              dateEnd={itemData.item.dateEnd}
+              topic={itemData.item.topic}
+              message={itemData.item.message}
+            />
+          )}
+        />
+      </Content>
+    </Container>
+  );
+};
 
 export default HomeScreen;
