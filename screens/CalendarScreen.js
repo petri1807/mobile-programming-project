@@ -5,15 +5,17 @@ import Dialog from 'react-native-dialog';
 import { calendarScreen } from '../styles/ProjectStyles.js';
 
 const CalendarScreen = () => {
-  const [selected, setSelected] = useState('');
+  const [selectedDay, setSelectedDay] = useState('');
   const [eventModalVisible, setEventModalVisible] = useState(false);
+  const [modalDate, setModalDate] = useState('');
 
   // calendar date string format: yyyy-mm-dd
   // addCalendarEvent = (userId, dateStart, dateEnd, topic, message)
 
   const onDayPress = (day) => {
-    setSelected(day.dateString);
+    setSelectedDay(day.dateString);
     console.log(day.dateString);
+    setModalDate(`${day.day}.${day.month}.${day.year}`);
     setEventModalVisible(true);
   };
 
@@ -26,13 +28,14 @@ const CalendarScreen = () => {
           style={calendarScreen.calendar}
           hideExtraDays={false}
           onDayPress={onDayPress}
+          // longpress for testing purposes
           onDayLongPress={(day) => {
             console.log('selected day', day);
           }}
           firstDay={1}
           enableSwipeMonths
           markedDates={{
-            [selected]: {
+            [selectedDay]: {
               selected: true,
               disableTouchEvent: false,
               selectedColor: '',
@@ -46,13 +49,15 @@ const CalendarScreen = () => {
       </View>
       <View>
         <Dialog.Container visible={eventModalVisible}>
-          <Dialog.Title>date:{selected.day}</Dialog.Title>
-          <Dialog.Title>topictest</Dialog.Title>
-          <Dialog.Description>message here: {selected.day}</Dialog.Description>
+          <Dialog.Title>{modalDate}</Dialog.Title>
+          <Dialog.Title>topic from db here</Dialog.Title>
+          <Dialog.Description>message from db here:</Dialog.Description>
           <Dialog.Button
-            label="Cancel"
+            label="Close"
             onPress={() => setEventModalVisible(false)}
           />
+          <Dialog.Input label="new topic" placeholder="write topic here?" />
+          <Dialog.Input label="new message" placeholder="write message here?" />
           <Dialog.Button label="Add" />
         </Dialog.Container>
       </View>
