@@ -98,7 +98,7 @@ const HomeScreen = () => {
         />
         <Text style={homeScreen.title}>Today's events</Text>
         {/* Delete Button once no longer needed */}
-        <Button title="Add calevent" onPress={addCalendarEventHandler} />
+        <Button title="Add calendar event" onPress={addCalendarEventHandler} />
         <FlatList
           data={calendarList}
           renderItem={(itemData) => (
