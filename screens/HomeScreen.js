@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Container, Content, Accordion } from 'native-base';
+import { Text, Button, FlatList } from 'react-native';
+import { Container, Content, Accordion, H1 } from 'native-base';
 
-import { FlatList } from 'react-native-gesture-handler';
 import EventCard from '../components/EventCard';
 import { homeScreen } from '../styles/ProjectStyles';
 
@@ -62,7 +60,7 @@ const HomeScreen = () => {
       'Dummy message'
     );
 
-    // Clear the database table
+    // // Clear the database table
     // for (let index = 1; index <= calendarList.length; index++) {
     //   await deleteCalendarEvent(index);
     // }
@@ -99,17 +97,21 @@ const HomeScreen = () => {
         <Text style={homeScreen.title}>Today's events</Text>
         {/* Delete Button once no longer needed */}
         <Button title="Add calendar event" onPress={addCalendarEventHandler} />
-        <FlatList
-          data={calendarList}
-          renderItem={(itemData) => (
-            <EventCard
-              dateStart={itemData.item.dateStart}
-              dateEnd={itemData.item.dateEnd}
-              topic={itemData.item.topic}
-              message={itemData.item.message}
-            />
-          )}
-        />
+        {calendarList.length > 0 ? (
+          <FlatList
+            data={calendarList}
+            renderItem={(itemData) => (
+              <EventCard
+                dateStart={itemData.item.dateStart}
+                dateEnd={itemData.item.dateEnd}
+                topic={itemData.item.topic}
+                message={itemData.item.message}
+              />
+            )}
+          />
+        ) : (
+          <H1>No events for today</H1>
+        )}
       </Content>
     </Container>
   );
