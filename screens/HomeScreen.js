@@ -87,6 +87,7 @@ const HomeScreen = () => {
         <Button title="Add calendar event" onPress={addCalendarEventHandler} />
         {calendarList.length > 0 ? (
           <FlatList
+            keyExtractor={(item) => calendarList.indexOf(item).toString()}
             data={calendarList}
             renderItem={(itemData) => (
               <EventCard
