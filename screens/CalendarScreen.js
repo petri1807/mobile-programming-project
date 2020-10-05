@@ -1,37 +1,63 @@
-import React, { useState, Fragment } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Calendar } from 'react-native-calendars';
+import Dialog from 'react-native-dialog';
+import { calendarScreen } from '../styles/ProjectStyles.js';
 
 const CalendarScreen = () => {
-  const [currentDate, setCurrentDate] = useState('');
+  const [selected, setSelected] = useState('');
+  const [eventModalVisible, setEventModalVisible] = useState(false);
+
+  // calendar date string format: yyyy-mm-dd
+  // addCalendarEvent = (userId, dateStart, dateEnd, topic, message)
+
+  const onDayPress = (day) => {
+    setSelected(day.dateString);
+    console.log(day.dateString);
+    setEventModalVisible(true);
+  };
 
   return (
     <View>
-      <Text style={styles.text} />
-      <Calendar
-        current={Date}
-        style={styles.calendar}
-        hideExtraDays={false}
-        onDayPress={(day) => {
-          console.log('selected day', day);
-        }}
-        firstDay={1}
-        enableSwipeMonths
-      />
+      <View>
+        <Text style={calendarScreen.text} />
+        <Calendar
+          current={Date}
+          style={calendarScreen.calendar}
+          hideExtraDays={false}
+          onDayPress={onDayPress}
+          onDayLongPress={(day) => {
+            console.log('selected day', day);
+          }}
+          firstDay={1}
+          enableSwipeMonths
+          markedDates={{
+            [selected]: {
+              selected: true,
+              disableTouchEvent: false,
+              selectedColor: '',
+              selectedTextColor: '',
+              dotColor: '',
+            },
+            // testing: marking a day with a dot
+            '2020-10-06': { marked: true },
+          }}
+        />
+      </View>
+      <View>
+        <Dialog.Container visible={eventModalVisible}>
+          <Dialog.Title>date:{selected.day}</Dialog.Title>
+          <Dialog.Title>topictest</Dialog.Title>
+          <Dialog.Description>message here: {selected.day}</Dialog.Description>
+          <Dialog.Button
+            label="Cancel"
+            onPress={() => setEventModalVisible(false)}
+          />
+          <Dialog.Button label="Add" />
+        </Dialog.Container>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  calendar: {
-    marginBottom: 10,
-  },
-  text: {
-    textAlign: 'center',
-    padding: 10,
-    backgroundColor: 'lightgrey',
-    fontSize: 16,
-  },
-});
 
 export default CalendarScreen;
