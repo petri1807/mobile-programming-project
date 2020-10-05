@@ -22,6 +22,7 @@ import {
   fetchAllCalendarEvents,
   fetchAllFloorballGames,
   fetchAllFloorballParticipants,
+  fetchTodaysCalendarEventsForUser,
   fetchAllUsers,
 } from '../connection/DBConnection';
 
@@ -49,10 +50,10 @@ const HomeScreen = () => {
   // Adding dummy data for testing
   const addCalendarEventHandler = async () => {
     setLoading(!loading);
-
     const dateStart = new Date().toDateString();
     const dateEnd = new Date().toDateString();
 
+    console.log('added event for tomorrow');
     await addCalendarEvent(
       1,
       dateStart,
@@ -61,14 +62,23 @@ const HomeScreen = () => {
       'Dummy message'
     );
 
-    // await deleteCalendarEvent(1);
+    // Clear the database table
+    // for (let index = 1; index <= calendarList.length; index++) {
+    //   await deleteCalendarEvent(index);
+    // }
   };
 
-  // Add userId as function parameter
   const fetch = async () => {
-    await fetchAllCalendarEvents().then((res) => {
+    const dateStart = new Date().toDateString();
+
+    await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
       setCalendarList(res.rows._array);
     });
+
+    // await fetchAllCalendarEvents().then((res) => {
+    //   setCalendarList(res.rows._array);
+    //   console.log(calendarList);
+    // });
   };
 
   useEffect(() => {

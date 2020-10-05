@@ -105,7 +105,6 @@ export const addCalendarEvent = (
 ) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
-      console.log('SQLite transaction');
       tx.executeSql(
         'insert into calendarEvent(userId, dateStart, dateEnd, topic, message) values(?,?,?,?,?)',
         [userId, dateStart, dateEnd, topic, message],
@@ -231,7 +230,25 @@ export const fetchAllAnnouncements = () => {
   return promise;
 };
 
-// Add a clause to the SQL statement where we select * from calendarEvent where userId=?
+// Add a clause to the SQL statement where we select * from calendarEvent where userId=? AND dateStart=today
+export const fetchTodaysCalendarEventsForUser = (userId, date) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'select * from calendarEvent where userId=? and dateStart=?',
+        [userId, date],
+        (tx, result) => {
+          resolve(result);
+        },
+        (tx, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
 export const fetchAllCalendarEvents = () => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {

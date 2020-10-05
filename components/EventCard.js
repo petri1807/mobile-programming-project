@@ -16,7 +16,7 @@ const EventCard = ({ dateStart, dateEnd, topic, message }) => (
         <Text>{message}</Text>
       </Body>
     </CardItem>
-    <CardItem footer style={homeScreen.cardIconBox}>
+    {/* <CardItem footer style={homeScreen.cardIconBox}>
       <Icon.Button
         style={homeScreen.cardIcon}
         name="instagram"
@@ -33,7 +33,7 @@ const EventCard = ({ dateStart, dateEnd, topic, message }) => (
       >
         <Text style={homeScreen.cardIconFont}>Placeholder</Text>
       </Icon.Button>
-    </CardItem>
+    </CardItem> */}
   </Card>
 );
 
