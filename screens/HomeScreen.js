@@ -40,8 +40,8 @@ const HomeScreen = () => {
   // Adding dummy data for testing
   const addCalendarEventHandler = async () => {
     setLoading(!loading);
-    const dateStart = new Date().toISOString().split('T')[0];
-    const dateEnd = new Date().toISOString().split('T')[0];
+    const dateStart = new Date(2020, 9, 9).toISOString().split('T')[0];
+    const dateEnd = new Date(2020, 9, 9).toISOString().split('T')[0];
 
     await addCalendarEvent(
       1,

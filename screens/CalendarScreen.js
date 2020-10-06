@@ -118,7 +118,7 @@ const CalendarScreen = () => {
     <View style={calendarScreen.calendar}>
       <Agenda
         items={items}
-        loadItemsForMonth={loadItems}
+        loadItemsForMonth={fetch}
         selected={Date}
         firstDay={1}
         renderItem={renderItem}
