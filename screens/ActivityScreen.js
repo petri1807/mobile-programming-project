@@ -23,8 +23,7 @@ const ActivityScreen = () => {
   const [activity, setActivity] = useState('');
   const [startedActivity, setStartedActivity] = useState('');
   const [stopModalVisible, setStopModalVisible] = useState(false);
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [startTime, setStartTime] = useState(0);
   const [elapsedTime, setElapsedTime] = useState('00:00');
 
   useEffect(() => {
@@ -37,36 +36,33 @@ const ActivityScreen = () => {
   };
 
   const startActivity = () => {
+    setStartTime(0);
+    setElapsedTime(0);
     setActivity('');
-    const time = new Date();
-    setStartTime(time.getMilliseconds());
+    setStartTime(Date.now());
     setStartedActivity(activity);
   };
 
   const stopActivity = () => {
     setStartedActivity('');
-    const time = new Date();
-    setEndTime(time.getMilliseconds());
     setStopModalVisible(false);
   };
 
   const timeTracker = () => {
-    const time = new Date();
-    setEndTime(time.getMilliseconds());
+    // 🤮🤮🤮🤮
+    const date1 = new Date();
+    let difference = date1.getTime() - startTime;
 
-    let startSeconds = startTime / 1000;
-    let endSeconds = endTime / 1000;
-    const startHours = parseInt(startSeconds / 3600);
-    startSeconds %= 3600;
-    const endHours = parseInt(endSeconds / 3600);
-    endSeconds %= 3600;
-    const startMinutes = parseInt(startSeconds / 60);
-    const endMinutes = parseInt(endSeconds / 60);
+    const daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
+    difference -= daysDifference * 1000 * 60 * 60 * 24;
 
-    const hoursDiff = endHours - startHours;
-    const minutesDiff = endMinutes - startMinutes;
+    const hoursDifference = Math.floor(difference / 1000 / 60 / 60);
+    difference -= hoursDifference * 1000 * 60 * 60;
 
-    setElapsedTime(`${hoursDiff}:${minutesDiff}`);
+    const minutesDifference = Math.floor(difference / 1000 / 60);
+    difference -= minutesDifference * 1000 * 60;
+
+    setElapsedTime(`${hoursDifference}:${minutesDifference}`);
   };
 
   const chartConfig = {
