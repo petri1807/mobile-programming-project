@@ -5,14 +5,20 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { homeScreen } from '../styles/ProjectStyles';
 
-const EventCard = ({ dateStart, dateEnd, topic, message }) => (
+const EventCard = ({ dateStart, dateEnd, topic, message, activityType }) => (
   <Card>
     <CardItem header>
       <Text>{dateStart}</Text>
     </CardItem>
     <CardItem>
       <Body>
-        <Text>{topic}</Text>
+        <Text>
+          {topic !== undefined
+            ? topic
+            : activityType !== undefined
+            ? activityType
+            : 'FloorBallGame'}
+        </Text>
         <Text>{message}</Text>
       </Body>
     </CardItem>
