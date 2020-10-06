@@ -179,4 +179,23 @@ const homeScreen = StyleSheet.create({
   },
 });
 
-export { activityScreen, homeScreen, floorBallScreen };
+
+const calendarScreen = StyleSheet.create({
+  calendar: {
+    // marginBottom: 10,
+    flex: 1,
+    marginTop: 30,
+  },
+  text: {
+    textAlign: 'center',
+    padding: 10,
+    backgroundColor: 'lightgrey',
+    fontSize: 16,
+  },
+  eventmodal: {
+    // placeholder
+  },
+});
+
+export { activityScreen, homeScreen, calendarScreen };
+

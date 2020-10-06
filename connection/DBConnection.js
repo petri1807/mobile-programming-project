@@ -276,7 +276,6 @@ export const fetchAllAnnouncements = (date) => {
   return promise;
 };
 
-// Add a clause to the SQL statement where we select * from calendarEvent where userId=? AND dateStart=today
 export const fetchTodaysCalendarEventsForUser = (userId, date) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {

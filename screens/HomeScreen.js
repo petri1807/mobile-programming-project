@@ -40,10 +40,9 @@ const HomeScreen = () => {
   // Adding dummy data for testing
   const addCalendarEventHandler = async () => {
     setLoading(!loading);
-    const dateStart = new Date().toDateString();
-    const dateEnd = new Date().toDateString();
+    const dateStart = new Date().toISOString().split('T')[0];
+    const dateEnd = new Date().toISOString().split('T')[0];
 
-    console.log('added event for tomorrow');
     await addCalendarEvent(
       1,
       dateStart,
@@ -52,6 +51,9 @@ const HomeScreen = () => {
       'Dummy message'
     );
 
+    // await addFloorballGame(dateStart, dateEnd);
+    // await addActivity(1, dateStart, dateEnd, 'Work');
+
     // // Clear the database table
     // for (let index = 1; index <= calendarList.length; index++) {
     //   await deleteCalendarEvent(index);
@@ -59,11 +61,19 @@ const HomeScreen = () => {
   };
 
   const fetch = async () => {
-    const dateStart = new Date().toDateString();
+    const dateStart = new Date().toISOString().split('T')[0];
 
     await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
       setCalendarList(res.rows._array);
     });
+
+    // await fetchAllActivities().then((res) => {
+    //   setCalendarList((list) => [...list, ...res.rows._array]);
+    // });
+
+    // await fetchAllFloorballGames().then((res) => {
+    //   setCalendarList((list) => [...list, ...res.rows._array]);
+    // });
 
     // await fetchAllCalendarEvents().then((res) => {
     //   setCalendarList(res.rows._array);
@@ -82,6 +92,7 @@ const HomeScreen = () => {
     <Container>
       <Content style={homeScreen.pageLayout}>
         <AnnouncementBox />
+        {console.log(calendarList)}
         <Text style={homeScreen.title}>Today's events</Text>
         {/* Delete Button once no longer needed */}
         <Button title="Add calendar event" onPress={addCalendarEventHandler} />
@@ -95,11 +106,14 @@ const HomeScreen = () => {
                 dateEnd={itemData.item.dateEnd}
                 topic={itemData.item.topic}
                 message={itemData.item.message}
+                activityType={itemData.item.activityType}
               />
             )}
           />
         ) : (
-          <H1>No events for today</H1>
+          <Content>
+            <H1>No events for today</H1>
+          </Content>
         )}
       </Content>
     </Container>
