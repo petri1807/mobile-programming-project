@@ -111,7 +111,9 @@ const homeScreen = StyleSheet.create({
 
 const calendarScreen = StyleSheet.create({
   calendar: {
-    marginBottom: 10,
+    // marginBottom: 10,
+    flex: 1,
+    marginTop: 30,
   },
   text: {
     textAlign: 'center',
