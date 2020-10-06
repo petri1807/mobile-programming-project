@@ -1,5 +1,11 @@
 import React, { useState, Fragment } from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 const CalendarScreen = () => {
