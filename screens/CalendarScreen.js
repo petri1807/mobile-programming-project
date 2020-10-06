@@ -24,7 +24,32 @@ const CalendarScreen = () => {
         // console.log(calendarEvents);
       })
       // .finally(() => console.log('fetchin logi', calendarEvents));
-      .then(() => logwriter(calendarEvents));
+      .then(() => {
+        // setItems needs a single object with keys of each day
+        // Value for each key is an array of objects
+        // calendarList holds an array of objects, each has a dateStart, topic and message keys
+        // To turn the list into an object with dates as keys we need to
+
+        // [x] 1. create an object that will be returned to setItems
+        // [x] 2. extract dates from calendarList
+        // [x] 3. remove duplicates
+        // [x] 4. assign a key for each date to the object with empty array as value
+        // [x] 5. Assign tasks for each day to obj arrays
+
+        const obj = {};
+        let keys = calendarEvents.map((item) => item.dateStart); // store dates in array
+        keys = [...new Set(keys)]; // remove duplicate dates from array
+        keys.map((item) => (obj[item] = [])); // assign a key for each date with value of empty array
+        calendarEvents.map(
+          (item) => obj[item.dateStart].push({ name: item.message }) // push messages from each day to the object
+        );
+
+        console.log('KEYS');
+        console.log(obj);
+
+        // setItems({ '2020-10-06': [{ name: 'odieheoiw' }] });
+        setItems(obj);
+      });
   };
 
   const logwriter = (param) => {
