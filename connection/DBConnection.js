@@ -39,6 +39,16 @@ export const init = () => {
           reject(err);
         }
       );
+      tx.executeSql(
+        'create table if not exists players(id integer not null primary key, player text not null);',
+        [],
+        () => {
+          resolve();
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
       // Floorball game participant
       tx.executeSql(
         'create table if not exists floorballParticipant(id integer not null primary key, userId integer not null, gameId integer not null);',
@@ -139,6 +149,41 @@ export const addFloorballGame = (dateStart, dateEnd) => {
   return promise;
 };
 
+export const addPlayer = (player) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'insert into players(player) values(?)',
+        [player],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+export const fetchAllPlayers = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      // Here we select all from the table fish
+      tx.executeSql(
+        'select * from players;',
+        [],
+        (_, result) => {
+          resolve(result);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
 export const addActivity = (userId, dateStart, dateEnd, activityType) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
