@@ -62,7 +62,7 @@ export const init = () => {
       );
       // Activity event
       tx.executeSql(
-        'create table if not exists activity(id integer not null primary key, userId integer not null, dateStart text not null, dateEnd text not null, activityType text not null);',
+        'create table if not exists activity(id integer not null primary key, userId integer not null, date text not null, startTime integer not null, endTime integer not null, activityType text not null);',
         [],
         () => {
           resolve();
@@ -184,12 +184,12 @@ export const fetchAllPlayers = () => {
   });
   return promise;
 };
-export const addActivity = (userId, dateStart, dateEnd, activityType) => {
+export const addActivity = (userId, date, startTime, endTime, activityType) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'insert into activity(userId, dateStart, dateEnd, activityType) values(?,?,?,?)',
-        [userId, dateStart, dateEnd, activityType],
+        'insert into activity(userId, date, startTime, endTime activityType) values(?,?,?,?,?)',
+        [userId, date, startTime, endTime, activityType],
         (_, result) => {
           resolve(result);
         },

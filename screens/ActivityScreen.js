@@ -19,16 +19,39 @@ import { PieChart } from 'react-native-chart-kit';
 
 import { activityScreen } from '../styles/ProjectStyles.js';
 
+import {
+  init,
+  addActivity,
+  fetchAllActivities,
+} from '../connection/DBConnection';
+
+init()
+  .then(() => {
+    console.log('Database creation successful');
+  })
+  .catch((error) => {
+    console.log(`Database not created! ${error}`);
+  });
+
 const ActivityScreen = () => {
+  const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState('');
+  const [activities, setActivities] = useState([]);
   const [startedActivity, setStartedActivity] = useState('');
   const [stopModalVisible, setStopModalVisible] = useState(false);
-  const [startTime, setStartTime] = useState(0);
   const [elapsedTime, setElapsedTime] = useState('00:00');
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
 
   useEffect(() => {
-    const tick = setInterval(() => timeTracker(), 1000);
-    return () => clearInterval(tick);
+    console.log(activities);
+    if (loading) {
+      setLoading(!loading);
+    }
+    if (startedActivity) {
+      const tick = setInterval(() => timeTracker(), 1000);
+      return () => clearInterval(tick);
+    }
   });
 
   const changeActivity = (value) => {
@@ -40,10 +63,13 @@ const ActivityScreen = () => {
     setElapsedTime(0);
     setActivity('');
     setStartTime(Date.now());
+    console.log(startTime);
     setStartedActivity(activity);
   };
 
   const stopActivity = () => {
+    setEndTime(startTime + elapsedTime);
+    addActivityEventHandler();
     setStartedActivity('');
     setStopModalVisible(false);
   };
@@ -63,6 +89,36 @@ const ActivityScreen = () => {
     difference -= minutesDifference * 1000 * 60;
 
     setElapsedTime(`${hoursDifference}:${minutesDifference}`);
+  };
+
+  const addActivityEventHandler = async () => {
+    setLoading(!loading);
+    const date = new Date().toISOString().split('T')[0];
+
+    await addActivity(1, date, startTime, endTime, startedActivity);
+  };
+
+  const fetch = async () => {
+    await fetchAllActivities
+      .then((res) => setActivities(res.rows._array))
+      .then(() => {
+        const obj = {};
+        let keys = activities.map((item) => item.endTime);
+        keys = [...new Set(keys)];
+        keys.map((item) => (obj[item] = []));
+        activities.map((item) =>
+          obj[item.endTime].push({
+            started: item.startTime,
+            ended: item.endTime,
+            activity: item.startedActivity,
+          })
+        );
+        setActivities(obj);
+      });
+  };
+
+  const loadData = () => {
+    fetch();
   };
 
   const chartConfig = {
