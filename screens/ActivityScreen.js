@@ -19,19 +19,7 @@ import { PieChart } from 'react-native-chart-kit';
 
 import { activityScreen } from '../styles/ProjectStyles.js';
 
-import {
-  init,
-  addActivity,
-  fetchAllActivities,
-} from '../connection/DBConnection';
-
-init()
-  .then(() => {
-    console.log('Database creation successful');
-  })
-  .catch((error) => {
-    console.log(`Database not created! ${error}`);
-  });
+import { addActivity, fetchAllActivities } from '../connection/DBConnection';
 
 const ActivityScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -44,9 +32,9 @@ const ActivityScreen = () => {
   const [endTime, setEndTime] = useState(0);
 
   useEffect(() => {
-    console.log(activities);
     if (loading) {
       setLoading(!loading);
+      loadData();
     }
     if (startedActivity) {
       const tick = setInterval(() => timeTracker(), 1000);
@@ -63,12 +51,12 @@ const ActivityScreen = () => {
     setElapsedTime(0);
     setActivity('');
     setStartTime(Date.now());
-    console.log(startTime);
     setStartedActivity(activity);
   };
 
   const stopActivity = () => {
-    setEndTime(startTime + elapsedTime);
+    setEndTime(elapsedTime - startTime);
+    loadData();
     addActivityEventHandler();
     setStartedActivity('');
     setStopModalVisible(false);
@@ -76,8 +64,8 @@ const ActivityScreen = () => {
 
   const timeTracker = () => {
     // 🤮🤮🤮🤮
-    const date1 = new Date();
-    let difference = date1.getTime() - startTime;
+    const date = new Date();
+    let difference = date.getTime() - startTime;
 
     const daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
     difference -= daysDifference * 1000 * 60 * 60 * 24;
@@ -94,25 +82,27 @@ const ActivityScreen = () => {
   const addActivityEventHandler = async () => {
     setLoading(!loading);
     const date = new Date().toISOString().split('T')[0];
-
-    await addActivity(1, date, startTime, endTime, startedActivity);
+    const timeSpent = endTime.toString();
+    console.log(timeSpent);
+    await addActivity(1, date, timeSpent, startedActivity);
   };
 
   const fetch = async () => {
-    await fetchAllActivities
+    await fetchAllActivities()
       .then((res) => setActivities(res.rows._array))
       .then(() => {
         const obj = {};
-        let keys = activities.map((item) => item.endTime);
+        let keys = activities.map((item) => item.date);
         keys = [...new Set(keys)];
         keys.map((item) => (obj[item] = []));
         activities.map((item) =>
-          obj[item.endTime].push({
-            started: item.startTime,
-            ended: item.endTime,
-            activity: item.startedActivity,
+          obj[item.date].push({
+            timespent: item.time,
+            focus: item.activityType,
           })
         );
+        console.log('KEYS');
+        console.log(obj);
         setActivities(obj);
       });
   };
