@@ -179,7 +179,6 @@ const homeScreen = StyleSheet.create({
   },
 });
 
-
 const calendarScreen = StyleSheet.create({
   calendar: {
     // marginBottom: 10,
@@ -197,5 +196,4 @@ const calendarScreen = StyleSheet.create({
   },
 });
 
-export { activityScreen, homeScreen, calendarScreen };
-
+export { activityScreen, homeScreen, calendarScreen, floorBallScreen };

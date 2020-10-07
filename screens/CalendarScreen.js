@@ -1,9 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { Calendar, Agenda } from 'react-native-calendars';
 import Dialog from 'react-native-dialog';
-import { Avatar, Button, Card, TextInput } from 'react-native-paper';
+import { Avatar, Card } from 'react-native-paper';
 import { LongPressGestureHandler } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  Content,
+  Body,
+  H1,
+  Form,
+  Picker,
+  CardItem,
+  Left,
+  Right,
+  Fab,
+  Button,
+} from 'native-base';
 import { calendarScreen } from '../styles/ProjectStyles.js';
 import { fetchAllCalendarEvents } from '../connection/DBConnection';
 
@@ -16,6 +29,7 @@ const CalendarScreen = () => {
   const [items, setItems] = useState({});
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [eventModalVisible, setEventModalVisible] = useState(false);
 
   const fetch = async () => {
     await fetchAllCalendarEvents()
@@ -56,17 +70,22 @@ const CalendarScreen = () => {
     console.log(param);
   };
 
-  useEffect(() => {
-    if (loading) {
-      fetch();
-      console.log('useeff fetch test');
-      setLoading(!loading);
-    }
-    // fetch();
-  });
+  // useEffect(() => {
+  //   if (loading === true) {
+  //     fetch();
+  //     console.log('useeff fetch test');
+  //     setLoading(!loading);
+  //   }
+  //   // fetch();
+  // });
+
+  const onFabPress = () => {
+    setEventModalVisible(true);
+  };
 
   const loadItems = (day) => {
-    const testiString = 'load items string';
+    fetch();
+    console.log('toimiiko?');
     // setTimeout(() => {
     //   for (let i = -15; i < 85; i++) {
     //     const time = day.timestamp + i * 24 * 60 * 60 * 1000;
@@ -118,18 +137,34 @@ const CalendarScreen = () => {
     <View style={calendarScreen.calendar}>
       <Agenda
         items={items}
-        loadItemsForMonth={loadItems}
+        // loadItemsForMonth={loadItems}
+        loadItemsForMonth={(month) => {
+          console.log('trigger items loading', fetch());
+        }}
         selected={Date}
         firstDay={1}
         renderItem={renderItem}
-        onDayPress={(day) => {
-          console.log('day pressed', fetch());
-        }}
+        // onDayPress={(day) => {
+        //   console.log('day pressed', fetch());
+        // }}
       />
+      <Fab>
+        <Icon name="plus" onPress={onFabPress} />
+      </Fab>
+      <Modal visible={eventModalVisible}>
+        <Text>placeholder</Text>
+        <Button
+          onPress={() => {
+            setEventModalVisible(false);
+          }}
+        >
+          <Text>Cancel</Text>
+        </Button>
+      </Modal>
     </View>
   );
 };
-
+// onPress={setEventModalVisible(false)}
 export default CalendarScreen;
 //   const [selectedDay, setSelectedDay] = useState('');
 //   const [eventModalVisible, setEventModalVisible] = useState(false);
