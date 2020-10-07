@@ -49,6 +49,7 @@ const CalendarScreen = () => {
 
         // setItems({ '2020-10-06': [{ name: 'odieheoiw' }] });
         setItems(obj);
+        setLoading(!loading);
       });
   };
 
@@ -60,10 +61,9 @@ const CalendarScreen = () => {
     if (loading) {
       fetch();
       console.log('useeff fetch test');
-      setLoading(!loading);
     }
     // fetch();
-  });
+  }, [loading]);
 
   const loadItems = (day) => {
     const testiString = 'load items string';
@@ -118,7 +118,7 @@ const CalendarScreen = () => {
     <View style={calendarScreen.calendar}>
       <Agenda
         items={items}
-        loadItemsForMonth={fetch}
+        loadItemsForMonth={loadItems}
         selected={Date}
         firstDay={1}
         renderItem={renderItem}

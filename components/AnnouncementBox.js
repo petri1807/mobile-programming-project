@@ -5,6 +5,7 @@ import { homeScreen } from '../styles/ProjectStyles';
 import {
   fetchAllAnnouncements,
   addAnnouncement,
+  deleteAnnouncement,
 } from '../connection/DBConnection';
 
 const AnnouncementBox = () => {
@@ -30,11 +31,16 @@ const AnnouncementBox = () => {
     await addAnnouncement(date, title, content);
   };
 
+  const deleteA = async () => {
+    await deleteAnnouncement(1);
+  };
+
   useEffect(() => {
     if (loading) {
       setLoading(false);
       fetch();
-      //   add();
+      // add();
+      // deleteA();
     }
   });
 

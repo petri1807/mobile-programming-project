@@ -213,6 +213,26 @@ export const deleteCalendarEvent = (id) => {
   return promise;
 };
 
+export const deleteAnnouncement = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'delete from announcement where id=?',
+        [id],
+        (_, result) => {
+          console.log(result);
+          resolve(result);
+        },
+        (_, err) => {
+          console.log(err);
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
 export const fetchAllAnnouncements = (date) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
