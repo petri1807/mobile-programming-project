@@ -38,7 +38,7 @@ const activityScreen = StyleSheet.create({
     borderColor: 'black',
   },
   card: {
-    backgroundColor: '#62B1F6',
+    backgroundColor: 'white',
     flex: 1,
     flexDirection: 'column',
   },
@@ -48,12 +48,11 @@ const activityScreen = StyleSheet.create({
   },
   cardTextStyle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
+    color: '#333333',
   },
   cardVariableTextStyle: {
     fontSize: 18,
-    color: 'white',
+    color: '#333333',
   },
   buttonStyle: {
     margin: 2,

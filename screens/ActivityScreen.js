@@ -19,7 +19,11 @@ import { PieChart } from 'react-native-chart-kit';
 
 import { activityScreen } from '../styles/ProjectStyles.js';
 
-import { addActivity, fetchAllActivities } from '../connection/DBConnection';
+import {
+  addActivity,
+  fetchAllActivities,
+  fetchActivityTypeSum,
+} from '../connection/DBConnection';
 
 const ActivityScreen = () => {
   const [loading, setLoading] = useState(true);
@@ -30,6 +34,11 @@ const ActivityScreen = () => {
   const [elapsedTime, setElapsedTime] = useState('00:00');
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
+  // Might be a smarter way but nvm for now..
+  const [workHours, setWorkHours] = useState(0);
+  const [meetingHours, setMeetingHours] = useState(0);
+  const [workoutHours, setWorkoutHours] = useState(0);
+  const [personalHours, setPersonalHours] = useState(0);
 
   useEffect(() => {
     if (loading) {
@@ -42,20 +51,38 @@ const ActivityScreen = () => {
     }
   });
 
+  const formatTime = (format, value) => {
+    let timeToFormat = value;
+    if (format === 'days') {
+      const daysDifference = Math.floor(timeToFormat / 1000 / 60 / 60 / 24);
+      timeToFormat -= daysDifference * 1000 * 60 * 60 * 24;
+      return daysDifference;
+    }
+    if (format === 'hours') {
+      const hoursDifference = Math.floor(timeToFormat / 1000 / 60 / 60);
+      timeToFormat -= hoursDifference * 1000 * 60 * 60;
+      return hoursDifference;
+    }
+    if (format === 'minutes') {
+      const minutesDifference = Math.floor(timeToFormat / 1000 / 60);
+      timeToFormat -= minutesDifference * 1000 * 60;
+      return minutesDifference;
+    }
+  };
+
   const changeActivity = (value) => {
     setActivity(value);
   };
 
   const startActivity = () => {
     setStartTime(0);
-    setElapsedTime(0);
+    setElapsedTime('00:00');
     setActivity('');
     setStartTime(Date.now());
     setStartedActivity(activity);
   };
 
   const stopActivity = () => {
-    setEndTime(elapsedTime - startTime);
     loadData();
     addActivityEventHandler();
     setStartedActivity('');
@@ -63,31 +90,24 @@ const ActivityScreen = () => {
   };
 
   const timeTracker = () => {
-    // 🤮🤮🤮🤮
     const date = new Date();
-    let difference = date.getTime() - startTime;
+    const difference = date.getTime() - startTime;
+    setEndTime(difference);
 
-    const daysDifference = Math.floor(difference / 1000 / 60 / 60 / 24);
-    difference -= daysDifference * 1000 * 60 * 60 * 24;
-
-    const hoursDifference = Math.floor(difference / 1000 / 60 / 60);
-    difference -= hoursDifference * 1000 * 60 * 60;
-
-    const minutesDifference = Math.floor(difference / 1000 / 60);
-    difference -= minutesDifference * 1000 * 60;
-
-    setElapsedTime(`${hoursDifference}:${minutesDifference}`);
+    setElapsedTime(
+      `${formatTime('hours', difference)}:${formatTime('minutes', difference)}`
+    );
   };
 
   const addActivityEventHandler = async () => {
     setLoading(!loading);
     const date = new Date().toISOString().split('T')[0];
-    const timeSpent = endTime.toString();
+    const timeSpent = endTime;
     console.log(timeSpent);
     await addActivity(1, date, timeSpent, startedActivity);
   };
 
-  const fetch = async () => {
+  const fetchAll = async () => {
     await fetchAllActivities()
       .then((res) => setActivities(res.rows._array))
       .then(() => {
@@ -97,18 +117,23 @@ const ActivityScreen = () => {
         keys.map((item) => (obj[item] = []));
         activities.map((item) =>
           obj[item.date].push({
-            timespent: item.time,
-            focus: item.activityType,
+            time: item.time,
+            activityType: item.activityType,
           })
         );
-        console.log('KEYS');
-        console.log(obj);
         setActivities(obj);
       });
   };
 
+  const fetchType = async (type) => {
+    await fetchActivityTypeSum(1, type).then((res) => {
+      console.log(res.rows._array);
+    });
+  };
+
   const loadData = () => {
-    fetch();
+    fetchAll();
+    fetchType('Work');
   };
 
   const chartConfig = {
@@ -126,30 +151,30 @@ const ActivityScreen = () => {
   const data = [
     {
       name: 'Work',
-      hours: 28,
+      hours: workHours,
       color: '#FF8552',
-      legendFontColor: '#FFFFFF',
+      legendFontColor: '#333333',
       legendFontSize: 15,
     },
     {
       name: 'Meetings',
-      hours: 5,
+      hours: meetingHours,
       color: '#297373',
-      legendFontColor: '#FFFFFF',
+      legendFontColor: '#333333',
       legendFontSize: 15,
     },
     {
       name: 'Workout',
-      hours: 1,
+      hours: workoutHours,
       color: '#85FFC7',
-      legendFontColor: '#FFFFFF',
+      legendFontColor: '#333333',
       legendFontSize: 15,
     },
     {
       name: 'Personal',
-      hours: 1,
+      hours: personalHours,
       color: '#D64045',
-      legendFontColor: '#FFFFFF',
+      legendFontColor: '#333333',
       legendFontSize: 15,
     },
   ];
