@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { homeScreen } from '../styles/ProjectStyles';
 
 const EventCard = ({ dateStart, dateEnd, topic, message, activityType }) => (
-  <Card>
+  <Card style={homeScreen.card}>
     <CardItem header>
       <Text>{dateStart}</Text>
     </CardItem>

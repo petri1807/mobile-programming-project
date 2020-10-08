@@ -9,18 +9,8 @@ import AnnouncementBox from '../components/AnnouncementBox';
 // The imports will be separated into their appropriate screens/components, this is just for testing
 import {
   init,
-  addActivity,
   addCalendarEvent,
-  addFloorballGame,
-  addFloorballParticipant,
-  addUser,
-  deleteCalendarEvent,
-  fetchAllActivities,
-  fetchAllCalendarEvents,
-  fetchAllFloorballGames,
-  fetchAllFloorballParticipants,
   fetchTodaysCalendarEventsForUser,
-  fetchAllUsers,
 } from '../connection/DBConnection';
 
 init()
@@ -42,7 +32,7 @@ const HomeScreen = () => {
     const dateStart = new Date().toISOString().split('T')[0];
     const dateEnd = new Date().toISOString().split('T')[0];
 
-    console.log('adding event');
+    console.log(`Adding event for ${dateStart}`);
     await addCalendarEvent(
       1,
       dateStart,
@@ -51,16 +41,12 @@ const HomeScreen = () => {
       'Dummy message'
     );
 
-    // await addFloorballGame(dateStart, dateEnd);
-    // await addActivity(1, dateStart, dateEnd, 'Work');
-
-    // // Clear the database table
-    // for (let index = 1; index <= calendarList.length; index++) {
-    //   await deleteCalendarEvent(index);
-    // }
+    // console.log(`deleting events for ${dateStart}`);
+    // await deleteCalendarEvent(dateStart);
   };
 
   const fetch = async () => {
+    console.log('fetch called');
     const dateStart = new Date().toISOString().split('T')[0];
 
     await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
@@ -79,17 +65,22 @@ const HomeScreen = () => {
     //   setCalendarList(res.rows._array);
     //   console.log(calendarList);
     // });
+    setLoading(!loading);
   };
 
   useEffect(() => {
     if (loading) {
-      setLoading(!loading);
       fetch();
     }
-  });
+    console.log(`useEffect called, loading: ${loading}`);
+  }, [loading]);
 
   return (
     <Container style={homeScreen.pageLayout}>
+      {/* VirtualizedLists should never be nested inside plain ScrollViews with the same orientation */}
+      {/* The error comes from using a flatlist inside the Content component, which is basically a ScrollView component */}
+
+      {/* <Content contentContainerStyle={{ flex: 1 }}> */}
       <Content>
         <AnnouncementBox setVisibility={setAnnouncementVisible} />
         <View
@@ -98,24 +89,26 @@ const HomeScreen = () => {
         >
           <Text style={homeScreen.title}>Today's events</Text>
           {/* Delete Button once no longer needed */}
-          {/* <Button title="Add calendar event" onPress={addCalendarEventHandler} /> */}
-          {calendarList.length > 0 ? (
-            <FlatList
-              keyExtractor={(item) => calendarList.indexOf(item).toString()}
-              data={calendarList}
-              renderItem={(itemData) => (
+          {/* <Button
+            title="Add calendar event"
+            onPress={addCalendarEventHandler}
+          /> */}
+          <View>
+            {calendarList.length > 0 ? (
+              calendarList.map((item) => (
                 <EventCard
-                  dateStart={itemData.item.dateStart}
-                  dateEnd={itemData.item.dateEnd}
-                  topic={itemData.item.topic}
-                  message={itemData.item.message}
-                  activityType={itemData.item.activityType}
+                  key={item.id}
+                  dateStart={item.dateStart}
+                  dateEnd={item.dateEnd}
+                  topic={item.topic}
+                  message={item.message}
+                  activityType={item.activityType}
                 />
-              )}
-            />
-          ) : (
-            <H1>No events for today</H1>
-          )}
+              ))
+            ) : (
+              <H1>No events for today</H1>
+            )}
+          </View>
         </View>
       </Content>
     </Container>
@@ -123,3 +116,18 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
+
+// <FlatList
+//   keyExtractor={(item) => calendarList.indexOf(item).toString()}
+//   data={calendarList}
+//   renderItem={(itemData) => (
+//     <EventCard
+//       dateStart={itemData.item.dateStart}
+//       dateEnd={itemData.item.dateEnd}
+//       topic={itemData.item.topic}
+//       message={itemData.item.message}
+//       activityType={itemData.item.activityType}
+//     />
+//   )}
+//   onEndReachedThreshold={0.5}
+// />

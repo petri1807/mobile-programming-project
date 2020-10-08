@@ -162,10 +162,16 @@ const homeScreen = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 1,
+    zIndex: 2,
+  },
+  card: {
+    // zIndex: 1,
+    padding: 0,
   },
   header: {
     backgroundColor: '#f1f1f1',
+    borderColor: 'orange',
+    borderWidth: 2,
   },
   title: {
     padding: 15,

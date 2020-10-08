@@ -238,12 +238,12 @@ export const addFloorballParticipant = (gameId, userId) => {
   return promise;
 };
 
-export const deleteCalendarEvent = (id) => {
+export const deleteCalendarEvent = (date) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'delete from calendarEvent where id=?',
-        [id],
+        'delete from calendarEvent where dateStart=?',
+        [date],
         (_, result) => {
           console.log(result);
           resolve(result);
