@@ -9,7 +9,6 @@ import AnnouncementBox from '../components/AnnouncementBox';
 // The imports will be separated into their appropriate screens/components, this is just for testing
 import {
   init,
-  addCalendarEvent,
   fetchTodaysCalendarEventsForUser,
 } from '../connection/DBConnection';
 
@@ -26,45 +25,11 @@ const HomeScreen = () => {
   const [calendarList, setCalendarList] = useState([]);
   const [announcementVisible, setAnnouncementVisible] = useState(false);
 
-  // Adding dummy data for testing
-  const addCalendarEventHandler = async () => {
-    setLoading(!loading);
-    const dateStart = new Date().toISOString().split('T')[0];
-    const dateEnd = new Date().toISOString().split('T')[0];
-
-    console.log(`Adding event for ${dateStart}`);
-    await addCalendarEvent(
-      1,
-      dateStart,
-      dateEnd,
-      'Dummy topic',
-      'Dummy message'
-    );
-
-    // console.log(`deleting events for ${dateStart}`);
-    // await deleteCalendarEvent(dateStart);
-  };
-
   const fetch = async () => {
-    console.log('fetch called');
     const dateStart = new Date().toISOString().split('T')[0];
-
     await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
       setCalendarList(res.rows._array);
     });
-
-    // await fetchAllActivities().then((res) => {
-    //   setCalendarList((list) => [...list, ...res.rows._array]);
-    // });
-
-    // await fetchAllFloorballGames().then((res) => {
-    //   setCalendarList((list) => [...list, ...res.rows._array]);
-    // });
-
-    // await fetchAllCalendarEvents().then((res) => {
-    //   setCalendarList(res.rows._array);
-    //   console.log(calendarList);
-    // });
     setLoading(!loading);
   };
 
@@ -72,7 +37,6 @@ const HomeScreen = () => {
     if (loading) {
       fetch();
     }
-    console.log(`useEffect called, loading: ${loading}`);
   }, [loading]);
 
   return (
@@ -88,11 +52,6 @@ const HomeScreen = () => {
           style={announcementVisible ? { paddingTop: 40 } : { paddingTop: 0 }}
         >
           <Text style={homeScreen.title}>Today's events</Text>
-          {/* Delete Button once no longer needed */}
-          {/* <Button
-            title="Add calendar event"
-            onPress={addCalendarEventHandler}
-          /> */}
           <View>
             {calendarList.length > 0 ? (
               calendarList.map((item) => (
@@ -116,18 +75,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-// <FlatList
-//   keyExtractor={(item) => calendarList.indexOf(item).toString()}
-//   data={calendarList}
-//   renderItem={(itemData) => (
-//     <EventCard
-//       dateStart={itemData.item.dateStart}
-//       dateEnd={itemData.item.dateEnd}
-//       topic={itemData.item.topic}
-//       message={itemData.item.message}
-//       activityType={itemData.item.activityType}
-//     />
-//   )}
-//   onEndReachedThreshold={0.5}
-// />
