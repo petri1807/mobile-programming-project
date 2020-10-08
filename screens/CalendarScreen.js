@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { Calendar, Agenda } from 'react-native-calendars';
 import Dialog from 'react-native-dialog';
-import { Avatar, Card } from 'react-native-paper';
+import { Avatar, Card, TextInput } from 'react-native-paper';
 import { LongPressGestureHandler } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
@@ -18,7 +18,11 @@ import {
   Button,
 } from 'native-base';
 import { calendarScreen } from '../styles/ProjectStyles.js';
-import { fetchAllCalendarEvents } from '../connection/DBConnection';
+import {
+  fetchAllCalendarEvents,
+  addCalendarEvent,
+  deleteCalendarEvent,
+} from '../connection/DBConnection';
 
 const timeToString = (time) => {
   const date = new Date(time);
@@ -30,6 +34,9 @@ const CalendarScreen = () => {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [eventModalVisible, setEventModalVisible] = useState(false);
+  const [selectedDay, setSelectedDay] = useState('');
+  const [newTopic, setNewTopic] = useState('');
+  const [newMessage, setNewMessage] = useState('');
 
   const fetch = async () => {
     await fetchAllCalendarEvents()
@@ -55,7 +62,12 @@ const CalendarScreen = () => {
         keys = [...new Set(keys)]; // remove duplicate dates from array
         keys.map((item) => (obj[item] = [])); // assign a key for each date with value of empty array
         calendarEvents.map(
-          (item) => obj[item.dateStart].push({ name: item.message }) // push messages from each day to the object
+          (item) =>
+            obj[item.dateStart].push({
+              topic: item.topic,
+              message: item.message,
+              id: item.id,
+            }) // push messages from each day to the object
         );
 
         console.log('KEYS');
@@ -66,8 +78,39 @@ const CalendarScreen = () => {
       });
   };
 
-  const logwriter = (param) => {
-    console.log(param);
+  const selectedDayHandler = (day) => {
+    setSelectedDay(day.dateString);
+    // console.log('dayhandlerin objecti', day.dateString);
+  };
+
+  const topicHandler = (enteredText) => {
+    setNewTopic(enteredText);
+  };
+
+  const messageHandler = (enteredText) => {
+    setNewMessage(enteredText);
+  };
+
+  const calendarEventControl = () => {
+    const dateStart = selectedDay;
+    const dateEnd = selectedDay;
+
+    console.log(
+      'controllin printti:',
+      dateStart,
+      dateEnd,
+      newTopic,
+      newMessage
+    );
+    setEventModalVisible(false);
+  };
+
+  const addCalendarEventHandler = async () => {
+    const dateStart = selectedDay;
+    const dateEnd = selectedDay;
+
+    await addCalendarEvent(1, dateStart, dateEnd, newTopic, newMessage);
+    setEventModalVisible(false);
   };
 
   // useEffect(() => {
@@ -109,8 +152,16 @@ const CalendarScreen = () => {
     // }, 1000);
   };
 
+  const deleteCardItem = async (id) => {
+    console.log('delete pressin toiminta?', id);
+    await deleteCalendarEvent(id).then(() => fetch());
+  };
+
   const renderItem = (item) => (
     <TouchableOpacity
+      onLongPress={() => {
+        deleteCardItem(item.id);
+      }}
       style={{
         marginRight: 10,
         marginTop: 17,
@@ -120,13 +171,15 @@ const CalendarScreen = () => {
         <Card.Content>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: 'column',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'flex-start',
             }}
           >
-            <Text>{item.name}</Text>
-            <Avatar.Text label="A" />
+            <Text style={calendarScreen.itemCardTopic}>{item.topic}</Text>
+            <Text />
+            <Text>{item.message}</Text>
+            {/* <Avatar.Text label="A" /> */}
           </View>
         </Card.Content>
       </Card>
@@ -144,23 +197,32 @@ const CalendarScreen = () => {
         selected={Date}
         firstDay={1}
         renderItem={renderItem}
-        // onDayPress={(day) => {
-        //   console.log('day pressed', fetch());
-        // }}
+        onDayPress={selectedDayHandler}
       />
       <Fab>
         <Icon name="plus" onPress={onFabPress} />
       </Fab>
-      <Modal visible={eventModalVisible}>
-        <Text>placeholder</Text>
-        <Button
+      <Dialog.Container visible={eventModalVisible}>
+        <Dialog.Title>{selectedDay}</Dialog.Title>
+        <Dialog.Input onChangeText={topicHandler} placeholder="Topic" />
+        <Dialog.Input onChangeText={messageHandler} placeholder="Message" />
+        <Dialog.Button
+          label="Cancel"
           onPress={() => {
             setEventModalVisible(false);
           }}
         >
-          <Text>Cancel</Text>
-        </Button>
-      </Modal>
+          {/* <Text>Cancel</Text> */}
+        </Dialog.Button>
+        <Dialog.Button
+          label="Add"
+          onPress={() => {
+            addCalendarEventHandler();
+          }}
+        >
+          <Text>Add</Text>
+        </Dialog.Button>
+      </Dialog.Container>
     </View>
   );
 };

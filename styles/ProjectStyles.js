@@ -191,8 +191,8 @@ const calendarScreen = StyleSheet.create({
     backgroundColor: 'lightgrey',
     fontSize: 16,
   },
-  eventmodal: {
-    // placeholder
+  itemCardTopic: {
+    fontWeight: 'bold',
   },
 });
 
