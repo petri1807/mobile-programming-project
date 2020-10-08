@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Button, FlatList } from 'react-native';
+import { View, Text, Button, FlatList } from 'react-native';
 import { Container, Content, H1 } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
@@ -34,13 +34,15 @@ init()
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [calendarList, setCalendarList] = useState([]);
+  const [announcementVisible, setAnnouncementVisible] = useState(false);
 
   // Adding dummy data for testing
   const addCalendarEventHandler = async () => {
     setLoading(!loading);
-    const dateStart = new Date(2020, 9, 9).toISOString().split('T')[0];
-    const dateEnd = new Date(2020, 9, 9).toISOString().split('T')[0];
+    const dateStart = new Date().toISOString().split('T')[0];
+    const dateEnd = new Date().toISOString().split('T')[0];
 
+    console.log('adding event');
     await addCalendarEvent(
       1,
       dateStart,
@@ -87,32 +89,34 @@ const HomeScreen = () => {
   });
 
   return (
-    <Container>
-      <Content style={homeScreen.pageLayout}>
-        <AnnouncementBox />
-        {console.log(calendarList)}
-        <Text style={homeScreen.title}>Today's events</Text>
-        {/* Delete Button once no longer needed */}
-        <Button title="Add calendar event" onPress={addCalendarEventHandler} />
-        {calendarList.length > 0 ? (
-          <FlatList
-            keyExtractor={(item) => calendarList.indexOf(item).toString()}
-            data={calendarList}
-            renderItem={(itemData) => (
-              <EventCard
-                dateStart={itemData.item.dateStart}
-                dateEnd={itemData.item.dateEnd}
-                topic={itemData.item.topic}
-                message={itemData.item.message}
-                activityType={itemData.item.activityType}
-              />
-            )}
-          />
-        ) : (
-          <Content>
+    <Container style={homeScreen.pageLayout}>
+      <Content>
+        <AnnouncementBox setVisibility={setAnnouncementVisible} />
+        <View
+          // If announcement is visible, use padding to reposition the title and EventCard from underneath the AnnouncementBox
+          style={announcementVisible ? { paddingTop: 40 } : { paddingTop: 0 }}
+        >
+          <Text style={homeScreen.title}>Today's events</Text>
+          {/* Delete Button once no longer needed */}
+          {/* <Button title="Add calendar event" onPress={addCalendarEventHandler} /> */}
+          {calendarList.length > 0 ? (
+            <FlatList
+              keyExtractor={(item) => calendarList.indexOf(item).toString()}
+              data={calendarList}
+              renderItem={(itemData) => (
+                <EventCard
+                  dateStart={itemData.item.dateStart}
+                  dateEnd={itemData.item.dateEnd}
+                  topic={itemData.item.topic}
+                  message={itemData.item.message}
+                  activityType={itemData.item.activityType}
+                />
+              )}
+            />
+          ) : (
             <H1>No events for today</H1>
-          </Content>
-        )}
+          )}
+        </View>
       </Content>
     </Container>
   );

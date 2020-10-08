@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import { Accordion } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
@@ -8,26 +9,23 @@ import {
   deleteAnnouncement,
 } from '../connection/DBConnection';
 
-const AnnouncementBox = () => {
+const AnnouncementBox = ({ setVisibility }) => {
   const [loading, setLoading] = useState(true);
-  const [announcementList, setAnnouncementList] = useState([
-    {
-      title: 'Default announcement',
-      content: 'Nothing in database.',
-    },
-  ]);
+  const [announcementList, setAnnouncementList] = useState([]);
 
   const fetch = async () => {
     const date = new Date().toDateString();
     await fetchAllAnnouncements(date).then((res) => {
       setAnnouncementList(res.rows._array);
+      setVisibility(true);
     });
   };
 
   const add = async () => {
     const date = new Date().toDateString();
-    const title = 'Fire safety exercise at 12:00';
-    const content = 'We will conduct a fire safety exercise at 12:00.';
+    const title = 'Avoid the angry duck';
+    const content =
+      'He will attack without hesitation. He will brutalize your boots like your mom does a McDonalds drive-thru order.';
     await addAnnouncement(date, title, content);
   };
 
@@ -45,11 +43,9 @@ const AnnouncementBox = () => {
   });
 
   return (
-    <Accordion
-      headerStyle={homeScreen.header}
-      dataArray={announcementList}
-      expanded={0}
-    />
+    <View style={homeScreen.announcementBox}>
+      <Accordion headerStyle={homeScreen.header} dataArray={announcementList} />
+    </View>
   );
 };
 

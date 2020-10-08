@@ -154,8 +154,15 @@ const floorBallScreen = StyleSheet.create({
 
 const homeScreen = StyleSheet.create({
   pageLayout: {
-    paddingVertical: 40,
+    paddingTop: 40,
     paddingHorizontal: 20,
+  },
+  announcementBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
   },
   header: {
     backgroundColor: '#f1f1f1',
