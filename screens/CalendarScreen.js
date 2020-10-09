@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import { Calendar, Agenda } from 'react-native-calendars';
 import Dialog from 'react-native-dialog';
-import { Avatar, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   Content,
@@ -23,6 +22,7 @@ import {
   Fab,
   Button,
 } from 'native-base';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { calendarScreen } from '../styles/ProjectStyles.js';
 import {
   fetchAllCalendarEvents,
@@ -41,10 +41,13 @@ const CalendarScreen = () => {
   const [loading, setLoading] = useState(true);
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
-  const [startTime, setStartTime] = useState('');
+  const [startTime, setStartTime] = useState({ default: 'unsetted' });
   const [endTime, setEndTime] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const [newMessage, setNewMessage] = useState('');
+  const [mode, setMode] = useState('time');
+  const [showClock, setShowClock] = useState(false);
+  const [timestampDay, setTimestampDay] = useState();
 
   const fetch = async () => {
     await fetchAllCalendarEvents()
@@ -58,6 +61,7 @@ const CalendarScreen = () => {
 
   const selectedDayHandler = (day) => {
     setSelectedDay(day.dateString);
+    setTimestampDay(day.timestamp);
     // console.log('dayhandlerin objecti', day.dateString);
   };
 
@@ -67,6 +71,19 @@ const CalendarScreen = () => {
 
   const messageHandler = (enteredText) => {
     setNewMessage(enteredText);
+  };
+
+  const startTimeHandler = (event, selectedTime) => {
+    setStartTime(selectedTime);
+    console.log(startTime);
+    console.log(typeof startTime);
+    console.log(`select time: ${selectedTime}`);
+    // console.log(event);
+    setShowClock(false);
+  };
+
+  const endTimeHandler = (enteredText) => {
+    setEndTime(enteredText);
   };
 
   const calendarEventControl = () => {
@@ -207,8 +224,26 @@ const CalendarScreen = () => {
       <Fab>
         <Icon name="plus" onPress={onFabPress} />
       </Fab>
+      {showClock && (
+        <DateTimePicker
+          mode={mode}
+          value={timestampDay}
+          is24Hour
+          display="default"
+          onChange={startTimeHandler}
+        />
+      )}
       <Dialog.Container visible={eventModalVisible}>
         <Dialog.Title>{selectedDay}</Dialog.Title>
+        <Dialog.Button
+          label="Clock time"
+          onPress={() => {
+            setShowClock(true);
+          }}
+        />
+        {/* <Dialog.Title>
+          {startTime !== undefined ? startTime : startTime.default}
+        </Dialog.Title> */}
         <Dialog.Input onChangeText={topicHandler} placeholder="Topic" />
         <Dialog.Input onChangeText={messageHandler} placeholder="Message" />
         <Dialog.Button
