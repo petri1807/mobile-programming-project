@@ -8,7 +8,6 @@ export const init = () => {
       // Announements
       tx.executeSql(
         'create table if not exists announcement(id integer not null primary key, date text not null, title text not null, content text not null);',
-        // 'drop table announcement;',
         [],
         () => {
           resolve();
@@ -19,7 +18,7 @@ export const init = () => {
       );
       // Calendar event
       tx.executeSql(
-        'create table if not exists calendarEvent(id integer not null primary key, userId integer not null, dateStart text not null, dateEnd text not null, topic text not null, message text not null);',
+        'create table if not exists calendarEvent(id integer not null primary key, userId integer not null, date text not null, timeStart text not null, timeEnd text not null, topic text not null, message text not null);',
         [],
         () => {
           resolve();
@@ -62,7 +61,7 @@ export const init = () => {
       );
       // Activity event
       tx.executeSql(
-        'create table if not exists activity(id integer not null primary key, userId integer not null, dateStart text not null, dateEnd text not null, activityType text not null);',
+        'create table if not exists activity(id integer not null primary key, userId integer not null, date text not null, timeStart text not null, timeEnd text not null, activityType text not null);',
         [],
         () => {
           resolve();
@@ -87,8 +86,6 @@ export const init = () => {
   return promise;
 };
 
-// DATE as strings ("YYYY-MM-DD HH:MM:SS.SSS")
-
 export const addAnnouncement = (date, title, content) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
@@ -109,16 +106,17 @@ export const addAnnouncement = (date, title, content) => {
 
 export const addCalendarEvent = (
   userId,
-  dateStart,
-  dateEnd,
+  date,
+  timeStart,
+  timeEnd,
   topic,
   message
 ) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'insert into calendarEvent(userId, dateStart, dateEnd, topic, message) values(?,?,?,?,?)',
-        [userId, dateStart, dateEnd, topic, message],
+        'insert into calendarEvent(userId, date, timeStart, timeEnd, topic, message) values(?,?,?,?,?,?)',
+        [userId, date, timeStart, timeEnd, topic, message],
         (_, result) => {
           resolve(result);
         },
@@ -184,12 +182,12 @@ export const fetchAllPlayers = () => {
   });
   return promise;
 };
-export const addActivity = (userId, dateStart, dateEnd, activityType) => {
+export const addActivity = (userId, date, timeStart, timeEnd, activityType) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'insert into activity(userId, dateStart, dateEnd, activityType) values(?,?,?,?)',
-        [userId, dateStart, dateEnd, activityType],
+        'insert into activity(userId, date, timestart, timeEnd, activityType) values(?,?,?,?,?)',
+        [userId, date, timeStart, timeEnd, activityType],
         (_, result) => {
           resolve(result);
         },
@@ -238,11 +236,31 @@ export const addFloorballParticipant = (gameId, userId) => {
   return promise;
 };
 
-export const deleteCalendarEvent = (id) => {
+export const deleteCalendarEvent = (date) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'delete from calendarEvent where id=?',
+        'delete from calendarEvent where dateStart=?',
+        [date],
+        (_, result) => {
+          console.log(result);
+          resolve(result);
+        },
+        (_, err) => {
+          console.log(err);
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;
+};
+
+export const deleteAnnouncement = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'delete from announcement where id=?',
         [id],
         (_, result) => {
           console.log(result);
@@ -280,7 +298,7 @@ export const fetchTodaysCalendarEventsForUser = (userId, date) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'select * from calendarEvent where userId=? and dateStart=?',
+        'select * from calendarEvent where userId=? and date=?',
         [userId, date],
         (tx, result) => {
           resolve(result);
