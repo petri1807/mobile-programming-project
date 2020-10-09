@@ -164,8 +164,10 @@ const homeScreen = StyleSheet.create({
     right: 0,
     zIndex: 2,
   },
+  cardContainer: {
+    zIndex: -1,
+  },
   card: {
-    // zIndex: 1,
     padding: 0,
   },
   header: {
@@ -173,22 +175,14 @@ const homeScreen = StyleSheet.create({
     borderColor: 'orange',
     borderWidth: 2,
   },
+  content: {
+    zIndex: 3,
+    backgroundColor: 'white',
+  },
   title: {
     padding: 15,
     fontSize: 20,
     fontWeight: 'normal',
-  },
-  cardIconBox: {
-    justifyContent: 'flex-end',
-  },
-  cardIcon: {
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-  },
-  cardIconFont: {
-    color: '#fff',
-    fontSize: 15,
-    paddingHorizontal: 5,
   },
 });
 

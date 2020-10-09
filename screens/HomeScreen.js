@@ -46,13 +46,13 @@ const HomeScreen = () => {
 
       {/* <Content contentContainerStyle={{ flex: 1 }}> */}
       <Content>
-        <AnnouncementBox setVisibility={setAnnouncementVisible} />
         <View
           // If announcement is visible, use padding to reposition the title and EventCard from underneath the AnnouncementBox
           style={announcementVisible ? { paddingTop: 40 } : { paddingTop: 0 }}
         >
+          <AnnouncementBox setVisibility={setAnnouncementVisible} />
           <Text style={homeScreen.title}>Today's events</Text>
-          <View>
+          <View style={homeScreen.cardContainer}>
             {calendarList.length > 0 ? (
               calendarList.map((item) => (
                 <EventCard

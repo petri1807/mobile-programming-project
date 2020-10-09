@@ -24,12 +24,13 @@ const AnnouncementBox = ({ setVisibility }) => {
   const add = async () => {
     const date = new Date().toDateString();
     const title = 'Announement Title';
-    const content = 'Announement content';
+    const content =
+      'Announement contentAnnounement contentAnnounement contentAnnounement contentAnnounement contentAnnounement content';
     await addAnnouncement(date, title, content);
   };
 
   const deleteA = async () => {
-    await deleteAnnouncement(1);
+    await deleteAnnouncement(0);
   };
 
   useEffect(() => {
@@ -43,7 +44,11 @@ const AnnouncementBox = ({ setVisibility }) => {
 
   return (
     <View style={homeScreen.announcementBox}>
-      <Accordion headerStyle={homeScreen.header} dataArray={announcementList} />
+      <Accordion
+        headerStyle={homeScreen.header}
+        contentStyle={homeScreen.content}
+        dataArray={announcementList}
+      />
     </View>
   );
 };
