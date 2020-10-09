@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
+import { View, Text } from 'react-native';
 import { Container, Content, H1 } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
@@ -37,7 +37,7 @@ const HomeScreen = () => {
     if (loading) {
       fetch();
     }
-  }, [loading]);
+  });
 
   return (
     <Container style={homeScreen.pageLayout}>
@@ -57,11 +57,10 @@ const HomeScreen = () => {
               calendarList.map((item) => (
                 <EventCard
                   key={item.id}
-                  dateStart={item.dateStart}
-                  dateEnd={item.dateEnd}
+                  timeStart={item.timeStart}
+                  timeEnd={item.timeEnd}
                   topic={item.topic}
                   message={item.message}
-                  activityType={item.activityType}
                 />
               ))
             ) : (

@@ -35,6 +35,8 @@ const CalendarScreen = () => {
   const [loading, setLoading] = useState(true);
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const [newMessage, setNewMessage] = useState('');
 
@@ -44,21 +46,7 @@ const CalendarScreen = () => {
         setCalendarEvents(res.rows._array);
       })
       .then(() => {
-        const obj = {};
-        let keys = calendarEvents.map((item) => item.dateStart); // store dates in array
-        keys = [...new Set(keys)]; // remove duplicate dates from array
-        keys.map((item) => (obj[item] = [])); // assign a key for each date with value of empty array
-        calendarEvents.map(
-          (item) =>
-            obj[item.dateStart].push({
-              topic: item.topic,
-              message: item.message,
-              id: item.id,
-            }) // push messages from each day to the object
-        );
-
-        setItems(obj);
-        setLoading(!loading);
+        addCalendarEventsToItems();
       });
   };
 
@@ -90,21 +78,38 @@ const CalendarScreen = () => {
   };
 
   const addCalendarEventHandler = async () => {
-    const dateStart = selectedDay;
-    const dateEnd = selectedDay;
+    const date = selectedDay;
+    const timeStart = '9:00';
+    const timeEnd = '10:00';
 
-    await addCalendarEvent(1, dateStart, dateEnd, newTopic, newMessage);
+    await addCalendarEvent(1, date, timeStart, timeEnd, newTopic, newMessage);
     setEventModalVisible(false);
   };
 
+  const addCalendarEventsToItems = () => {
+    const obj = {};
+    let keys = calendarEvents.map((item) => item.date); // store dates in array
+    keys = [...new Set(keys)]; // remove duplicate dates from array
+    keys.map((item) => (obj[item] = [])); // assign a key for each date with value of empty array
+    calendarEvents.map(
+      (item) =>
+        obj[item.date].push({
+          timeStart: item.timeStart,
+          timeEnd: item.timeEnd,
+          topic: item.topic,
+          message: item.message,
+          id: item.id,
+        }) // push messages from each day to the object
+    );
+
+    setItems(obj);
+    setLoading(!loading);
+  };
+
   // useEffect(() => {
-  //   if (loading === true) {
-  //     fetch();
-  //     console.log('useeff fetch test');
-  //     setLoading(!loading);
-  //   }
-  //   // fetch();
-  // });
+  //   console.log('Items changed');
+  //   console.log(items);
+  // }, [items]);
 
   const onFabPress = () => {
     setEventModalVisible(true);
@@ -160,8 +165,10 @@ const CalendarScreen = () => {
               alignItems: 'flex-start',
             }}
           >
-            <Text style={calendarScreen.itemCardTopic}>{item.topic}</Text>
-            <Text />
+            <Text style={calendarScreen.itemCardTopic}>
+              {item.timeStart} - {item.timeEnd}
+            </Text>
+            <Text>{item.topic}</Text>
             <Text>{item.message}</Text>
             {/* <Avatar.Text label="A" /> */}
           </View>
@@ -212,6 +219,7 @@ const CalendarScreen = () => {
 };
 // onPress={setEventModalVisible(false)}
 export default CalendarScreen;
+
 //   const [selectedDay, setSelectedDay] = useState('');
 //   const [eventModalVisible, setEventModalVisible] = useState(false);
 //   const [modalDate, setModalDate] = useState('');

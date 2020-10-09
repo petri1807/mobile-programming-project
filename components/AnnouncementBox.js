@@ -23,9 +23,8 @@ const AnnouncementBox = ({ setVisibility }) => {
 
   const add = async () => {
     const date = new Date().toDateString();
-    const title = 'Avoid the angry duck';
-    const content =
-      'He will attack without hesitation. He will brutalize your boots like your mom does a McDonalds drive-thru order.';
+    const title = 'Announement Title';
+    const content = 'Announement content';
     await addAnnouncement(date, title, content);
   };
 
