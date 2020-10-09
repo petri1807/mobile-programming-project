@@ -119,20 +119,23 @@ const floorBallScreen = StyleSheet.create({
     fontSize: 18,
   },
   buttonsign: {
+    margin: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    padding: 50,
+    padding: 75,
   },
   buttonwho: {
+    margin: 0,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    padding: 50,
+    padding: 70,
   },
   roundedtextbox: {
-    margin: 10,
+    margin: 2,
     backgroundColor: 'gainsboro',
     borderRadius: 10,
   },
@@ -149,6 +152,18 @@ const floorBallScreen = StyleSheet.create({
     height: '100%',
     width: '80%',
     flex: 5,
+  },
+  modalStyle: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
   },
 });
 
