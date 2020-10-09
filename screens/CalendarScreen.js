@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
+} from 'react-native';
 import { Calendar, Agenda } from 'react-native-calendars';
 import Dialog from 'react-native-dialog';
-import { Avatar, Card, TextInput } from 'react-native-paper';
-import { LongPressGestureHandler } from 'react-native-gesture-handler';
+import { Avatar, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   Content,
@@ -11,6 +16,7 @@ import {
   H1,
   Form,
   Picker,
+  Card,
   CardItem,
   Left,
   Right,
@@ -92,17 +98,11 @@ const CalendarScreen = () => {
   };
 
   const calendarEventControl = () => {
-    const dateStart = selectedDay;
-    const dateEnd = selectedDay;
-
-    console.log(
-      'controllin printti:',
-      dateStart,
-      dateEnd,
-      newTopic,
-      newMessage
-    );
-    setEventModalVisible(false);
+    if (newTopic === '' || newMessage === '') {
+      alert('please fill topic and message fields.');
+    } else {
+      addCalendarEventHandler();
+    }
   };
 
   const addCalendarEventHandler = async () => {
@@ -152,6 +152,20 @@ const CalendarScreen = () => {
     // }, 1000);
   };
 
+  const deleteItemAlert = (id) =>
+    Alert.alert(
+      'Delete event',
+      'Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        { text: 'Yes', onPress: () => deleteCardItem(id) },
+      ],
+      { cancelable: false }
+    );
+
   const deleteCardItem = async (id) => {
     console.log('delete pressin toiminta?', id);
     await deleteCalendarEvent(id).then(() => fetch());
@@ -160,7 +174,7 @@ const CalendarScreen = () => {
   const renderItem = (item) => (
     <TouchableOpacity
       onLongPress={() => {
-        deleteCardItem(item.id);
+        deleteItemAlert(item.id);
       }}
       style={{
         marginRight: 10,
@@ -168,7 +182,7 @@ const CalendarScreen = () => {
       }}
     >
       <Card>
-        <Card.Content>
+        <CardItem>
           <View
             style={{
               flexDirection: 'column',
@@ -181,13 +195,13 @@ const CalendarScreen = () => {
             <Text>{item.message}</Text>
             {/* <Avatar.Text label="A" /> */}
           </View>
-        </Card.Content>
+        </CardItem>
       </Card>
     </TouchableOpacity>
   );
 
   return (
-    <View style={calendarScreen.calendar}>
+    <KeyboardAvoidingView style={calendarScreen.calendar}>
       <Agenda
         items={items}
         // loadItemsForMonth={loadItems}
@@ -217,13 +231,13 @@ const CalendarScreen = () => {
         <Dialog.Button
           label="Add"
           onPress={() => {
-            addCalendarEventHandler();
+            calendarEventControl();
           }}
         >
           <Text>Add</Text>
         </Dialog.Button>
       </Dialog.Container>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 // onPress={setEventModalVisible(false)}

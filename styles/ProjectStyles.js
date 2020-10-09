@@ -185,6 +185,9 @@ const calendarScreen = StyleSheet.create({
     flex: 1,
     marginTop: 30,
   },
+  keyboardstyle: {
+    zIndex: 1,
+  },
   text: {
     textAlign: 'center',
     padding: 10,
