@@ -154,28 +154,35 @@ const floorBallScreen = StyleSheet.create({
 
 const homeScreen = StyleSheet.create({
   pageLayout: {
-    paddingVertical: 40,
+    paddingTop: 40,
     paddingHorizontal: 20,
+  },
+  announcementBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 2,
+  },
+  cardContainer: {
+    zIndex: -1,
+  },
+  card: {
+    padding: 0,
   },
   header: {
     backgroundColor: '#f1f1f1',
+    borderColor: 'orange',
+    borderWidth: 2,
+  },
+  content: {
+    zIndex: 3,
+    backgroundColor: 'white',
   },
   title: {
     padding: 15,
     fontSize: 20,
     fontWeight: 'normal',
-  },
-  cardIconBox: {
-    justifyContent: 'flex-end',
-  },
-  cardIcon: {
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-  },
-  cardIconFont: {
-    color: '#fff',
-    fontSize: 15,
-    paddingHorizontal: 5,
   },
 });
 
