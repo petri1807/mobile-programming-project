@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Alert,
+} from 'react-native';
 import { Calendar, Agenda } from 'react-native-calendars';
 import Dialog from 'react-native-dialog';
-import { Avatar, Card, TextInput } from 'react-native-paper';
-import { LongPressGestureHandler } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   Content,
@@ -11,12 +15,14 @@ import {
   H1,
   Form,
   Picker,
+  Card,
   CardItem,
   Left,
   Right,
   Fab,
   Button,
 } from 'native-base';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { calendarScreen } from '../styles/ProjectStyles.js';
 import {
   fetchAllCalendarEvents,
@@ -35,51 +41,27 @@ const CalendarScreen = () => {
   const [loading, setLoading] = useState(true);
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState('');
+  const [startTime, setStartTime] = useState({ default: 'unsetted' });
+  const [endTime, setEndTime] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const [newMessage, setNewMessage] = useState('');
+  const [mode, setMode] = useState('time');
+  const [showClock, setShowClock] = useState(false);
+  const [timestampDay, setTimestampDay] = useState();
 
   const fetch = async () => {
     await fetchAllCalendarEvents()
       .then((res) => {
         setCalendarEvents(res.rows._array);
-        // console.log(calendarEvents);
       })
-      // .finally(() => console.log('fetchin logi', calendarEvents));
       .then(() => {
-        // setItems needs a single object with keys of each day
-        // Value for each key is an array of objects
-        // calendarList holds an array of objects, each has a dateStart, topic and message keys
-        // To turn the list into an object with dates as keys we need to
-
-        // [x] 1. create an object that will be returned to setItems
-        // [x] 2. extract dates from calendarList
-        // [x] 3. remove duplicates
-        // [x] 4. assign a key for each date to the object with empty array as value
-        // [x] 5. Assign tasks for each day to obj arrays
-
-        const obj = {};
-        let keys = calendarEvents.map((item) => item.dateStart); // store dates in array
-        keys = [...new Set(keys)]; // remove duplicate dates from array
-        keys.map((item) => (obj[item] = [])); // assign a key for each date with value of empty array
-        calendarEvents.map(
-          (item) =>
-            obj[item.dateStart].push({
-              topic: item.topic,
-              message: item.message,
-              id: item.id,
-            }) // push messages from each day to the object
-        );
-
-        console.log('KEYS');
-        console.log(obj);
-
-        // setItems({ '2020-10-06': [{ name: 'odieheoiw' }] });
-        setItems(obj);
+        addCalendarEventsToItems();
       });
   };
 
   const selectedDayHandler = (day) => {
     setSelectedDay(day.dateString);
+    setTimestampDay(day.timestamp);
     // console.log('dayhandlerin objecti', day.dateString);
   };
 
@@ -91,36 +73,60 @@ const CalendarScreen = () => {
     setNewMessage(enteredText);
   };
 
-  const calendarEventControl = () => {
-    const dateStart = selectedDay;
-    const dateEnd = selectedDay;
+  const startTimeHandler = (event, selectedTime) => {
+    setStartTime(selectedTime);
+    console.log(startTime);
+    console.log(typeof startTime);
+    console.log(`select time: ${selectedTime}`);
+    // console.log(event);
+    setShowClock(false);
+  };
 
-    console.log(
-      'controllin printti:',
-      dateStart,
-      dateEnd,
-      newTopic,
-      newMessage
-    );
-    setEventModalVisible(false);
+  const endTimeHandler = (enteredText) => {
+    setEndTime(enteredText);
+  };
+
+  const calendarEventControl = () => {
+    if (newTopic === '' || newMessage === '') {
+      alert('please fill topic and message fields.');
+    } else {
+      addCalendarEventHandler();
+    }
   };
 
   const addCalendarEventHandler = async () => {
-    const dateStart = selectedDay;
-    const dateEnd = selectedDay;
+    const date = selectedDay;
+    const timeStart = '9:00';
+    const timeEnd = '10:00';
 
-    await addCalendarEvent(1, dateStart, dateEnd, newTopic, newMessage);
+    await addCalendarEvent(1, date, timeStart, timeEnd, newTopic, newMessage);
     setEventModalVisible(false);
   };
 
+  const addCalendarEventsToItems = () => {
+    const obj = {};
+    let keys = calendarEvents.map((item) => item.date); // store dates in array
+    keys = [...new Set(keys)]; // remove duplicate dates from array
+    keys.map((item) => (obj[item] = [])); // assign a key for each date with value of empty array
+    calendarEvents.map(
+      (item) =>
+        obj[item.date].push({
+          timeStart: item.timeStart,
+          timeEnd: item.timeEnd,
+          topic: item.topic,
+          message: item.message,
+          id: item.id,
+        }) // push messages from each day to the object
+    );
+
+    setItems(obj);
+    setLoading(!loading);
+  };
+
   // useEffect(() => {
-  //   if (loading === true) {
-  //     fetch();
-  //     console.log('useeff fetch test');
-  //     setLoading(!loading);
-  //   }
-  //   // fetch();
-  // });
+  //   console.log('Items changed');
+  //   console.log(items);
+  // }, [items]);
 
   const onFabPress = () => {
     setEventModalVisible(true);
@@ -152,6 +158,20 @@ const CalendarScreen = () => {
     // }, 1000);
   };
 
+  const deleteItemAlert = (id) =>
+    Alert.alert(
+      'Delete event',
+      'Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        { text: 'Yes', onPress: () => deleteCardItem(id) },
+      ],
+      { cancelable: false }
+    );
+
   const deleteCardItem = async (id) => {
     console.log('delete pressin toiminta?', id);
     await deleteCalendarEvent(id).then(() => fetch());
@@ -160,7 +180,7 @@ const CalendarScreen = () => {
   const renderItem = (item) => (
     <TouchableOpacity
       onLongPress={() => {
-        deleteCardItem(item.id);
+        deleteItemAlert(item.id);
       }}
       style={{
         marginRight: 10,
@@ -168,7 +188,7 @@ const CalendarScreen = () => {
       }}
     >
       <Card>
-        <Card.Content>
+        <CardItem>
           <View
             style={{
               flexDirection: 'column',
@@ -176,18 +196,20 @@ const CalendarScreen = () => {
               alignItems: 'flex-start',
             }}
           >
-            <Text style={calendarScreen.itemCardTopic}>{item.topic}</Text>
-            <Text />
+            <Text style={calendarScreen.itemCardTopic}>
+              {item.timeStart} - {item.timeEnd}
+            </Text>
+            <Text>{item.topic}</Text>
             <Text>{item.message}</Text>
             {/* <Avatar.Text label="A" /> */}
           </View>
-        </Card.Content>
+        </CardItem>
       </Card>
     </TouchableOpacity>
   );
 
   return (
-    <View style={calendarScreen.calendar}>
+    <KeyboardAvoidingView style={calendarScreen.calendar}>
       <Agenda
         items={items}
         // loadItemsForMonth={loadItems}
@@ -202,8 +224,26 @@ const CalendarScreen = () => {
       <Fab>
         <Icon name="plus" onPress={onFabPress} />
       </Fab>
+      {showClock && (
+        <DateTimePicker
+          mode={mode}
+          value={timestampDay}
+          is24Hour
+          display="default"
+          onChange={startTimeHandler}
+        />
+      )}
       <Dialog.Container visible={eventModalVisible}>
         <Dialog.Title>{selectedDay}</Dialog.Title>
+        <Dialog.Button
+          label="Clock time"
+          onPress={() => {
+            setShowClock(true);
+          }}
+        />
+        {/* <Dialog.Title>
+          {startTime !== undefined ? startTime : startTime.default}
+        </Dialog.Title> */}
         <Dialog.Input onChangeText={topicHandler} placeholder="Topic" />
         <Dialog.Input onChangeText={messageHandler} placeholder="Message" />
         <Dialog.Button
@@ -217,17 +257,18 @@ const CalendarScreen = () => {
         <Dialog.Button
           label="Add"
           onPress={() => {
-            addCalendarEventHandler();
+            calendarEventControl();
           }}
         >
           <Text>Add</Text>
         </Dialog.Button>
       </Dialog.Container>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 // onPress={setEventModalVisible(false)}
 export default CalendarScreen;
+
 //   const [selectedDay, setSelectedDay] = useState('');
 //   const [eventModalVisible, setEventModalVisible] = useState(false);
 //   const [modalDate, setModalDate] = useState('');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Button, FlatList } from 'react-native';
+import { View, Text } from 'react-native';
 import { Container, Content, H1 } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
@@ -9,20 +9,7 @@ import AnnouncementBox from '../components/AnnouncementBox';
 // The imports will be separated into their appropriate screens/components, this is just for testing
 import {
   init,
-  addActivity,
-  addAnnouncement,
-  addCalendarEvent,
-  addFloorballGame,
-  addFloorballParticipant,
-  addUser,
-  deleteCalendarEvent,
-  fetchAllActivities,
-  fetchAllAnnouncements,
-  fetchAllCalendarEvents,
-  fetchAllFloorballGames,
-  fetchAllFloorballParticipants,
   fetchTodaysCalendarEventsForUser,
-  fetchAllUsers,
 } from '../connection/DBConnection';
 
 init()
@@ -36,85 +23,51 @@ init()
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [calendarList, setCalendarList] = useState([]);
-
-  // Adding dummy data for testing
-  const addCalendarEventHandler = async () => {
-    setLoading(!loading);
-    const dateStart = new Date().toISOString().split('T')[0];
-    const dateEnd = new Date().toISOString().split('T')[0];
-
-    await addCalendarEvent(
-      1,
-      dateStart,
-      dateEnd,
-      'Dummy topic',
-      'Dummy message'
-    );
-
-    // await addFloorballGame(dateStart, dateEnd);
-    // await addActivity(1, dateStart, dateEnd, 'Work');
-
-    // // Clear the database table
-    // for (let index = 1; index <= calendarList.length; index++) {
-    //   await deleteCalendarEvent(index);
-    // }
-  };
+  const [announcementVisible, setAnnouncementVisible] = useState(false);
 
   const fetch = async () => {
     const dateStart = new Date().toISOString().split('T')[0];
-
     await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
       setCalendarList(res.rows._array);
     });
-
-    // await fetchAllActivities().then((res) => {
-    //   setCalendarList((list) => [...list, ...res.rows._array]);
-    // });
-
-    // await fetchAllFloorballGames().then((res) => {
-    //   setCalendarList((list) => [...list, ...res.rows._array]);
-    // });
-
-    // await fetchAllCalendarEvents().then((res) => {
-    //   setCalendarList(res.rows._array);
-    //   console.log(calendarList);
-    // });
+    setLoading(!loading);
   };
 
   useEffect(() => {
     if (loading) {
-      setLoading(!loading);
       fetch();
     }
   });
 
   return (
-    <Container>
-      <Content style={homeScreen.pageLayout}>
-        <AnnouncementBox />
-        {console.log(calendarList)}
-        <Text style={homeScreen.title}>Today's events</Text>
-        {/* Delete Button once no longer needed */}
-        <Button title="Add calendar event" onPress={addCalendarEventHandler} />
-        {calendarList.length > 0 ? (
-          <FlatList
-            keyExtractor={(item) => calendarList.indexOf(item).toString()}
-            data={calendarList}
-            renderItem={(itemData) => (
-              <EventCard
-                dateStart={itemData.item.dateStart}
-                dateEnd={itemData.item.dateEnd}
-                topic={itemData.item.topic}
-                message={itemData.item.message}
-                activityType={itemData.item.activityType}
-              />
+    <Container style={homeScreen.pageLayout}>
+      {/* VirtualizedLists should never be nested inside plain ScrollViews with the same orientation */}
+      {/* The error comes from using a flatlist inside the Content component, which is basically a ScrollView component */}
+
+      {/* <Content contentContainerStyle={{ flex: 1 }}> */}
+      <Content>
+        <View
+          // If announcement is visible, use padding to reposition the title and EventCard from underneath the AnnouncementBox
+          style={announcementVisible ? { paddingTop: 40 } : { paddingTop: 0 }}
+        >
+          <AnnouncementBox setVisibility={setAnnouncementVisible} />
+          <Text style={homeScreen.title}>Today's events</Text>
+          <View style={homeScreen.cardContainer}>
+            {calendarList.length > 0 ? (
+              calendarList.map((item) => (
+                <EventCard
+                  key={item.id}
+                  timeStart={item.timeStart}
+                  timeEnd={item.timeEnd}
+                  topic={item.topic}
+                  message={item.message}
+                />
+              ))
+            ) : (
+              <H1>No events for today</H1>
             )}
-          />
-        ) : (
-          <Content>
-            <H1>No events for today</H1>
-          </Content>
-        )}
+          </View>
+        </View>
       </Content>
     </Container>
   );

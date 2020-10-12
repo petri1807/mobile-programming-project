@@ -118,20 +118,23 @@ const floorBallScreen = StyleSheet.create({
     fontSize: 18,
   },
   buttonsign: {
+    margin: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    padding: 50,
+    padding: 75,
   },
   buttonwho: {
+    margin: 0,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    padding: 50,
+    padding: 70,
   },
   roundedtextbox: {
-    margin: 10,
+    margin: 2,
     backgroundColor: 'gainsboro',
     borderRadius: 10,
   },
@@ -149,32 +152,51 @@ const floorBallScreen = StyleSheet.create({
     width: '80%',
     flex: 5,
   },
+  modalStyle: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
 });
 
 const homeScreen = StyleSheet.create({
   pageLayout: {
-    paddingVertical: 40,
+    paddingTop: 40,
     paddingHorizontal: 20,
+  },
+  announcementBox: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 2,
+  },
+  cardContainer: {
+    zIndex: -1,
+  },
+  card: {
+    padding: 0,
   },
   header: {
     backgroundColor: '#f1f1f1',
+    borderColor: 'orange',
+    borderWidth: 2,
+  },
+  content: {
+    zIndex: 3,
+    backgroundColor: 'white',
   },
   title: {
     padding: 15,
     fontSize: 20,
     fontWeight: 'normal',
-  },
-  cardIconBox: {
-    justifyContent: 'flex-end',
-  },
-  cardIcon: {
-    paddingHorizontal: 5,
-    paddingVertical: 2,
-  },
-  cardIconFont: {
-    color: '#fff',
-    fontSize: 15,
-    paddingHorizontal: 5,
   },
 });
 
@@ -183,6 +205,9 @@ const calendarScreen = StyleSheet.create({
     // marginBottom: 10,
     flex: 1,
     marginTop: 30,
+  },
+  keyboardstyle: {
+    zIndex: 1,
   },
   text: {
     textAlign: 'center',
