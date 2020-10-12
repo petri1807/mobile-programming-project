@@ -107,37 +107,35 @@ const ActivityScreen = () => {
     setLoading(!loading);
     const date = new Date().toISOString().split('T')[0];
     const timeSpent = endTime - startTime;
-    console.log(timeSpent);
-    await addActivity(1, date, startTime, endTime, timeSpent, startedActivity);
+    await addActivity(1, date, startTime, endTime, 5700000, startedActivity);
   };
 
-  const fetchAll = async () => {
-    await fetchAllActivities()
-      .then((res) => setActivities(res.rows._array))
-      .then(() => {
-        const obj = {};
-        let keys = activities.map((item) => item.date);
-        keys = [...new Set(keys)];
-        keys.map((item) => (obj[item] = []));
-        activities.map((item) =>
-          obj[item.date].push({
-            time: item.time,
-            activityType: item.activityType,
-          })
-        );
-        setActivities(obj);
-      });
-  };
-
-  const fetchType = async () => {
-    await fetchActivityTypeSum(1, 'Work').then((res) =>
-      console.log(res.rows._array[res.rows._array.length - 1])
-    );
+  const fetchType = async (type) => {
+    await fetchActivityTypeSum(1, type).then((res) => {
+      if (res && res.rows && res.rows._array) {
+        const obj = res.rows._array[0];
+        for (const property in obj) {
+          if (obj[property] >= 3600000) {
+            if (type === 'Work') {
+              setWorkHours(formatTime('hours', obj[property]));
+            }
+            if (type === 'Meeting') {
+              setMeetingHours(formatTime('hours', obj[property]));
+            }
+            if (type === 'Workout') {
+              setWorkoutHours(formatTime('hours', obj[property]));
+            }
+            if (type === 'Personal') {
+              setPersonalHours(formatTime('hours', obj[property]));
+            }
+          }
+        }
+      }
+    });
   };
 
   const loadData = () => {
-    fetchAll();
-    fetchType();
+    fetchType(startedActivity);
   };
 
   const chartConfig = {
