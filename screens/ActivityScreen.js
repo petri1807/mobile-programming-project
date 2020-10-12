@@ -31,7 +31,8 @@ const ActivityScreen = () => {
   const [activities, setActivities] = useState([]);
   const [startedActivity, setStartedActivity] = useState('');
   const [stopModalVisible, setStopModalVisible] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState('00:00');
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [elapsedForCard, setElapsedForCard] = useState('00:00');
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
   // Might be a smarter way but nvm for now..
@@ -91,20 +92,23 @@ const ActivityScreen = () => {
 
   const timeTracker = () => {
     const date = new Date();
-    const difference = date.getTime() - startTime;
-    setEndTime(difference);
+    setEndTime(date.getTime());
+    setElapsedTime(endTime - startTime);
 
-    setElapsedTime(
-      `${formatTime('hours', difference)}:${formatTime('minutes', difference)}`
+    setElapsedForCard(
+      `${formatTime('hours', elapsedTime)}:${formatTime(
+        'minutes',
+        elapsedTime
+      )}`
     );
   };
 
   const addActivityEventHandler = async () => {
     setLoading(!loading);
     const date = new Date().toISOString().split('T')[0];
-    const timeSpent = endTime;
+    const timeSpent = endTime - startTime;
     console.log(timeSpent);
-    await addActivity(1, date, timeSpent, startedActivity);
+    await addActivity(1, date, startTime, endTime, timeSpent, startedActivity);
   };
 
   const fetchAll = async () => {
@@ -125,15 +129,15 @@ const ActivityScreen = () => {
       });
   };
 
-  const fetchType = async (type) => {
-    await fetchActivityTypeSum(1, type).then((res) => {
-      console.log(res.rows._array);
-    });
+  const fetchType = async () => {
+    await fetchActivityTypeSum(1, 'Work').then((res) =>
+      console.log(res.rows._array[res.rows._array.length - 1])
+    );
   };
 
   const loadData = () => {
     fetchAll();
-    fetchType('Work');
+    fetchType();
   };
 
   const chartConfig = {
@@ -267,7 +271,7 @@ const ActivityScreen = () => {
                 </Left>
                 <Right>
                   <Text style={activityScreen.cardVariableTextStyle}>
-                    {elapsedTime}
+                    {elapsedForCard}
                   </Text>
                 </Right>
               </Body>

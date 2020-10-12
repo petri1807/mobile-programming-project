@@ -61,7 +61,8 @@ export const init = () => {
       );
       // Activity event
       tx.executeSql(
-        'create table if not exists activity(id integer not null primary key, userId integer not null, date text not null, timeStart text not null, timeEnd text not null, activityType text not null);',
+        'create table if not exists activity(id integer not null primary key, userId integer not null, date text not null, timeStart text not null, timeEnd text not null, timeSpent integer not null, activityType text not null);',
+        // 'drop table activity;',
         [],
         () => {
           resolve();
@@ -183,12 +184,19 @@ export const fetchAllPlayers = () => {
   });
   return promise;
 };
-export const addActivity = (userId, date, timeStart, timeEnd, activityType) => {
+export const addActivity = (
+  userId,
+  date,
+  timeStart,
+  timeEnd,
+  timeSpent,
+  activityType
+) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'insert into activity(userId, date, timestart, timeEnd, activityType) values(?,?,?,?,?)',
-        [userId, date, timeStart, timeEnd, activityType],
+        'insert into activity(userId, date, timestart, timeEnd, timeSpent, activityType) values(?,?,?,?,?,?)',
+        [userId, date, timeStart, timeEnd, timeSpent, activityType],
         (_, result) => {
           resolve(result);
         },
@@ -389,7 +397,7 @@ export const fetchActivityTypeSum = (userId, type) => {
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'select sum(activityType) from activity where userId=? and activityType=?',
+        'select sum(timeSpent) from activity where userId=? and activityType=?',
         // 'select * from activity where userId=? and activityType=?',
         [userId, type],
         (tx, result) => {
