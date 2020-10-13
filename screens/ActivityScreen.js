@@ -19,16 +19,11 @@ import { PieChart } from 'react-native-chart-kit';
 
 import { activityScreen } from '../styles/ProjectStyles.js';
 
-import {
-  addActivity,
-  fetchAllActivities,
-  fetchActivityTypeSum,
-} from '../connection/DBConnection';
+import { addActivity, fetchActivityTypeSum } from '../connection/DBConnection';
 
 const ActivityScreen = () => {
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState('');
-  const [activities, setActivities] = useState([]);
   const [startedActivity, setStartedActivity] = useState('');
   const [stopModalVisible, setStopModalVisible] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -45,6 +40,13 @@ const ActivityScreen = () => {
     if (loading) {
       setLoading(!loading);
       loadData();
+      fetchType('Work');
+      fetchType('Meeting');
+      fetchType('Workout');
+      fetchType('Personal');
+      console.log(
+        `Work: ${workHours}, meetings: ${meetingHours}, workout: ${workoutHours}, personal: ${personalHours}`
+      );
     }
     if (startedActivity) {
       const tick = setInterval(() => timeTracker(), 1000);
@@ -69,6 +71,16 @@ const ActivityScreen = () => {
       timeToFormat -= minutesDifference * 1000 * 60;
       return minutesDifference;
     }
+    if (format === 'decimal') {
+      const t = `${formatTime('hours', value)}:${formatTime('minutes', value)}`;
+      const arr = t.split(':');
+      const dec = parseInt((arr[1] / 6) * 10, 10);
+
+      const decTime = +parseFloat(
+        `${parseInt(arr[0], 10)}.${dec < 10 ? '0' : ''}${dec}`
+      ).toFixed(2);
+      return decTime;
+    }
   };
 
   const changeActivity = (value) => {
@@ -86,6 +98,7 @@ const ActivityScreen = () => {
   const stopActivity = () => {
     loadData();
     addActivityEventHandler();
+    setElapsedForCard('00:00');
     setStartedActivity('');
     setStopModalVisible(false);
   };
@@ -94,20 +107,21 @@ const ActivityScreen = () => {
     const date = new Date();
     setEndTime(date.getTime());
     setElapsedTime(endTime - startTime);
-
-    setElapsedForCard(
-      `${formatTime('hours', elapsedTime)}:${formatTime(
-        'minutes',
-        elapsedTime
-      )}`
-    );
+    if (elapsedTime > 60000) {
+      setElapsedForCard(
+        `${formatTime('hours', elapsedTime)}:${formatTime(
+          'minutes',
+          elapsedTime
+        )}`
+      );
+    }
   };
 
   const addActivityEventHandler = async () => {
     setLoading(!loading);
     const date = new Date().toISOString().split('T')[0];
     const timeSpent = endTime - startTime;
-    await addActivity(1, date, startTime, endTime, 5700000, startedActivity);
+    await addActivity(1, date, startTime, endTime, timeSpent, startedActivity);
   };
 
   const fetchType = async (type) => {
@@ -115,18 +129,18 @@ const ActivityScreen = () => {
       if (res && res.rows && res.rows._array) {
         const obj = res.rows._array[0];
         for (const property in obj) {
-          if (obj[property] >= 3600000) {
+          if (obj[property] >= 60000) {
             if (type === 'Work') {
-              setWorkHours(formatTime('hours', obj[property]));
+              setWorkHours(formatTime('decimal', obj[property]));
             }
             if (type === 'Meeting') {
-              setMeetingHours(formatTime('hours', obj[property]));
+              setMeetingHours(formatTime('decimal', obj[property]));
             }
             if (type === 'Workout') {
-              setWorkoutHours(formatTime('hours', obj[property]));
+              setWorkoutHours(formatTime('decimal', obj[property]));
             }
             if (type === 'Personal') {
-              setPersonalHours(formatTime('hours', obj[property]));
+              setPersonalHours(formatTime('decimal', obj[property]));
             }
           }
         }
@@ -154,28 +168,28 @@ const ActivityScreen = () => {
     {
       name: 'Work',
       hours: workHours,
-      color: '#FF8552',
+      color: '#006D77',
       legendFontColor: '#333333',
       legendFontSize: 15,
     },
     {
       name: 'Meetings',
       hours: meetingHours,
-      color: '#297373',
+      color: '#F2A541',
       legendFontColor: '#333333',
       legendFontSize: 15,
     },
     {
-      name: 'Workout',
+      name: 'Workouts',
       hours: workoutHours,
-      color: '#85FFC7',
+      color: '#D33F49',
       legendFontColor: '#333333',
       legendFontSize: 15,
     },
     {
       name: 'Personal',
       hours: personalHours,
-      color: '#D64045',
+      color: '#95D9C3',
       legendFontColor: '#333333',
       legendFontSize: 15,
     },
@@ -279,7 +293,7 @@ const ActivityScreen = () => {
         <Card>
           <CardItem header style={activityScreen.card}>
             <Text style={activityScreen.cardTextStyle}>
-              Time spent on activities
+              Time spent on activities (h)
             </Text>
           </CardItem>
           <CardItem style={activityScreen.card}>
@@ -291,7 +305,7 @@ const ActivityScreen = () => {
                 chartConfig={chartConfig}
                 accessor="hours"
                 backgroundColor="transparent"
-                paddingLeft="15"
+                paddingLeft="0"
                 absolute
               />
             </Body>
