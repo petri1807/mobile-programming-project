@@ -220,4 +220,25 @@ const calendarScreen = StyleSheet.create({
   },
 });
 
-export { activityScreen, homeScreen, calendarScreen, floorBallScreen };
+const loginScreen = StyleSheet.create({
+  title: {
+    padding: 15,
+    fontSize: 20,
+    fontWeight: 'normal',
+  },
+  buttonStyle: {
+    margin: 2,
+  },
+  buttonTextStyle: {
+    color: 'white',
+    fontSize: 18,
+  },
+});
+
+export {
+  activityScreen,
+  homeScreen,
+  calendarScreen,
+  floorBallScreen,
+  loginScreen,
+};
