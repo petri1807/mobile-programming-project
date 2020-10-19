@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, Text, View, FlatList } from 'react-native';
+import { ImageBackground, Text, View, FlatList, Alert } from 'react-native';
 import {
   Container,
   Content,
@@ -16,6 +16,7 @@ import {
   Input,
   Button,
 } from 'native-base';
+import Modal from 'react-native-modal';
 
 import * as SQLite from 'expo-sqlite';
 import {
@@ -38,10 +39,21 @@ const FloorBallScreen = () => {
   const [isInserted, setIsInserted] = useState(false);
   const [playerList, setPlayerList] = useState([]);
   const [newPlayer, setNewPlayer] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const addPlayerHandler = () => {
     setPlayerList((playerList) => [...playerList, { player: newPlayer }]);
     savePlayer();
+    Alert.alert(
+      'Success!',
+      'You have succesfully signed up for the next game!',
+      [{ text: 'Continue' }],
+      { cancelable: false }
+    );
   };
   const playerInputHandler = (enteredText) => {
     setNewPlayer(enteredText);
