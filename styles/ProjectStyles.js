@@ -140,14 +140,16 @@ const floorBallScreen = StyleSheet.create({
   },
   listItemStyle: {
     borderWidth: 1,
-    borderColor: 'blue',
+    borderColor: 'white',
+    borderRadius: 10,
     padding: 5,
-    backgroundColor: '#abc',
+    backgroundColor: 'gainsboro',
     marginVertical: 5,
   },
   flatliststyle: {
-    borderColor: 'black',
-    borderWidth: 2,
+    borderColor: 'white',
+    borderWidth: 0,
+    borderRadius: 25,
     height: '100%',
     width: '80%',
     flex: 5,
@@ -163,6 +165,12 @@ const floorBallScreen = StyleSheet.create({
       width: 0,
       height: 2,
     },
+  },
+  dialogStyle: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
