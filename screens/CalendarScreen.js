@@ -25,10 +25,12 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { calendarScreen } from '../styles/ProjectStyles.js';
 import {
-  fetchAllCalendarEvents,
+  // fetchAllCalendarEvents,
   addCalendarEvent,
   deleteCalendarEvent,
 } from '../connection/DBConnection';
+
+import { fetchAllCalendarEvents } from '../connection/CloudConnection';
 
 const timeToString = (time) => {
   const date = new Date(time);
@@ -52,11 +54,14 @@ const CalendarScreen = () => {
   const fetch = async () => {
     await fetchAllCalendarEvents()
       .then((res) => {
-        setCalendarEvents(res.rows._array);
+        setCalendarEvents(res);
+        console.log('tämä tulee screenistä eli res');
+        console.log(res);
       })
       .then(() => {
         addCalendarEventsToItems();
       });
+    // await fetchAllCalendarEvents(setCalendarEvents);
   };
 
   const selectedDayHandler = (day) => {
