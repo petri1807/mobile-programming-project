@@ -17,6 +17,7 @@ import {
   Button,
 } from 'native-base';
 import Modal from 'react-native-modal';
+import Dialog from 'react-native-dialog';
 
 import * as SQLite from 'expo-sqlite';
 import {
@@ -40,9 +41,14 @@ const FloorBallScreen = () => {
   const [playerList, setPlayerList] = useState([]);
   const [newPlayer, setNewPlayer] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const showDialog = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
   };
 
   const addPlayerHandler = () => {
@@ -82,6 +88,7 @@ const FloorBallScreen = () => {
     } finally {
       console.log('Players are all here');
     }
+    showDialog();
   }
 
   return (
@@ -144,19 +151,29 @@ const FloorBallScreen = () => {
             >
               <Text>WHO'S COMING</Text>
             </Button>
-            <View style={floorBallScreen.flatliststyle}>
-              <FlatList
-                // keyExtractor={item=>item.id.toString()}
-                keyExtractor={(item) => playerList.indexOf(item).toString()}
-                data={playerList}
-                renderItem={(itemData) => (
-                  <View style={floorBallScreen.listItemStyle}>
-                    <Text>
-                      {itemData.item.id}) {itemData.item.player}
-                    </Text>
+            <View style={floorBallScreen.dialogStyle}>
+              <Dialog.Container visible={visible}>
+                <Dialog.Title>Who's coming?</Dialog.Title>
+                <Dialog.Description>
+                  <View style={floorBallScreen.flatliststyle}>
+                    <FlatList
+                      // keyExtractor={item=>item.id.toString()}
+                      keyExtractor={(item) =>
+                        playerList.indexOf(item).toString()
+                      }
+                      data={playerList}
+                      renderItem={(itemData) => (
+                        <View style={floorBallScreen.listItemStyle}>
+                          <Text>
+                            {itemData.item.id}) {itemData.item.player}
+                          </Text>
+                        </View>
+                      )}
+                    />
                   </View>
-                )}
-              />
+                </Dialog.Description>
+                <Dialog.Button label="Got it!" onPress={handleCancel} />
+              </Dialog.Container>
             </View>
           </Body>
         </Card>
