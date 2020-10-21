@@ -6,29 +6,38 @@ import { homeScreen } from '../styles/ProjectStyles';
 import EventCard from '../components/EventCard';
 import AnnouncementBox from '../components/AnnouncementBox';
 
-// The imports will be separated into their appropriate screens/components, this is just for testing
-import {
-  init,
-  fetchTodaysCalendarEventsForUser,
-} from '../connection/DBConnection';
+// import {
+//   init,
+//   fetchTodaysCalendarEventsForUser,
+// } from '../connection/DBConnection';
+import { fetchAllCalendarEvents } from '../connection/CloudConnection';
 
-init()
-  .then(() => {
-    console.log('Database creation successful');
-  })
-  .catch((error) => {
-    console.log(`Database not created! ${error}`);
-  });
+// init()
+//   .then(() => {
+//     console.log('Database creation successful');
+//   })
+//   .catch((error) => {
+//     console.log(`Database not created! ${error}`);
+//   });
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [calendarList, setCalendarList] = useState([]);
   const [announcementVisible, setAnnouncementVisible] = useState(false);
 
+  // const fetchSQLite = async () => {
+  //   const dateStart = new Date().toISOString().split('T')[0];
+  //   await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
+  //     setCalendarList(res.rows._array);
+  //   });
+  //   setLoading(!loading);
+  // };
+
   const fetch = async () => {
-    const dateStart = new Date().toISOString().split('T')[0];
-    await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
-      setCalendarList(res.rows._array);
+    const date = new Date().toISOString().split('T')[0];
+    await fetchAllCalendarEvents().then((res) => {
+      const today = res.filter((item) => item.date === date);
+      setCalendarList(today);
     });
     setLoading(!loading);
   };
@@ -41,10 +50,6 @@ const HomeScreen = () => {
 
   return (
     <Container style={homeScreen.pageLayout}>
-      {/* VirtualizedLists should never be nested inside plain ScrollViews with the same orientation */}
-      {/* The error comes from using a flatlist inside the Content component, which is basically a ScrollView component */}
-
-      {/* <Content contentContainerStyle={{ flex: 1 }}> */}
       <Content>
         <View
           // If announcement is visible, use padding to reposition the title and EventCard from underneath the AnnouncementBox

@@ -42,14 +42,16 @@ const CalendarScreen = () => {
   const [calendarEvents, setCalendarEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [eventModalVisible, setEventModalVisible] = useState(false);
-  const [selectedDay, setSelectedDay] = useState('');
-  const [startTime, setStartTime] = useState({ default: 'unsetted' });
+  const [selectedDay, setSelectedDay] = useState(
+    new Date().toISOString().split('T')[0]
+  );
+  const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const [newMessage, setNewMessage] = useState('');
   const [mode, setMode] = useState('time');
   const [showClock, setShowClock] = useState(false);
-  const [timestampDay, setTimestampDay] = useState();
+  const [timestampDay, setTimestampDay] = useState(Date);
 
   const fetch = async () => {
     await fetchAllCalendarEvents()
@@ -79,8 +81,7 @@ const CalendarScreen = () => {
 
   const startTimeHandler = (event, selectedTime) => {
     setStartTime(selectedTime);
-    console.log(startTime);
-    console.log(typeof startTime);
+
     console.log(`select time: ${selectedTime}`);
     // console.log(event);
     setShowClock(false);
@@ -127,10 +128,11 @@ const CalendarScreen = () => {
     setLoading(!loading);
   };
 
-  // useEffect(() => {
-  //   console.log('Items changed');
-  //   console.log(items);
-  // }, [items]);
+  useEffect(() => {
+    console.log('Entries');
+    console.log(Object.keys(startTime));
+    console.log(startTime);
+  }, [startTime]);
 
   const onFabPress = () => {
     setEventModalVisible(true);
@@ -246,7 +248,9 @@ const CalendarScreen = () => {
           }}
         />
         {/* <Dialog.Title>
-          {startTime !== undefined ? startTime : startTime.default}
+          {startTime.timestamp !== undefined
+            ? startTime.timestamp
+            : 'No go boss'}
         </Dialog.Title> */}
         <Dialog.Input onChangeText={topicHandler} placeholder="Topic" />
         <Dialog.Input onChangeText={messageHandler} placeholder="Message" />
