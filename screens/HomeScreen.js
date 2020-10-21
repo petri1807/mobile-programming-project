@@ -6,11 +6,11 @@ import { homeScreen } from '../styles/ProjectStyles';
 import EventCard from '../components/EventCard';
 import AnnouncementBox from '../components/AnnouncementBox';
 
-// The imports will be separated into their appropriate screens/components, this is just for testing
 import {
   init,
   fetchTodaysCalendarEventsForUser,
 } from '../connection/DBConnection';
+import { fetchTodaysCalendarEvents } from '../connection/CloudConnection';
 
 init()
   .then(() => {
@@ -25,10 +25,19 @@ const HomeScreen = () => {
   const [calendarList, setCalendarList] = useState([]);
   const [announcementVisible, setAnnouncementVisible] = useState(false);
 
-  const fetch = async () => {
+  const fetchSQLite = async () => {
     const dateStart = new Date().toISOString().split('T')[0];
     await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
+      console.log(res);
       setCalendarList(res.rows._array);
+    });
+    setLoading(!loading);
+  };
+
+  const fetch = async () => {
+    const date = new Date().toISOString().split('T')[0];
+    await fetchTodaysCalendarEvents(1, date).then((res) => {
+      setCalendarList(res);
     });
     setLoading(!loading);
   };
@@ -36,15 +45,12 @@ const HomeScreen = () => {
   useEffect(() => {
     if (loading) {
       fetch();
+      // fetchSQLite();
     }
   });
 
   return (
     <Container style={homeScreen.pageLayout}>
-      {/* VirtualizedLists should never be nested inside plain ScrollViews with the same orientation */}
-      {/* The error comes from using a flatlist inside the Content component, which is basically a ScrollView component */}
-
-      {/* <Content contentContainerStyle={{ flex: 1 }}> */}
       <Content>
         <View
           // If announcement is visible, use padding to reposition the title and EventCard from underneath the AnnouncementBox
