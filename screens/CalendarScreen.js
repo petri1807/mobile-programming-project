@@ -57,12 +57,11 @@ const CalendarScreen = () => {
     await fetchAllCalendarEvents()
       .then((res) => {
         setCalendarEvents(res);
-        console.log('tämä tulee screenistä eli res');
-        console.log(res);
       })
       .then(() => {
         addCalendarEventsToItems();
-      });
+      })
+      .catch((error) => console.log(error));
     // await fetchAllCalendarEvents(setCalendarEvents);
   };
 
