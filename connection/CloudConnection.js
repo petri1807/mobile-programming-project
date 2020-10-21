@@ -7,3 +7,14 @@ export const fetchAllCalendarEvents = async () => {
     .then((responseJson) => responseJson);
   return eventFetcher;
 };
+
+export const fetchAllPlayer = async () => {
+  await fetch(
+    'https://reactnativeprojectrest.appspot.com/rest/floorballservice/getallplayers'
+  )
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      return responseJson;
+    });
+};
