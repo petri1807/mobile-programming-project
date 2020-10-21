@@ -49,5 +49,4 @@ export const addActivity = async (
       activityType,
     }),
   });
-  console.log('New activity added, maybe....');
 };

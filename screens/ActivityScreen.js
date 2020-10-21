@@ -22,9 +22,7 @@ import { activityScreen } from '../styles/ProjectStyles.js';
 import { fetchAllActivities, addActivity } from '../connection/CloudConnection';
 
 const ActivityScreen = () => {
-  // Cloud set
   const [allActivities, setAllActivities] = useState([]);
-  // Old
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState('');
   const [startedActivity, setStartedActivity] = useState('');
