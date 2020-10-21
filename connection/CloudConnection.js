@@ -9,3 +9,14 @@ export const fetchAllCalendarEvents = async () => {
       return responseJson;
     });
 };
+
+export const fetchAllPlayer = async () => {
+  await fetch(
+    'https://reactnativeprojectrest.appspot.com/rest/floorballservice/getallplayers'
+  )
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      return responseJson;
+    });
+};

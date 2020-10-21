@@ -16,14 +16,14 @@ import {
   Input,
   Button,
 } from 'native-base';
-import Modal from 'react-native-modal';
-import Dialog from 'react-native-dialog';
 
+import Dialog from 'react-native-dialog';
 import * as SQLite from 'expo-sqlite';
+import { fetchAllPlayers } from '../connection/CloudConnection';
 import {
   init,
   addPlayer,
-  fetchAllPlayers,
+  // fetchAllPlayers,
 } from '../connection/DBConnection.js';
 
 import { floorBallScreen } from '../styles/ProjectStyles.js';
