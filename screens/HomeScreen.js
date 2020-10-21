@@ -6,38 +6,38 @@ import { homeScreen } from '../styles/ProjectStyles';
 import EventCard from '../components/EventCard';
 import AnnouncementBox from '../components/AnnouncementBox';
 
-import {
-  init,
-  fetchTodaysCalendarEventsForUser,
-} from '../connection/DBConnection';
-import { fetchTodaysCalendarEvents } from '../connection/CloudConnection';
+// import {
+//   init,
+//   fetchTodaysCalendarEventsForUser,
+// } from '../connection/DBConnection';
+import { fetchAllCalendarEvents } from '../connection/CloudConnection';
 
-init()
-  .then(() => {
-    console.log('Database creation successful');
-  })
-  .catch((error) => {
-    console.log(`Database not created! ${error}`);
-  });
+// init()
+//   .then(() => {
+//     console.log('Database creation successful');
+//   })
+//   .catch((error) => {
+//     console.log(`Database not created! ${error}`);
+//   });
 
 const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
   const [calendarList, setCalendarList] = useState([]);
   const [announcementVisible, setAnnouncementVisible] = useState(false);
 
-  const fetchSQLite = async () => {
-    const dateStart = new Date().toISOString().split('T')[0];
-    await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
-      console.log(res);
-      setCalendarList(res.rows._array);
-    });
-    setLoading(!loading);
-  };
+  // const fetchSQLite = async () => {
+  //   const dateStart = new Date().toISOString().split('T')[0];
+  //   await fetchTodaysCalendarEventsForUser(1, dateStart).then((res) => {
+  //     setCalendarList(res.rows._array);
+  //   });
+  //   setLoading(!loading);
+  // };
 
   const fetch = async () => {
     const date = new Date().toISOString().split('T')[0];
-    await fetchTodaysCalendarEvents(1, date).then((res) => {
-      setCalendarList(res);
+    await fetchAllCalendarEvents().then((res) => {
+      const today = res.filter((item) => item.date === date);
+      setCalendarList(today);
     });
     setLoading(!loading);
   };
@@ -45,7 +45,6 @@ const HomeScreen = () => {
   useEffect(() => {
     if (loading) {
       fetch();
-      // fetchSQLite();
     }
   });
 
