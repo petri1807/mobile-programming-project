@@ -19,9 +19,12 @@ import { PieChart } from 'react-native-chart-kit';
 
 import { activityScreen } from '../styles/ProjectStyles.js';
 
-import { addActivity, fetchActivityTypeSum } from '../connection/DBConnection';
+import { fetchAllActivities, addActivity } from '../connection/CloudConnection';
 
 const ActivityScreen = () => {
+  // Cloud set
+  const [allActivities, setAllActivities] = useState([]);
+  // Old
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState('');
   const [startedActivity, setStartedActivity] = useState('');
@@ -39,20 +42,45 @@ const ActivityScreen = () => {
   useEffect(() => {
     if (loading) {
       setLoading(!loading);
-      loadData();
-      fetchType('Work');
-      fetchType('Meeting');
-      fetchType('Workout');
-      fetchType('Personal');
-      console.log(
-        `Work: ${workHours}, meetings: ${meetingHours}, workout: ${workoutHours}, personal: ${personalHours}`
-      );
+      activitiesFetcher();
     }
     if (startedActivity) {
       const tick = setInterval(() => timeTracker(), 1000);
       return () => clearInterval(tick);
     }
   });
+
+  const activitiesFetcher = async () => {
+    let work = 0;
+    let meeting = 0;
+    let workout = 0;
+    let personal = 0;
+    await fetchAllActivities()
+      .then((res) => {
+        setAllActivities(res);
+      })
+      .then(() => {
+        allActivities.forEach((element) => {
+          if (element.activityType === 'Work') {
+            work += element.timeSpent;
+            setWorkHours(formatTime('decimal', work));
+          }
+          if (element.activityType === 'Meeting') {
+            meeting += element.timeSpent;
+            setMeetingHours(formatTime('decimal', meeting));
+          }
+          if (element.activityType === 'Workout') {
+            workout += element.timeSpent;
+            setWorkoutHours(formatTime('decimal', workout));
+          }
+          if (element.activityType === 'Personal') {
+            personal += element.timeSpent;
+            setPersonalHours(formatTime('decimal', personal));
+          }
+        });
+      })
+      .catch((error) => console.log(error));
+  };
 
   const formatTime = (format, value) => {
     let timeToFormat = value;
@@ -117,39 +145,15 @@ const ActivityScreen = () => {
     }
   };
 
-  const addActivityEventHandler = async () => {
+  const addActivityEventHandler = () => {
     setLoading(!loading);
     const date = new Date().toISOString().split('T')[0];
     const timeSpent = endTime - startTime;
-    await addActivity(1, date, startTime, endTime, timeSpent, startedActivity);
-  };
-
-  const fetchType = async (type) => {
-    await fetchActivityTypeSum(1, type).then((res) => {
-      if (res && res.rows && res.rows._array) {
-        const obj = res.rows._array[0];
-        for (const property in obj) {
-          if (obj[property] >= 60000) {
-            if (type === 'Work') {
-              setWorkHours(formatTime('decimal', obj[property]));
-            }
-            if (type === 'Meeting') {
-              setMeetingHours(formatTime('decimal', obj[property]));
-            }
-            if (type === 'Workout') {
-              setWorkoutHours(formatTime('decimal', obj[property]));
-            }
-            if (type === 'Personal') {
-              setPersonalHours(formatTime('decimal', obj[property]));
-            }
-          }
-        }
-      }
-    });
+    addActivity(0, date, startTime, endTime, timeSpent, startedActivity);
   };
 
   const loadData = () => {
-    fetchType(startedActivity);
+    activitiesFetcher();
   };
 
   const chartConfig = {
