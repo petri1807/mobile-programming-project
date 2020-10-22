@@ -40,18 +40,21 @@ const timeToString = (time) => {
 const CalendarScreen = () => {
   const [items, setItems] = useState({});
   const [calendarEvents, setCalendarEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [eventModalVisible, setEventModalVisible] = useState(false);
   const [selectedDay, setSelectedDay] = useState(
     new Date().toISOString().split('T')[0]
   );
-  const [startTime, setStartTime] = useState('');
+  const [startTime, setStartTime] = useState('no time');
   const [endTime, setEndTime] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const [newMessage, setNewMessage] = useState('');
-  const [mode, setMode] = useState('time');
+  // const [mode, setMode] = useState('time');
   const [showClock, setShowClock] = useState(false);
-  const [timestampDay, setTimestampDay] = useState(Date);
+  // const [timestampDay, setTimestampDay] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+  const [startTitle, setStartTitle] = useState('Start');
+  const [endTitle, setEndTitle] = useState('End');
+  const [timeButton, setTimeButton] = useState('');
 
   const fetch = async () => {
     await fetchAllCalendarEvents()
@@ -62,12 +65,11 @@ const CalendarScreen = () => {
         addCalendarEventsToItems();
       })
       .catch((error) => console.log(error));
-    // await fetchAllCalendarEvents(setCalendarEvents);
   };
 
   const selectedDayHandler = (day) => {
     setSelectedDay(day.dateString);
-    setTimestampDay(day.timestamp);
+    // setTimestampDay(day.timestamp);
     // console.log('dayhandlerin objecti', day.dateString);
   };
 
@@ -79,16 +81,44 @@ const CalendarScreen = () => {
     setNewMessage(enteredText);
   };
 
-  const startTimeHandler = (event, selectedTime) => {
-    setStartTime(selectedTime);
+  // Sets the current time to time hook, which is selected on DateTimePicker when you press clock time
+  const timeNow = () => {
+    setTime(new Date());
+  };
 
-    console.log(`select time: ${selectedTime}`);
-    // console.log(event);
+  const timeOneHourFromNow = () => {
+    const t = new Date();
+    const newTime = t.setHours(t.getHours() + 1);
+    setTime(newTime);
+  };
+
+  const startTimeHandler = (event, selectedTime) => {
+    const moddedTime = selectedTime
+      .toTimeString()
+      .split('')
+      .slice(0, 5)
+      .join('');
+    console.log(`Selected time: ${moddedTime}`);
+    setStartTime(moddedTime);
+    setStartTitle(moddedTime);
     setShowClock(false);
   };
 
-  const endTimeHandler = (enteredText) => {
-    setEndTime(enteredText);
+  const endTimeHandler = (event, selectedTime) => {
+    const moddedTime = selectedTime
+      .toTimeString()
+      .split('')
+      .slice(0, 5)
+      .join('');
+    console.log(`Selected time: ${moddedTime}`);
+    setEndTime(moddedTime);
+    setEndTitle(moddedTime);
+    setShowClock(false);
+  };
+
+  const settingTimeHandler = (event, selectedTime) => {
+    if (timeButton === 'start') startTimeHandler(event, selectedTime);
+    if (timeButton === 'end') endTimeHandler(event, selectedTime);
   };
 
   const calendarEventControl = () => {
@@ -101,8 +131,8 @@ const CalendarScreen = () => {
 
   const addCalendarEventHandler = async () => {
     const date = selectedDay;
-    const timeStart = '9:00';
-    const timeEnd = '10:00';
+    const timeStart = startTime;
+    const timeEnd = endTime;
 
     await addCalendarEvent(1, date, timeStart, timeEnd, newTopic, newMessage);
     setEventModalVisible(false);
@@ -125,16 +155,27 @@ const CalendarScreen = () => {
     );
 
     setItems(obj);
-    setLoading(!loading);
   };
 
   useEffect(() => {
-    console.log('Entries');
-    console.log(Object.keys(startTime));
+    console.log('Start time hook:');
     console.log(startTime);
+
+    // console.log('timeStampDay hook');
+    // console.log(timestampDay);
   }, [startTime]);
 
   const onFabPress = () => {
+    // Setting start & end time button title
+    const start = new Date().toTimeString().split(':').slice(0, 2).join(':');
+    const endArr = new Date().toTimeString().split(':');
+    endArr[0] =
+      Number(endArr[0]) < 23
+        ? (endArr[0] = Number(endArr[0]) + 1)
+        : (endArr[0] = 0);
+    const end = endArr.slice(0, 2).join(':');
+    setStartTitle(start);
+    setEndTitle(end);
     setEventModalVisible(true);
   };
 
@@ -219,8 +260,10 @@ const CalendarScreen = () => {
       <Agenda
         items={items}
         // loadItemsForMonth={loadItems}
-        loadItemsForMonth={(month) => {
-          console.log('trigger items loading', fetch());
+        loadItemsForMonth={(selectedDate) => {
+          console.log('loadItemsForMonth fired');
+          console.log(selectedDate);
+          fetch();
         }}
         selected={Date}
         firstDay={1}
@@ -232,32 +275,39 @@ const CalendarScreen = () => {
       </Fab>
       {showClock && (
         <DateTimePicker
-          mode={mode}
-          value={timestampDay}
+          mode="time"
+          value={time}
           is24Hour
           display="default"
-          onChange={startTimeHandler}
+          onChange={settingTimeHandler}
         />
       )}
       <Dialog.Container visible={eventModalVisible}>
         <Dialog.Title>{selectedDay}</Dialog.Title>
-        <Dialog.Button
-          label="Clock time"
-          onPress={() => {
-            setShowClock(true);
-          }}
-        />
-        {/* <Dialog.Title>
-          {startTime.timestamp !== undefined
-            ? startTime.timestamp
-            : 'No go boss'}
-        </Dialog.Title> */}
         <Dialog.Input onChangeText={topicHandler} placeholder="Topic" />
         <Dialog.Input onChangeText={messageHandler} placeholder="Message" />
+        <Dialog.Button
+          label={startTitle}
+          onPress={() => {
+            timeNow();
+            setShowClock(true);
+            setTimeButton('start');
+          }}
+        />
+        <Dialog.Button
+          label={endTitle}
+          onPress={() => {
+            timeOneHourFromNow();
+            setShowClock(true);
+            setTimeButton('end');
+          }}
+        />
         <Dialog.Button
           label="Cancel"
           onPress={() => {
             setEventModalVisible(false);
+            setStartTitle('Start');
+            setEndTitle('End');
           }}
         >
           {/* <Text>Cancel</Text> */}
