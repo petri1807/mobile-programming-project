@@ -1,3 +1,5 @@
+import { Alert } from 'react-native';
+
 const urlString = 'https://reactnativeprojectrest.appspot.com/rest';
 
 export const fetchAllCalendarEvents = async () => {
@@ -43,15 +45,14 @@ export const deleteCalendarEvent = async (id) => {
     .then((res) => console.log(res));
 };
 
-export const fetchAllPlayer = async () => {
-  await fetch(
-    'https://reactnativeprojectrest.appspot.com/rest/floorballservice/getallplayers'
+export const fetchAllPlayers = async () => {
+  const playerFetcher = await fetch(
+    `${urlString}/floorballservice/getallplayers`
+
   )
     .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson);
-      return responseJson;
-    });
+    .then((responseJson) => responseJson);
+  return playerFetcher;
 };
 
 export const fetchAllActivities = async () => {
@@ -95,4 +96,22 @@ export const fetchAllAnnouncements = async (date) => {
     .then((response) => response.json())
     .then((responseJson) => responseJson);
   return announcementFetcher;
+
 };
+export const addPlayer = async (playerParam) => {
+  const response = await fetch(`${urlString}/floorballservice/addplayer`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ player: playerParam }),
+  });
+
+  const responseData = await response.json();
+  console.log(responseData);
+  Alert.alert(
+    'Success!',
+    'You have succesfully signed up for the next game!',
+    [{ text: 'Continue' }],
+    { cancelable: false }
+  );

@@ -3,12 +3,6 @@ import { View } from 'react-native';
 import { Accordion } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
-import {
-  // fetchAllAnnouncements,
-  addAnnouncement,
-  deleteAnnouncement,
-} from '../connection/DBConnection';
-
 import { fetchAllAnnouncements } from '../connection/CloudConnection';
 
 const AnnouncementBox = ({ setVisibility }) => {
@@ -20,29 +14,14 @@ const AnnouncementBox = ({ setVisibility }) => {
     await fetchAllAnnouncements(date).then((res) => {
       const today = res.filter((item) => item.date === date);
       setAnnouncementList(today);
-      // setAnnouncementList(res.rows._array);
       setVisibility(true);
     });
-  };
-
-  const add = async () => {
-    const date = new Date().toDateString();
-    const title = 'Announement Title';
-    const content =
-      'Announement contentAnnounement contentAnnounement contentAnnounement contentAnnounement contentAnnounement content';
-    await addAnnouncement(date, title, content);
-  };
-
-  const deleteA = async () => {
-    await deleteAnnouncement(0);
   };
 
   useEffect(() => {
     if (loading) {
       setLoading(false);
       fetch();
-      // add();
-      // deleteA();
     }
   });
 
