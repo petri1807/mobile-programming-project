@@ -9,6 +9,32 @@ export const fetchAllCalendarEvents = async () => {
   return eventFetcher;
 };
 
+export const addCalendarEvent = async (
+  userId,
+  date,
+  timeStart,
+  timeEnd,
+  topic,
+  message
+) => {
+  await fetch(`${urlString}/calendarservice/addcalendarevent`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userId: 1,
+      date,
+      timeStart,
+      timeEnd,
+      topic,
+      message,
+    }),
+  });
+  console.log('cloudconn consolelog:');
+  console.log(topic);
+};
+
 export const fetchAllPlayer = async () => {
   await fetch(
     'https://reactnativeprojectrest.appspot.com/rest/floorballservice/getallplayers'

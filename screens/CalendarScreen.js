@@ -26,11 +26,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { calendarScreen } from '../styles/ProjectStyles.js';
 import {
   // fetchAllCalendarEvents,
-  addCalendarEvent,
+  // addCalendarEvent,
   deleteCalendarEvent,
 } from '../connection/DBConnection';
 
-import { fetchAllCalendarEvents } from '../connection/CloudConnection';
+import {
+  fetchAllCalendarEvents,
+  addCalendarEvent,
+} from '../connection/CloudConnection';
 
 const timeToString = (time) => {
   const date = new Date(time);
