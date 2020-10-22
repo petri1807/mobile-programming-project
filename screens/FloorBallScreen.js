@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, Text, View, FlatList, Alert } from 'react-native';
+import { ImageBackground, Text, View, FlatList } from 'react-native';
 import {
   Container,
   Content,
   Body,
   H1,
-  Form,
-  Picker,
-  Icon,
   Card,
   CardItem,
   Left,
@@ -18,16 +15,11 @@ import {
 } from 'native-base';
 
 import Dialog from 'react-native-dialog';
-import * as SQLite from 'expo-sqlite';
-import { fetchAllPlayers } from '../connection/CloudConnection';
-import {
-  init,
-  addPlayer,
-  // fetchAllPlayers,
-} from '../connection/DBConnection.js';
+
+import { fetchAllPlayers, addPlayer } from '../connection/CloudConnection';
 
 import { floorBallScreen } from '../styles/ProjectStyles.js';
-
+/*
 init()
   .then(() => {
     console.log('Database creation succeeded!');
@@ -35,12 +27,11 @@ init()
   .catch((err) => {
     console.log(`Database IS NOT initialized! ${err}`);
   });
-
+*/
 const FloorBallScreen = () => {
-  const [isInserted, setIsInserted] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [playerList, setPlayerList] = useState([]);
-  const [newPlayer, setNewPlayer] = useState('');
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [player, setNewPlayer] = useState('');
   const [visible, setVisible] = useState(false);
 
   const showDialog = () => {
@@ -51,46 +42,21 @@ const FloorBallScreen = () => {
     setVisible(false);
   };
 
-  const addPlayerHandler = () => {
-    setPlayerList((playerList) => [...playerList, { player: newPlayer }]);
-    savePlayer();
-    Alert.alert(
-      'Success!',
-      'You have succesfully signed up for the next game!',
-      [{ text: 'Continue' }],
-      { cancelable: false }
-    );
-  };
   const playerInputHandler = (enteredText) => {
     setNewPlayer(enteredText);
   };
-  async function savePlayer() {
-    try {
-      const dbResult = await addPlayer(newPlayer);
-      console.log(dbResult);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setIsInserted(true);
-    }
-  }
-  async function readAllPlayers() {
-    try {
-      const dbResult = await fetchAllPlayers(newPlayer);
-      console.log('dbResult');
-
-      // Take a look at the stucture of the dbResult printed below
-      console.log(dbResult);
-      // The structure tells that we have to use dbResult.rows._array
-      setPlayerList(dbResult.rows._array);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      console.log('Players are all here');
-    }
+  const fetch = async () => {
+    await fetchAllPlayers().then((res) => {
+      setPlayerList(res);
+    });
+    setLoading(!loading);
     showDialog();
-  }
-
+  };
+  useEffect(() => {
+    if (loading) {
+      fetch();
+    }
+  });
   return (
     <Container style={{ flex: 1 }}>
       <Content>
@@ -126,7 +92,7 @@ const FloorBallScreen = () => {
                 <Text style={floorBallScreen.cardTextStyle}>Next game:</Text>
               </Left>
               <Right>
-                <Text>6.10.2020 @20:00</Text>
+                <Text>27.10.2020 @20:00</Text>
               </Right>
             </Body>
           </CardItem>
@@ -134,20 +100,20 @@ const FloorBallScreen = () => {
             <Input
               placeholder="Name"
               onChangeText={playerInputHandler}
-              value={newPlayer}
+              value={player}
             />
           </Item>
           <Body>
             <Button
               style={floorBallScreen.buttonsign}
-              onPress={addPlayerHandler}
+              onPress={() => addPlayer(player)}
             >
               <Text>SIGN UP</Text>
             </Button>
             <Button
               transparent
               style={floorBallScreen.buttonwho}
-              onPress={readAllPlayers}
+              onPress={fetch}
             >
               <Text>WHO'S COMING</Text>
             </Button>
@@ -155,20 +121,18 @@ const FloorBallScreen = () => {
               <Dialog.Container visible={visible}>
                 <Dialog.Title>Who's coming?</Dialog.Title>
                 <Dialog.Description>
-                  <View style={floorBallScreen.flatliststyle}>
+                  <View>
                     <FlatList
-                      // keyExtractor={item=>item.id.toString()}
-                      keyExtractor={(item) =>
-                        playerList.indexOf(item).toString()
-                      }
                       data={playerList}
-                      renderItem={(itemData) => (
+                      // data={movies.movies}
+                      renderItem={(itemdata) => (
                         <View style={floorBallScreen.listItemStyle}>
                           <Text>
-                            {itemData.item.id}) {itemData.item.player}
+                            {itemdata.item.id}) {itemdata.item.player}
                           </Text>
                         </View>
                       )}
+                      keyExtractor={(item) => item.id.toString()}
                     />
                   </View>
                 </Dialog.Description>
