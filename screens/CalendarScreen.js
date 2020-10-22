@@ -24,15 +24,15 @@ import {
 } from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { calendarScreen } from '../styles/ProjectStyles.js';
-import {
-  // fetchAllCalendarEvents,
-  // addCalendarEvent,
-  deleteCalendarEvent,
-} from '../connection/DBConnection';
+import // fetchAllCalendarEvents,
+// addCalendarEvent,
+// deleteCalendarEvent,
+'../connection/DBConnection';
 
 import {
   fetchAllCalendarEvents,
   addCalendarEvent,
+  deleteCalendarEvent,
 } from '../connection/CloudConnection';
 
 const timeToString = (time) => {
@@ -97,9 +97,9 @@ const CalendarScreen = () => {
       return;
     }
     const timeStr = `${t.getHours()}.${t.getMinutes()}`;
+    setShowClock(false);
     setStartTime(timeStr);
     setStartTitle(timeStr);
-    setShowClock(false);
   };
 
   const endTimeHandler = (t) => {
@@ -107,9 +107,9 @@ const CalendarScreen = () => {
       return;
     }
     const timeStr = `${t.getHours()}.${t.getMinutes()}`;
+    setShowClock(false);
     setEndTime(timeStr);
     setEndTitle(timeStr);
-    setShowClock(false);
   };
 
   const settingTimeHandler = (event, selectedTime) => {
@@ -277,6 +277,7 @@ const CalendarScreen = () => {
           is24Hour
           display="default"
           onChange={settingTimeHandler}
+          // onHide={() => setShowClock(false)}
         />
       )}
       <Dialog.Container visible={eventModalVisible}>

@@ -35,6 +35,14 @@ export const addCalendarEvent = async (
   console.log(topic);
 };
 
+export const deleteCalendarEvent = async (id) => {
+  await fetch(`${urlString}/calendarservice/deletecalendarevent/${id}`, {
+    method: 'DELETE',
+  })
+    .then((res) => res.text()) // or res.json()
+    .then((res) => console.log(res));
+};
+
 export const fetchAllPlayer = async () => {
   await fetch(
     'https://reactnativeprojectrest.appspot.com/rest/floorballservice/getallplayers'
