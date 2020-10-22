@@ -263,7 +263,7 @@ const CalendarScreen = () => {
         renderItem={renderItem}
         onDayPress={selectedDayHandler}
       />
-      <Fab>
+      <Fab style={{ backgroundColor: '#2e8ee8' }}>
         <Icon name="plus" onPress={onFabPress} />
       </Fab>
       {showClock && (
