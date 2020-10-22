@@ -1,7 +1,9 @@
 const urlString = 'https://reactnativeprojectrest.appspot.com/rest';
 
 export const fetchAllCalendarEvents = async () => {
-  const eventFetcher = await fetch(`${urlString}/getallcalendarevents`)
+  const eventFetcher = await fetch(
+    `${urlString}/calendarservice/getallcalendarevents`
+  )
     .then((response) => response.json())
     .then((responseJson) => responseJson);
   return eventFetcher;
@@ -50,4 +52,13 @@ export const addActivity = async (
     }),
   });
   console.log('New activity added, maybe....');
+};
+
+export const fetchAllAnnouncements = async (date) => {
+  const announcementFetcher = await fetch(
+    `${urlString}/announcementservice/getallannouncements`
+  )
+    .then((response) => response.json())
+    .then((responseJson) => responseJson);
+  return announcementFetcher;
 };
