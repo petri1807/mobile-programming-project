@@ -1,13 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-const color = {
-  primary: '',
-  secondary: '',
-  third: '',
-  fourth: '',
-  fifth: '',
-};
-
 const activityScreen = StyleSheet.create({
   topView: {
     borderBottomLeftRadius: 25,
@@ -210,7 +202,6 @@ const homeScreen = StyleSheet.create({
 
 const calendarScreen = StyleSheet.create({
   calendar: {
-    // marginBottom: 10,
     flex: 1,
     marginTop: 30,
   },
@@ -228,29 +219,21 @@ const calendarScreen = StyleSheet.create({
   },
   // Start & end buttons
   timeContainer: {
-    // borderColor: 'green',
-    // borderWidth: 2,
     flexDirection: 'row',
     width: '50%',
     marginLeft: 'auto',
     marginRight: 'auto',
   },
   timeAndDesc: {
-    // borderColor: 'blue',
-    // borderWidth: 2,
     alignItems: 'center',
     width: '50%',
   },
   description: {
-    // borderWidth: 2,
-    // borderColor: 'red',
     width: 60,
     textAlignVertical: 'center',
     textAlign: 'center',
   },
   timeSelector: {
-    // borderWidth: 1,
-    // borderColor: 'gray',
     width: 60,
   },
 });
