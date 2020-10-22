@@ -48,9 +48,7 @@ const CalendarScreen = () => {
   const [endTime, setEndTime] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const [newMessage, setNewMessage] = useState('');
-  // const [mode, setMode] = useState('time');
   const [showClock, setShowClock] = useState(false);
-  // const [timestampDay, setTimestampDay] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [startTitle, setStartTitle] = useState('Start');
   const [endTitle, setEndTitle] = useState('End');
@@ -69,8 +67,6 @@ const CalendarScreen = () => {
 
   const selectedDayHandler = (day) => {
     setSelectedDay(day.dateString);
-    // setTimestampDay(day.timestamp);
-    // console.log('dayhandlerin objecti', day.dateString);
   };
 
   const topicHandler = (enteredText) => {
@@ -81,51 +77,52 @@ const CalendarScreen = () => {
     setNewMessage(enteredText);
   };
 
-  // Sets the current time to time hook, which is selected on DateTimePicker when you press clock time
+  // Sets the current time to time hook, which is selected on DateTimePicker when you press the start time
   const timeNow = () => {
     setTime(new Date());
   };
 
+  // Sets the current time +1h to time hook, which is selected on DateTimePicker when you press the end time
   const timeOneHourFromNow = () => {
     const t = new Date();
     const newTime = t.setHours(t.getHours() + 1);
     setTime(newTime);
   };
 
-  const startTimeHandler = (event, selectedTime) => {
-    const moddedTime = selectedTime
-      .toTimeString()
-      .split('')
-      .slice(0, 5)
-      .join('');
-    console.log(`Selected time: ${moddedTime}`);
-    setStartTime(moddedTime);
-    setStartTitle(moddedTime);
+  const startTimeHandler = (t) => {
+    if (t === undefined) {
+      return;
+    }
+    const timeStr = `${t.getHours()}.${t.getMinutes()}`;
+    setStartTime(timeStr);
+    setStartTitle(timeStr);
     setShowClock(false);
   };
 
-  const endTimeHandler = (event, selectedTime) => {
-    const moddedTime = selectedTime
-      .toTimeString()
-      .split('')
-      .slice(0, 5)
-      .join('');
-    console.log(`Selected time: ${moddedTime}`);
-    setEndTime(moddedTime);
-    setEndTitle(moddedTime);
+  const endTimeHandler = (t) => {
+    if (t === undefined) {
+      return;
+    }
+    const timeStr = `${t.getHours()}.${t.getMinutes()}`;
+    setEndTime(timeStr);
+    setEndTitle(timeStr);
     setShowClock(false);
   };
 
   const settingTimeHandler = (event, selectedTime) => {
-    if (timeButton === 'start') startTimeHandler(event, selectedTime);
-    if (timeButton === 'end') endTimeHandler(event, selectedTime);
+    if (timeButton === 'start') startTimeHandler(selectedTime);
+    if (timeButton === 'end') endTimeHandler(selectedTime);
   };
 
   const calendarEventControl = () => {
     if (newTopic === '' || newMessage === '') {
       alert('please fill topic and message fields.');
     } else {
-      addCalendarEventHandler();
+      console.log('Hooks');
+      console.log(`Date: ${selectedDay}`);
+      console.log(`Start time: ${startTime}`);
+      console.log(`End time: ${endTime}`);
+      // addCalendarEventHandler();
     }
   };
 
@@ -160,22 +157,19 @@ const CalendarScreen = () => {
   useEffect(() => {
     console.log('Start time hook:');
     console.log(startTime);
-
-    // console.log('timeStampDay hook');
-    // console.log(timestampDay);
-  }, [startTime]);
+    console.log('End time hook:');
+    console.log(endTime);
+  }, [startTime, endTime]);
 
   const onFabPress = () => {
-    // Setting start & end time button title
-    const start = new Date().toTimeString().split(':').slice(0, 2).join(':');
-    const endArr = new Date().toTimeString().split(':');
-    endArr[0] =
-      Number(endArr[0]) < 23
-        ? (endArr[0] = Number(endArr[0]) + 1)
-        : (endArr[0] = 0);
-    const end = endArr.slice(0, 2).join(':');
+    const day = new Date();
+    const start = `${day.getHours()}:${day.getMinutes()}`;
+    const end = `${day.getHours() + 1}:${day.getMinutes()}`;
+
     setStartTitle(start);
     setEndTitle(end);
+    setStartTime(start);
+    setEndTime(end);
     setEventModalVisible(true);
   };
 
