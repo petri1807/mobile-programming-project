@@ -37,6 +37,8 @@ const HomeScreen = () => {
     const date = new Date().toISOString().split('T')[0];
     await fetchAllCalendarEvents().then((res) => {
       const today = res.filter((item) => item.date === date);
+      console.log('home fetch');
+      console.log(today);
       setCalendarList(today);
     });
     setLoading(!loading);
@@ -50,30 +52,30 @@ const HomeScreen = () => {
 
   return (
     <Container style={homeScreen.pageLayout}>
-      <Content>
-        <View
-          // If announcement is visible, use padding to reposition the title and EventCard from underneath the AnnouncementBox
-          style={announcementVisible ? { paddingTop: 40 } : { paddingTop: 0 }}
-        >
-          <AnnouncementBox setVisibility={setAnnouncementVisible} />
-          <Text style={homeScreen.title}>Today's events</Text>
-          <View style={homeScreen.cardContainer}>
-            {calendarList.length > 0 ? (
-              calendarList.map((item) => (
-                <EventCard
-                  key={item.id}
-                  timeStart={item.timeStart}
-                  timeEnd={item.timeEnd}
-                  topic={item.topic}
-                  message={item.message}
-                />
-              ))
-            ) : (
-              <H1>No events for today</H1>
-            )}
-          </View>
+      {/* <Content> */}
+      <View
+        // If announcement is visible, use padding to reposition the title and EventCard from underneath the AnnouncementBox
+        style={announcementVisible ? { paddingTop: 40 } : { paddingTop: 0 }}
+      >
+        <AnnouncementBox setVisibility={setAnnouncementVisible} />
+        <Text style={homeScreen.title}>Today's events</Text>
+        <View style={homeScreen.cardContainer}>
+          {calendarList.length > 0 ? (
+            calendarList.map((item) => (
+              <EventCard
+                key={item.id}
+                timeStart={item.timeStart}
+                timeEnd={item.timeEnd}
+                topic={item.topic}
+                message={item.message}
+              />
+            ))
+          ) : (
+            <H1>No events for today</H1>
+          )}
         </View>
-      </Content>
+      </View>
+      {/* </Content> */}
     </Container>
   );
 };

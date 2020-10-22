@@ -1,7 +1,9 @@
 const urlString = 'https://reactnativeprojectrest.appspot.com/rest';
 
 export const fetchAllCalendarEvents = async () => {
-  const eventFetcher = await fetch(`${urlString}/getallcalendarevents`)
+  const eventFetcher = await fetch(
+    `${urlString}/calendarservice/getallcalendarevents`
+  )
     .then((response) => response.json())
     .then((responseJson) => responseJson);
   return eventFetcher;
