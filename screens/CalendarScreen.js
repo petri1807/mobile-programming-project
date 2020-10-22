@@ -125,7 +125,7 @@ const CalendarScreen = () => {
       console.log(`Date: ${selectedDay}`);
       console.log(`Start time: ${startTime}`);
       console.log(`End time: ${endTime}`);
-      // addCalendarEventHandler();
+      addCalendarEventHandler();
     }
   };
 

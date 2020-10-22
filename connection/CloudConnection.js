@@ -48,7 +48,6 @@ export const deleteCalendarEvent = async (id) => {
 export const fetchAllPlayers = async () => {
   const playerFetcher = await fetch(
     `${urlString}/floorballservice/getallplayers`
-
   )
     .then((response) => response.json())
     .then((responseJson) => responseJson);
@@ -96,7 +95,6 @@ export const fetchAllAnnouncements = async (date) => {
     .then((response) => response.json())
     .then((responseJson) => responseJson);
   return announcementFetcher;
-
 };
 export const addPlayer = async (playerParam) => {
   const response = await fetch(`${urlString}/floorballservice/addplayer`, {
@@ -115,3 +113,4 @@ export const addPlayer = async (playerParam) => {
     [{ text: 'Continue' }],
     { cancelable: false }
   );
+};
