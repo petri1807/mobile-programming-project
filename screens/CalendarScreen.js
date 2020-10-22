@@ -242,7 +242,6 @@ const CalendarScreen = () => {
             </Text>
             <Text>{item.topic}</Text>
             <Text>{item.message}</Text>
-            {/* <Avatar.Text label="A" /> */}
           </View>
         </CardItem>
       </Card>
@@ -280,22 +279,36 @@ const CalendarScreen = () => {
         <Dialog.Title>{selectedDay}</Dialog.Title>
         <Dialog.Input onChangeText={topicHandler} placeholder="Topic" />
         <Dialog.Input onChangeText={messageHandler} placeholder="Message" />
-        <Dialog.Button
-          label={startTitle}
-          onPress={() => {
-            timeNow();
-            setShowClock(true);
-            setTimeButton('start');
-          }}
-        />
-        <Dialog.Button
-          label={endTitle}
-          onPress={() => {
-            timeOneHourFromNow();
-            setShowClock(true);
-            setTimeButton('end');
-          }}
-        />
+        <View style={calendarScreen.timeContainer}>
+          <View style={calendarScreen.timeAndDesc}>
+            <Dialog.Description style={calendarScreen.description}>
+              Start
+            </Dialog.Description>
+            <Dialog.Button
+              style={calendarScreen.timeSelector}
+              label={startTitle}
+              onPress={() => {
+                timeNow();
+                setShowClock(true);
+                setTimeButton('start');
+              }}
+            />
+          </View>
+          <View style={calendarScreen.timeAndDesc}>
+            <Dialog.Description style={calendarScreen.description}>
+              End
+            </Dialog.Description>
+            <Dialog.Button
+              style={calendarScreen.timeSelector}
+              label={endTitle}
+              onPress={() => {
+                timeOneHourFromNow();
+                setShowClock(true);
+                setTimeButton('end');
+              }}
+            />
+          </View>
+        </View>
         <Dialog.Button
           label="Cancel"
           onPress={() => {
