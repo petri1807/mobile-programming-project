@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { Container, Content, H1 } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
@@ -61,15 +61,28 @@ const HomeScreen = () => {
         <Text style={homeScreen.title}>Today's events</Text>
         <View style={homeScreen.cardContainer}>
           {calendarList.length > 0 ? (
-            calendarList.map((item) => (
-              <EventCard
-                key={item.id}
-                timeStart={item.timeStart}
-                timeEnd={item.timeEnd}
-                topic={item.topic}
-                message={item.message}
-              />
-            ))
+            // calendarList.map((item) => (
+            //   <EventCard
+            //     key={item.id}
+            //     timeStart={item.timeStart}
+            //     timeEnd={item.timeEnd}
+            //     topic={item.topic}
+            //     message={item.message}
+            //   />
+            // ))
+            <FlatList
+              keyExtractor={(item) => item.id.toString()}
+              data={calendarList}
+              renderItem={(itemData) => (
+                <EventCard
+                  key={itemData.item.id}
+                  timeStart={itemData.item.timeStart}
+                  timeEnd={itemData.item.timeEnd}
+                  topic={itemData.item.topic}
+                  message={itemData.item.message}
+                />
+              )}
+            />
           ) : (
             <H1>No events for today</H1>
           )}
