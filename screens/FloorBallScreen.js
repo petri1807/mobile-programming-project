@@ -19,15 +19,7 @@ import Dialog from 'react-native-dialog';
 import { fetchAllPlayers, addPlayer } from '../connection/CloudConnection';
 
 import { floorBallScreen } from '../styles/ProjectStyles.js';
-/*
-init()
-  .then(() => {
-    console.log('Database creation succeeded!');
-  })
-  .catch((err) => {
-    console.log(`Database IS NOT initialized! ${err}`);
-  });
-*/
+
 const FloorBallScreen = () => {
   const [loading, setLoading] = useState(true);
   const [playerList, setPlayerList] = useState([]);
@@ -36,6 +28,7 @@ const FloorBallScreen = () => {
 
   const showDialog = () => {
     setVisible(true);
+    fetch();
   };
 
   const handleCancel = () => {
@@ -45,18 +38,25 @@ const FloorBallScreen = () => {
   const playerInputHandler = (enteredText) => {
     setNewPlayer(enteredText);
   };
+
   const fetch = async () => {
     await fetchAllPlayers().then((res) => {
       setPlayerList(res);
     });
     setLoading(!loading);
-    showDialog();
   };
+
+  const pressSignup = () => {
+    addPlayer(player);
+    playerInputHandler('');
+  };
+
   useEffect(() => {
     if (loading) {
       fetch();
     }
   });
+
   return (
     <Container style={{ flex: 1 }}>
       <Content>
@@ -104,16 +104,13 @@ const FloorBallScreen = () => {
             />
           </Item>
           <Body>
-            <Button
-              style={floorBallScreen.buttonsign}
-              onPress={() => addPlayer(player)}
-            >
+            <Button style={floorBallScreen.buttonsign} onPress={pressSignup}>
               <Text>SIGN UP</Text>
             </Button>
             <Button
               transparent
               style={floorBallScreen.buttonwho}
-              onPress={fetch}
+              onPress={showDialog}
             >
               <Text>WHO'S COMING</Text>
             </Button>

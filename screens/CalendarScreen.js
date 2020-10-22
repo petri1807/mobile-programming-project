@@ -47,70 +47,8 @@ const CalendarScreen = () => {
       .catch((error) => console.log(error));
   };
 
-  const selectedDayHandler = (day) => {
-    setSelectedDay(day.dateString);
-  };
-
-  const topicHandler = (enteredText) => {
-    setNewTopic(enteredText);
-  };
-
-  const messageHandler = (enteredText) => {
-    setNewMessage(enteredText);
-  };
-
-  const timeNow = () => {
-    setTime(new Date());
-  };
-
-  const timeOneHourFromNow = () => {
-    const t = new Date();
-    const newTime = t.setHours(t.getHours() + 1);
-    setTime(newTime);
-  };
-
-  const startTimeHandler = (t) => {
-    if (t === undefined) {
-      return;
-    }
-    const timeStr = `${t.getHours()}.${t.getMinutes()}`;
-    setShowClock(false);
-    setStartTime(timeStr);
-    setStartTitle(timeStr);
-  };
-
-  const endTimeHandler = (t) => {
-    if (t === undefined) {
-      return;
-    }
-    const timeStr = `${t.getHours()}.${t.getMinutes()}`;
-    setShowClock(false);
-    setEndTime(timeStr);
-    setEndTitle(timeStr);
-  };
-
-  const settingTimeHandler = (event, selectedTime) => {
-    if (timeButton === 'start') startTimeHandler(selectedTime);
-    if (timeButton === 'end') endTimeHandler(selectedTime);
-  };
-
-  const calendarEventControl = () => {
-    if (newTopic === '' || newMessage === '') {
-      alert('Please fill topic and message fields.');
-    } else {
-      addCalendarEventHandler();
-    }
-  };
-
-  const addCalendarEventHandler = async () => {
-    const date = selectedDay;
-    const timeStart = startTime;
-    const timeEnd = endTime;
-
-    await addCalendarEvent(1, date, timeStart, timeEnd, newTopic, newMessage);
-    setEventModalVisible(false);
-  };
-
+  // Calendar Agenda needs it's content to be in a different form than what we receive from the database
+  // This function creates an object, stores each unique date as a key, and adds all events for the dates as objects inside an array
   const addCalendarEventsToItems = () => {
     const obj = {};
     let keys = calendarEvents.map((item) => item.date); // store dates in array
@@ -129,13 +67,7 @@ const CalendarScreen = () => {
     setItems(obj);
   };
 
-  useEffect(() => {
-    console.log('Start time hook:');
-    console.log(startTime);
-    console.log('End time hook:');
-    console.log(endTime);
-  }, [startTime, endTime]);
-
+  // Sets the time used on time button titles, and start/end time hooks if user adds an event without setting the time himself
   const onFabPress = () => {
     const day = new Date();
     const start = `${day.getHours()}:${day.getMinutes()}`;
@@ -146,6 +78,80 @@ const CalendarScreen = () => {
     setStartTime(start);
     setEndTime(end);
     setEventModalVisible(true);
+  };
+
+  // Handles the date, topic and message fields
+  const selectedDayHandler = (day) => {
+    setSelectedDay(day.dateString);
+  };
+
+  const topicHandler = (enteredText) => {
+    setNewTopic(enteredText);
+  };
+
+  const messageHandler = (enteredText) => {
+    setNewMessage(enteredText);
+  };
+
+  // Sets the start time to the current hours/minutes for Time Picker when you open the clock dial
+  const timeNow = () => {
+    setTime(new Date());
+  };
+
+  // Sets the end time to the current hours/minutes +1 hour for Time Picker when you open the clock dial
+  const timeOneHourFromNow = () => {
+    const t = new Date();
+    const newTime = t.setHours(t.getHours() + 1);
+    setTime(newTime);
+  };
+
+  // Handles the input from Time Picker
+  const startTimeHandler = (t) => {
+    if (t === undefined) {
+      return;
+    }
+    const timeStr = `${t.getHours()}.${t.getMinutes()}`;
+    setShowClock(false);
+    setStartTime(timeStr);
+    setStartTitle(timeStr);
+  };
+
+  // Handles the input from Time Picker
+  const endTimeHandler = (t) => {
+    if (t === undefined) {
+      return;
+    }
+    const timeStr = `${t.getHours()}.${t.getMinutes()}`;
+    setShowClock(false);
+    setEndTime(timeStr);
+    setEndTitle(timeStr);
+  };
+
+  // Calls time handlers depending on which time was set
+  const settingTimeHandler = (event, selectedTime) => {
+    if (timeButton === 'start') startTimeHandler(selectedTime);
+    if (timeButton === 'end') endTimeHandler(selectedTime);
+  };
+
+  const calendarEventControl = () => {
+    if (newTopic === '' || newMessage === '') {
+      alert('Please fill topic and message fields.');
+    } else {
+      addCalendarEventHandler();
+    }
+  };
+
+  // Calls the add function from CloudConnection, and closes the modal screen
+  const addCalendarEventHandler = async () => {
+    await addCalendarEvent(
+      1,
+      selectedDay,
+      startTime,
+      endTime,
+      newTopic,
+      newMessage
+    );
+    setEventModalVisible(false);
   };
 
   const deleteItemAlert = (id) =>
@@ -167,6 +173,9 @@ const CalendarScreen = () => {
     await deleteCalendarEvent(id).then(() => fetch());
   };
 
+  useEffect(() => {}, [calendarEvents]);
+
+  // The card for events
   const renderItem = (item) => (
     <TouchableOpacity
       onLongPress={() => {

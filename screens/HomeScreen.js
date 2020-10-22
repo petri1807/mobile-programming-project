@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { Container, Content, H1 } from 'native-base';
+import { Container, H1 } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
 import EventCard from '../components/EventCard';
 import AnnouncementBox from '../components/AnnouncementBox';
 import { fetchAllCalendarEvents } from '../connection/CloudConnection';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [calendarList, setCalendarList] = useState([]);
   const [announcementVisible, setAnnouncementVisible] = useState(false);
@@ -25,7 +25,12 @@ const HomeScreen = () => {
     if (loading) {
       fetch();
     }
-  });
+
+    const unsub = navigation.addListener('focus', () => {
+      fetch();
+    });
+    return unsub;
+  }, [loading, navigation]);
 
   return (
     <Container style={homeScreen.pageLayout}>
