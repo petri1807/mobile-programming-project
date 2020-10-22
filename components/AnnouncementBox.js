@@ -4,19 +4,23 @@ import { Accordion } from 'native-base';
 
 import { homeScreen } from '../styles/ProjectStyles';
 import {
-  fetchAllAnnouncements,
+  // fetchAllAnnouncements,
   addAnnouncement,
   deleteAnnouncement,
 } from '../connection/DBConnection';
+
+import { fetchAllAnnouncements } from '../connection/CloudConnection';
 
 const AnnouncementBox = ({ setVisibility }) => {
   const [loading, setLoading] = useState(true);
   const [announcementList, setAnnouncementList] = useState([]);
 
   const fetch = async () => {
-    const date = new Date().toDateString();
+    const date = new Date().toISOString().split('T')[0];
     await fetchAllAnnouncements(date).then((res) => {
-      setAnnouncementList(res.rows._array);
+      const today = res.filter((item) => item.date === date);
+      setAnnouncementList(today);
+      // setAnnouncementList(res.rows._array);
       setVisibility(true);
     });
   };

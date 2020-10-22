@@ -53,3 +53,12 @@ export const addActivity = async (
   });
   console.log('New activity added, maybe....');
 };
+
+export const fetchAllAnnouncements = async (date) => {
+  const announcementFetcher = await fetch(
+    `${urlString}/announcementservice/getallannouncements`
+  )
+    .then((response) => response.json())
+    .then((responseJson) => responseJson);
+  return announcementFetcher;
+};
