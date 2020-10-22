@@ -201,7 +201,7 @@ const CalendarScreen = () => {
     <KeyboardAvoidingView style={calendarScreen.calendar}>
       <Agenda
         items={items}
-        loadItemsForMonth={(selectedDate) => {
+        loadItemsForMonth={() => {
           fetch();
         }}
         selected={Date}
