@@ -15,8 +15,29 @@ const HomeScreen = ({ navigation }) => {
   const fetch = async () => {
     const date = new Date().toISOString().split('T')[0];
     await fetchAllCalendarEvents().then((res) => {
+      // Filters out events that are not today
       const today = res.filter((item) => item.date === date);
-      setCalendarList(today);
+
+      // Compares hours and minutes to sort the list
+      const compare = (a, b) => {
+        const hoursA = a.timeStart.split('.')[0];
+        const hoursB = b.timeStart.split('.')[0];
+        const minutesA = a.timeStart.split('.')[1];
+        const minutesB = b.timeStart.split('.')[1];
+
+        if (hoursA > hoursB) {
+          return 1;
+        }
+        if (hoursA === hoursB) {
+          if (minutesA > minutesB) {
+            return 1;
+          }
+          return -1;
+        }
+        return -1;
+      };
+      const organized = today.sort(compare);
+      setCalendarList(organized);
     });
     setLoading(!loading);
   };
